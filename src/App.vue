@@ -3,6 +3,8 @@
   import { RouterView } from "vue-router";
   import { useI18n } from "vue-i18n";
 
+  import TheHeader from "@/components/TheHeader.vue";
+
   const { locale } = useI18n();
 
   onMounted(() => {
@@ -13,5 +15,6 @@
 </script>
 
 <template>
+  <TheHeader />
   <RouterView />
 </template>
