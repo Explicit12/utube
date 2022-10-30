@@ -1,0 +1,17 @@
+yarn.lock
+vite.config.ts
+tsconfig.json
+tsconfig.config.json
+tailwind.config.js
+postcss.config.js
+env.d.ts
+.prettierrc.json
+.eslintrc.cjs
+.gitignore
+.eslintignore
+
+**/*.config.js
+
+/dist
+/node_modules
+
