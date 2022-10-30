@@ -58,6 +58,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@iconify-prerendered/vue-mdi@^0.13.1665726087":
+  version "0.13.1665726087"
+  resolved "https://registry.yarnpkg.com/@iconify-prerendered/vue-mdi/-/vue-mdi-0.13.1665726087.tgz#bfb25e9ebcb857cf47bf1f8b60fb95ef266f08b4"
+  integrity sha512-DlJ+mKchUOyiYmgYp3NQfWZIli9/jxUolS5uNHLhjrTvajhHW5VzMMgH/feUlNTQtERIPb1WwKy5sQTh0r+UWg==
+
 "@intlify/bundle-utils@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@intlify/bundle-utils/-/bundle-utils-3.2.1.tgz#f1a00fb31716567c8da63fbb351c3199ca12d467"
