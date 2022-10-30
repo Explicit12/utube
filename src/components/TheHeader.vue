@@ -14,7 +14,6 @@
   import TheLogo from "./TheLogo.vue";
 
   const { t } = useI18n();
-
   const breakpoints = useBreakpoints(breakpointsTailwind);
 
   const isMobileSearch: Ref<boolean> = ref(false);
