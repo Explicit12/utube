@@ -44,7 +44,7 @@
       <input
         type="text"
         :placeholder="t('search placeholder')"
-        class="placeholder:text-grey-400 text-grey-900 w-full max-w-screen-sm rounded-lg bg-blue-50 p-2 pl-10 text-base font-normal focus-visible:outline-none focus-visible:outline-blue-200"
+        class="placeholder:text-grey-400 text-grey-900 w-full max-w-screen-sm rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
       />
     </span>
 
