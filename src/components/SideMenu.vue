@@ -11,7 +11,7 @@
   const channels: Ref<any[]> = ref(new Array(0));
   const standardToShow: Ref<number> = ref(6);
   const channelsToShow: Ref<number> = ref(standardToShow.value);
-  const importDropZoneRef = ref<HTMLDivElement>();
+  const importDropZone = ref<HTMLDivElement>();
 
   function importDropZoneHandler(file: File[] | null): void {
     if (file) {
@@ -29,10 +29,7 @@
 
   const route = useRoute();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isOverDropZone } = useDropZone(
-    importDropZoneRef,
-    importDropZoneHandler,
-  );
+  const { isOverDropZone } = useDropZone(importDropZone, importDropZoneHandler);
   const { t } = useI18n();
 
   // TODO: Remove any type
@@ -111,7 +108,7 @@
 
       <template v-else>
         <div
-          ref="importDropZoneRef"
+          ref="importDropZone"
           class="mt-6 flex h-64 w-full items-center justify-center rounded-lg border-4 border-dashed border-blue-600 p-4 text-center"
         >
           {{ t("subscribtions.drop-zone") }}
