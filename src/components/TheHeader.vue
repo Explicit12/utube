@@ -7,11 +7,16 @@
     IconMagnify,
     IconCog,
     IconClose,
+    IconMenu,
   } from "@iconify-prerendered/vue-mdi";
 
   import type { Ref } from "vue";
 
   import TheLogo from "./TheLogo.vue";
+
+  defineEmits<{
+    (e: "menuClick"): void;
+  }>();
 
   const { t } = useI18n();
   const breakpoints = useBreakpoints(breakpointsTailwind);
@@ -28,9 +33,19 @@
   <header
     class="border-b-1 fixed flex min-h-[106px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-8"
   >
-    <RouterLink :to="{ name: 'home' }">
-      <TheLogo />
-    </RouterLink>
+    <div class="flex items-center gap-8">
+      <button @click="$emit('menuClick')">
+        <IconMenu
+          width="24"
+          height="24"
+          class="text-grey-900 hidden lg:block"
+        />
+      </button>
+
+      <RouterLink :to="{ name: 'home' }">
+        <TheLogo />
+      </RouterLink>
+    </div>
 
     <span
       :class="{ flex: isMobileSearch, hidden: !isMobileSearch }"
