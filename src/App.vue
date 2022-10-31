@@ -4,6 +4,7 @@
   import { useI18n } from "vue-i18n";
 
   import TheHeader from "@/components/TheHeader.vue";
+  import SideMenu from "@/components/SideMenu.vue";
 
   const { locale } = useI18n();
 
@@ -16,5 +17,6 @@
 
 <template>
   <TheHeader />
+  <SideMenu />
   <RouterView />
 </template>
