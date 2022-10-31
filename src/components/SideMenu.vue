@@ -40,7 +40,7 @@
 
 <template>
   <aside
-    class="fixed inset-y-0 left-0 top-[106px] inline w-64 space-y-8 overflow-y-scroll border-r-2 border-gray-200 px-6 py-8"
+    class="fixed inset-y-0 left-0 top-[106px] hidden w-64 space-y-8 overflow-y-scroll border-r-2 border-gray-200 px-6 py-8 lg:inline"
   >
     <nav>
       <h2 class="font-sans text-xl font-normal uppercase text-gray-400">
