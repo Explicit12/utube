@@ -9,12 +9,10 @@
 
   const settings = useSettings();
   const { isMenuOpen } = storeToRefs(settings);
-
-  const { toggleMenu } = settings;
 </script>
 
 <template>
-  <TheHeader @menu-click="toggleMenu" />
+  <TheHeader />
   <Transition name="slide-in">
     <SideMenu v-show="isMenuOpen" />
   </Transition>

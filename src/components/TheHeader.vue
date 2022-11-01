@@ -10,19 +10,20 @@
     IconMenu,
   } from "@iconify-prerendered/vue-mdi";
 
+  import { useSettings } from "@/stores/settings";
+
   import type { Ref } from "vue";
 
   import TheLogo from "./TheLogo.vue";
 
-  defineEmits<{
-    (e: "menuClick"): void;
-  }>();
-
   const { t } = useI18n();
+  const settings = useSettings();
   const breakpoints = useBreakpoints(breakpointsTailwind);
 
   const isMobileSearch: Ref<boolean> = ref(false);
   const isSmAndSmaller: Ref<boolean> = breakpoints.smallerOrEqual("sm");
+
+  const { toggleMenu } = settings;
 
   watch(isSmAndSmaller, (newValue) => {
     if (newValue) isMobileSearch.value = false;
@@ -34,7 +35,7 @@
     class="border-b-1 fixed flex min-h-[106px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-8"
   >
     <div class="flex items-center gap-8">
-      <button @click="$emit('menuClick')">
+      <button @click="toggleMenu">
         <IconMenu width="24" height="24" class="text-grey-900" />
       </button>
 
