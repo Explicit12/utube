@@ -35,11 +35,7 @@
   >
     <div class="flex items-center gap-8">
       <button @click="$emit('menuClick')">
-        <IconMenu
-          width="24"
-          height="24"
-          class="text-grey-900 hidden lg:block"
-        />
+        <IconMenu width="24" height="24" class="text-grey-900" />
       </button>
 
       <RouterLink :to="{ name: 'home' }">

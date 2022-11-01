@@ -3,6 +3,7 @@
   import { useRoute } from "vue-router";
   import { useDropZone } from "@vueuse/core";
   import { ref, computed } from "vue";
+
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
 
   import type { Ref, ComputedRef } from "vue";
@@ -40,7 +41,7 @@
 
 <template>
   <aside
-    class="fixed inset-y-0 left-0 top-[106px] hidden w-64 space-y-8 overflow-y-scroll border-r-2 border-gray-200 px-6 py-8 lg:inline"
+    class="fixed inset-y-0 left-0 top-[106px] inline w-64 space-y-8 overflow-y-scroll border-r-2 border-gray-200 bg-white px-6 py-8"
   >
     <nav>
       <h2 class="font-sans text-xl font-normal uppercase text-gray-400">

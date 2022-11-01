@@ -18,13 +18,18 @@
   <Transition name="slide-in">
     <SideMenu v-show="isMenuOpen" />
   </Transition>
-  <RouterView />
+
+  <RouterView
+    tag="main"
+    :class="{ 'lg:pl-[256px]': isMenuOpen }"
+    class="pt-[106px] transition-[padding-left] duration-300"
+  />
 </template>
 
 <style>
   .slide-in-enter-active,
   .slide-in-leave-active {
-    transition: 250ms ease-in-out;
+    transition: 300ms ease-in-out;
   }
 
   .slide-in-enter-from,

@@ -5,7 +5,9 @@
 </script>
 
 <template>
-  <h1 class="text-xl font-bold underline">{{ t("hello") }}</h1>
+  <div class="my-0 mx-auto max-w-screen-xl px-4">
+    <h1 class="text-xl font-bold underline">{{ t("hello") }}</h1>
+  </div>
 </template>
 
 <i18n lang="json">
