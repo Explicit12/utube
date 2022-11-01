@@ -32,7 +32,7 @@
 
 <template>
   <header
-    class="border-b-1 fixed flex min-h-[106px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-8"
+    class="border-b-1 fixed z-20 flex min-h-[106px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-8"
   >
     <div class="flex items-center gap-8">
       <button @click="toggleMenu">
