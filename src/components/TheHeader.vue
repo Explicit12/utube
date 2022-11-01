@@ -55,7 +55,7 @@
       />
       <input
         type="text"
-        :placeholder="t('search placeholder')"
+        :placeholder="t('search-placeholder')"
         class="placeholder:text-grey-400 text-grey-900 w-full max-w-screen-sm rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
       />
     </span>
@@ -83,13 +83,13 @@
 <i18n lang="json">
 {
   "en-US": {
-    "search placeholder": "I'm searching..."
+    "search-placeholder": "I'm searching..."
   },
   "uk-UA": {
-    "search placeholder": "Я шукаю..."
+    "search-placeholder": "Я шукаю..."
   },
   "ru-RU": {
-    "search placeholder": "Я ищу..."
+    "search-placeholder": "Я ищу..."
   }
 }
 </i18n>

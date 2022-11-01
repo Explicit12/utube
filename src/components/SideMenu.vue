@@ -148,7 +148,7 @@
             href="#"
             class="font-sans font-normal text-gray-400 hover:underline hover:underline-offset-2"
           >
-            {{ t("info.license") }}
+            {{ t("info.github") }}
           </a>
         </li>
       </ul>
