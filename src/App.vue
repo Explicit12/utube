@@ -2,6 +2,9 @@
   import { RouterView } from "vue-router";
   import { storeToRefs } from "pinia";
   import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
+  import { onMounted } from "vue";
+  import { useI18n } from "vue-i18n";
+  import dayjs from "dayjs";
 
   import { useSettings } from "@/stores/settings";
 
@@ -12,11 +15,26 @@
 
   const settings = useSettings();
   const breakpoints = useBreakpoints(breakpointsTailwind);
+  const { locale } = useI18n();
 
   const isLgAndGreater: Ref<boolean> = breakpoints.greaterOrEqual("lg");
 
   const { isMenuOpen } = storeToRefs(settings);
   const { toggleMenu } = settings;
+
+  onMounted(() => {
+    switch (locale.value) {
+      case "uk-UA":
+        dayjs.locale("uk");
+        break;
+      case "en-US":
+        dayjs.locale("en");
+        break;
+      case "ru-RU":
+        dayjs.locale("ru");
+        break;
+    }
+  });
 </script>
 
 <template>
@@ -33,9 +51,8 @@
   ></div>
 
   <RouterView
-    tag="main"
-    :class="{ 'lg:pl-[256px]': isMenuOpen }"
-    class="relative pt-[106px] transition-[padding-left] duration-300"
+    :class="{ 'lg:pl-[272px]': isMenuOpen }"
+    class="relative my-0 mx-auto max-w-screen-xl pt-[106px] transition-[padding-left] duration-300"
   />
 </template>
 
