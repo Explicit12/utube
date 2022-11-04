@@ -1,20 +1,27 @@
 <script setup lang="ts">
-  import { computed } from "vue";
+  import { computed, ref, onMounted } from "vue";
   import { useI18n } from "vue-i18n";
   import { RouterLink } from "vue-router";
   import { IconPlay } from "@iconify-prerendered/vue-mdi";
   import dayjs from "dayjs";
   import relativeTime from "dayjs/plugin/relativeTime";
 
+  import { pingImage } from "@/utils/invidiousAPI";
+
+  import type { Ref } from "vue";
+  import type { VideoThumbnails } from "@/utils/invidiousAPI";
+
   dayjs.extend(relativeTime);
 
   const props = defineProps<{
     name: string;
-    author: { name: string; link: string };
+    author: { name: string; id: string };
     date: number;
     views: number;
-    image: string | null;
+    image: VideoThumbnails | null;
   }>();
+
+  const imageError: Ref<boolean> = ref(false);
 
   const { t } = useI18n();
 
@@ -31,7 +38,14 @@
   });
 
   const formatedDate = computed<string>(() => {
-    return dayjs(props.date).fromNow();
+    return dayjs.unix(props.date).fromNow();
+  });
+
+  onMounted(() => {
+    if (props.image) {
+      // Ping image url to check whether it exists or not
+      pingImage(props.image[8].url).catch(() => (imageError.value = true));
+    }
   });
 </script>
 
@@ -39,10 +53,15 @@
   <div>
     <RouterLink :to="{ name: 'home' }">
       <img
-        v-if="image"
-        :src="image"
-        alt="name"
-        class="aspect-video rounded-lg object-cover"
+        @error="imageError = true"
+        v-if="image && !imageError"
+        :src="image[3].url"
+        :alt="name"
+        decoding="async"
+        referrerpolicy="no-referrer"
+        crossorigin="anonymous"
+        loading="lazy"
+        class="aspect-video w-full rounded-lg object-cover"
       />
       <div
         v-else
