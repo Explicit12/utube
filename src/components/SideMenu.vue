@@ -8,6 +8,8 @@
   import { useUserData } from "@/stores/userData";
 
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
+  import SubscribtionSkeleton from "@/components/skeletonLoaders/SubscribtionSkeleton.vue";
+
   import getIdsFromCSV from "@/utils/getIdsFromCSV";
   import { getShortChannelInfo } from "@/utils/invidiousAPI";
 
@@ -17,6 +19,7 @@
   const userData = useUserData();
 
   const { subscribtions } = storeToRefs(userData);
+  const isChannelsInfoLoaded: Ref<boolean> = ref(false);
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
   const channelsToShow: Ref<number> = ref(standardToShow.value);
@@ -54,9 +57,10 @@
 
   onMounted(() => {
     subscribtions.value.forEach((id) => {
-      getShortChannelInfo(id).then((channelInfo) =>
-        channels.value.push(channelInfo),
-      );
+      getShortChannelInfo(id).then((channelInfo) => {
+        channels.value.push(channelInfo);
+        isChannelsInfoLoaded.value = true;
+      });
     });
   });
 </script>
@@ -121,6 +125,10 @@
               </span>
             </RouterLink>
           </li>
+
+          <template v-if="!isChannelsInfoLoaded">
+            <SubscribtionSkeleton v-for="n in standardToShow" :key="n" />
+          </template>
         </ul>
 
         <SecondaryButton

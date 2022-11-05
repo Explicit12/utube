@@ -4,6 +4,7 @@
   import { useWindowScroll } from "@vueuse/core";
 
   import VideoCompact from "@/components/videoCompact/VideoCompact.vue";
+  import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
 
   import { getPopular } from "@/utils/invidiousAPI";
 
@@ -12,10 +13,14 @@
 
   onMounted(() => {
     getPopular()
-      .then((popular) => (videos.value = popular))
+      .then((popular) => {
+        videos.value = popular;
+        isVideosLoaded.value = true;
+      })
       .catch((err) => (requestError.value = err.message));
   });
 
+  const isVideosLoaded: Ref<boolean> = ref(false);
   const requestError: Ref<string> = ref("");
   const videos: Ref<PopularVideos | []> = ref([]);
   const standardToShow: Ref<number> = ref(16);
@@ -28,7 +33,10 @@
   });
 
   watch(scrollY, (newValue) => {
-    if (newValue === document.body.scrollHeight - window.innerHeight) {
+    if (
+      newValue === document.body.scrollHeight - window.innerHeight &&
+      isVideosLoaded
+    ) {
       setTimeout(() => (videosToShow.value += standardToShow.value), 500);
     }
   });
@@ -42,15 +50,20 @@
       {{ t("headline") }}
     </h1>
     <div class="grid grid-cols-1 gap-4 py-4 md:grid-cols-3 lg:grid-cols-4">
-      <VideoCompact
-        v-for="video in slicedVideos"
-        :key="video.title"
-        :name="video.title"
-        :author="{ name: video.author, id: video.authorId }"
-        :views="video.viewCount"
-        :date="video.published"
-        :image="video.videoThumbnails"
-      />
+      <template v-if="isVideosLoaded">
+        <VideoCompact
+          v-for="video in slicedVideos"
+          :key="video.title"
+          :name="video.title"
+          :author="{ name: video.author, id: video.authorId }"
+          :views="video.viewCount"
+          :date="video.published"
+          :image="video.videoThumbnails"
+        />
+      </template>
+      <template v-else>
+        <VideoCompactSkeleton v-for="n in standardToShow" :key="n" />
+      </template>
     </div>
   </main>
 </template>
