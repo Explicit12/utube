@@ -11,22 +11,14 @@
   import type { Ref } from "vue";
   import type { PopularVideos } from "@/utils/invidiousAPI";
 
-  onMounted(() => {
-    getPopular()
-      .then((popular) => {
-        videos.value = popular;
-        isVideosLoaded.value = true;
-      })
-      .catch((err) => (requestError.value = err.message));
-  });
-
   const isVideosLoaded: Ref<boolean> = ref(false);
   const requestError: Ref<string> = ref("");
   const videos: Ref<PopularVideos | []> = ref([]);
-  const standardToShow: Ref<number> = ref(16);
+  const standardToShow: Ref<number> = ref(20);
   const videosToShow: Ref<number> = ref(standardToShow.value);
 
   const { y: scrollY } = useWindowScroll();
+  const { t } = useI18n();
 
   const slicedVideos = computed(() => {
     return videos.value.slice(0, videosToShow.value);
@@ -41,7 +33,14 @@
     }
   });
 
-  const { t } = useI18n();
+  onMounted(() => {
+    getPopular()
+      .then((popular) => {
+        videos.value = popular;
+        isVideosLoaded.value = true;
+      })
+      .catch((err) => (requestError.value = err.message));
+  });
 </script>
 
 <template>
@@ -49,7 +48,9 @@
     <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
       {{ t("headline") }}
     </h1>
-    <div class="grid grid-cols-1 gap-4 py-4 md:grid-cols-3 lg:grid-cols-4">
+    <div
+      class="grid grid-cols-1 gap-4 py-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+    >
       <template v-if="isVideosLoaded">
         <VideoCompact
           v-for="video in slicedVideos"

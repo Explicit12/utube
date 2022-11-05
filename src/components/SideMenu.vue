@@ -3,7 +3,6 @@
   import { useRoute } from "vue-router";
   import { useDropZone } from "@vueuse/core";
   import { ref, computed, onMounted, watch } from "vue";
-  import { storeToRefs } from "pinia";
 
   import { useUserData } from "@/stores/userData";
 
@@ -18,7 +17,7 @@
 
   const userData = useUserData();
 
-  const { subscribtions } = storeToRefs(userData);
+  const { subscribtions } = userData;
   const isChannelsInfoLoaded: Ref<boolean> = ref(false);
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
@@ -46,17 +45,18 @@
     return channels.value.slice(0, channelsToShow.value);
   });
 
-  watch(userData.subscribtions, (newValue) => {
+  watch(subscribtions, (newValue) => {
     newValue.forEach(async (id) => {
       if (!channels.value.find((channel) => channel.authorId === id)) {
         const channelInfo = await getShortChannelInfo(id);
         channels.value.push(channelInfo);
+        isChannelsInfoLoaded.value = true;
       }
     });
   });
 
   onMounted(() => {
-    subscribtions.value.forEach((id) => {
+    subscribtions.forEach((id) => {
       getShortChannelInfo(id).then((channelInfo) => {
         channels.value.push(channelInfo);
         isChannelsInfoLoaded.value = true;
