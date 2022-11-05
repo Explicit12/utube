@@ -124,7 +124,7 @@
         </ul>
 
         <SecondaryButton
-          v-if="subscribtions.length > standardToShow"
+          v-if="subscribtions.length > standardToShow && channels.length"
           @click="
             channelsToShow =
               channelsToShow <= standardToShow
