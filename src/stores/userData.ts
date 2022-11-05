@@ -1,12 +1,10 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
-import { ref } from "vue";
 
 import type { Ref } from "vue";
 
 export const useUserData = defineStore("userData", () => {
   const subscribtions: Ref<string[]> = useLocalStorage("subscribtions", []);
-  const test = ref(0);
 
   function subscribe(channelId: string[] | string) {
     if (
@@ -21,5 +19,5 @@ export const useUserData = defineStore("userData", () => {
     }
   }
 
-  return { subscribtions, subscribe, test };
+  return { subscribtions, subscribe };
 });
