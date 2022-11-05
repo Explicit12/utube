@@ -4,20 +4,20 @@ import { useLocalStorage } from "@vueuse/core";
 import type { Ref } from "vue";
 
 export const useUserData = defineStore("userData", () => {
-  const subscribtions: Ref<string[]> = useLocalStorage("subscribtions", []);
+  const subscriptions: Ref<string[]> = useLocalStorage("subscriptions", []);
 
   function subscribe(channelId: string[] | string) {
     if (
       typeof channelId === "string" &&
-      !subscribtions.value.includes(channelId)
+      !subscriptions.value.includes(channelId)
     ) {
-      subscribtions.value.push(channelId);
+      subscriptions.value.push(channelId);
     } else if (Array.isArray(channelId)) {
       channelId.forEach((id) => {
-        if (!subscribtions.value.includes(id)) subscribtions.value.push(id);
+        if (!subscriptions.value.includes(id)) subscriptions.value.push(id);
       });
     }
   }
 
-  return { subscribtions, subscribe };
+  return { subscriptions, subscribe };
 });

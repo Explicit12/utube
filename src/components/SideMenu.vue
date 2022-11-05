@@ -7,7 +7,7 @@
   import { useUserData } from "@/stores/userData";
 
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
-  import SubscribtionSkeleton from "@/components/skeletonLoaders/SubscribtionSkeleton.vue";
+  import SubscriptionSkeleton from "@/components/skeletonLoaders/SubscriptionsSkeleton.vue";
 
   import getIdsFromCSV from "@/utils/getIdsFromCSV";
   import { getShortChannelInfo } from "@/utils/invidiousAPI";
@@ -17,7 +17,7 @@
 
   const userData = useUserData();
 
-  const { subscribtions } = userData;
+  const { subscriptions } = userData;
   const isChannelsInfoLoaded: Ref<boolean> = ref(false);
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
@@ -45,7 +45,7 @@
     return channels.value.slice(0, channelsToShow.value);
   });
 
-  watch(subscribtions, (newValue) => {
+  watch(subscriptions, (newValue) => {
     newValue.forEach(async (id) => {
       if (!channels.value.find((channel) => channel.authorId === id)) {
         const channelInfo = await getShortChannelInfo(id);
@@ -56,7 +56,7 @@
   });
 
   onMounted(() => {
-    subscribtions.forEach((id) => {
+    subscriptions.forEach((id) => {
       getShortChannelInfo(id).then((channelInfo) => {
         channels.value.push(channelInfo);
         isChannelsInfoLoaded.value = true;
@@ -85,11 +85,11 @@
         </li>
         <li>
           <RouterLink
-            :to="{ name: 'home' }"
-            :class="{ 'bg-blue-50': route.name === 'subscribtions' }"
+            :to="{ name: 'subscriptions' }"
+            :class="{ 'bg-blue-50': route.name === 'subscriptions' }"
             class="block rounded-lg p-2 font-sans text-base font-normal transition-colors"
           >
-            {{ t("navigation.links.subscribtions") }}
+            {{ t("navigation.links.subscriptions") }}
           </RouterLink>
         </li>
       </ul>
@@ -97,10 +97,10 @@
 
     <div>
       <h2 class="font-sans text-xl font-normal uppercase text-gray-400">
-        {{ t("subscribtions.headline") }}
+        {{ t("subscriptions.headline") }}
       </h2>
 
-      <template v-if="subscribtions.length">
+      <template v-if="subscriptions.length">
         <ul class="space-y-5 pt-6">
           <li v-for="channel in slicedChannels" :key="channel.author">
             <RouterLink
@@ -114,7 +114,7 @@
                 referrerpolicy="no-referrer"
                 crossorigin="anonymous"
                 loading="lazy"
-                :alt="t('subscribtions.alt-avatar')"
+                :alt="t('subscriptions.alt-avatar')"
                 class="rounded-lg"
                 width="32"
                 height="32"
@@ -127,24 +127,24 @@
           </li>
 
           <template v-if="!isChannelsInfoLoaded">
-            <SubscribtionSkeleton v-for="n in standardToShow" :key="n" />
+            <SubscriptionSkeleton v-for="n in standardToShow" :key="n" />
           </template>
         </ul>
 
         <SecondaryButton
-          v-if="subscribtions.length > standardToShow && channels.length"
+          v-if="subscriptions.length > standardToShow && channels.length"
           @click="
             channelsToShow =
               channelsToShow <= standardToShow
-                ? subscribtions.length
+                ? subscriptions.length
                 : standardToShow
           "
           class="mt-4 w-full"
         >
           {{
             channelsToShow <= standardToShow
-              ? t("subscribtions.button-more")
-              : t("subscribtions.button-less")
+              ? t("subscriptions.button-more")
+              : t("subscriptions.button-less")
           }}
         </SecondaryButton>
       </template>
@@ -154,7 +154,7 @@
           ref="importDropZone"
           class="mt-6 flex h-64 w-full items-center justify-center rounded-lg border-4 border-dashed border-blue-600 p-4 text-center"
         >
-          {{ t("subscribtions.drop-zone") }}
+          {{ t("subscriptions.drop-zone") }}
         </div>
         <input
           type="file"
@@ -205,11 +205,11 @@
       "headline": "Navigation",
       "links": {
         "home": "Home",
-        "subscribtions": "Subscribtions"
+        "subscriptions": "subscriptions"
       }
     },
-    "subscribtions": {
-      "headline": "Subscribtions",
+    "subscriptions": {
+      "headline": "subscriptions",
       "button-more": "More",
       "button-less": "Less",
       "alt-avatar": "Channel avatar",
@@ -227,10 +227,10 @@
       "headline": "Навігація",
       "links": {
         "home": "Головна",
-        "subscribtions": "Підписки"
+        "subscriptions": "Підписки"
       }
     },
-    "subscribtions": {
+    "subscriptions": {
       "headline": "Підписки",
       "button-more": "Більше",
       "button-less": "Менше",
@@ -249,11 +249,11 @@
       "header": "Навигация",
       "links": {
         "home": "Главная",
-        "subscribtions": "Подписки"
+        "subscriptions": "Подписки"
       }
     },
-    "subscribtions": {
-      "headline": "Subscribtions",
+    "subscriptions": {
+      "headline": "subscriptions",
       "button-more": "Ещё",
       "button-less": "Меньше",
       "alt-avatar": "Аватар канала",
