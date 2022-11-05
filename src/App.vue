@@ -10,7 +10,7 @@
   import { useI18n } from "vue-i18n";
   import dayjs from "dayjs";
 
-  import { useSettings } from "@/stores/settings";
+  import { useSettings } from "@/stores/userSettings";
 
   import TheHeader from "@/components/TheHeader.vue";
   import SideMenu from "@/components/SideMenu.vue";

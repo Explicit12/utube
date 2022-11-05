@@ -10,7 +10,7 @@
     IconMenu,
   } from "@iconify-prerendered/vue-mdi";
 
-  import { useSettings } from "@/stores/settings";
+  import { useSettings } from "@/stores/userSettings";
 
   import type { Ref } from "vue";
 

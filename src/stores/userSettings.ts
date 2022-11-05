@@ -3,7 +3,7 @@ import { useLocalStorage } from "@vueuse/core";
 
 import type { Ref } from "vue";
 
-export const useSettings = defineStore("settings", () => {
+export const useSettings = defineStore("userSettings", () => {
   const isMenuOpen: Ref<boolean> = useLocalStorage("isMenuOpen", true);
 
   function toggleMenu(): void {
