@@ -2,40 +2,62 @@
   import { useI18n } from "vue-i18n";
   import { useRoute } from "vue-router";
   import { useDropZone } from "@vueuse/core";
-  import { ref, computed } from "vue";
+  import { ref, computed, onMounted, watch } from "vue";
+  import { storeToRefs } from "pinia";
+
+  import { useUserData } from "@/stores/userData";
 
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
+  import getIdsFromCSV from "@/utils/getIdsFromCSV";
+  import { getShortChannelInfo } from "@/utils/invidiousAPI";
 
-  import type { Ref, ComputedRef } from "vue";
+  import type { Ref } from "vue";
+  import type { ShortChannelInfo } from "@/utils/invidiousAPI";
 
-  // TODO: Change to real data
-  const channels: Ref<any[]> = ref(new Array(0));
+  const userData = useUserData();
+
+  const { subscribtions } = storeToRefs(userData);
+  const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
   const channelsToShow: Ref<number> = ref(standardToShow.value);
   const importDropZone = ref<HTMLDivElement>();
 
   function importDropZoneHandler(file: File[] | null): void {
-    if (file) {
-      console.log(file[0].type);
-    }
+    if (file) getIdsFromCSV(file[0]).then((ids) => subscribe(ids));
   }
 
   function importInputHandler(event: Event | null): void {
     const element = event?.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
-    if (fileList) {
-      console.log(fileList);
-    }
+    if (fileList) getIdsFromCSV(fileList[0]).then((ids) => subscribe(ids));
   }
+
+  const { subscribe } = userData;
 
   const route = useRoute();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isOverDropZone } = useDropZone(importDropZone, importDropZoneHandler);
   const { t } = useI18n();
 
-  // TODO: Remove any type
-  const slicedChannels: ComputedRef<any[]> = computed(() => {
+  const slicedChannels = computed<ShortChannelInfo[]>(() => {
     return channels.value.slice(0, channelsToShow.value);
+  });
+
+  watch(userData.subscribtions, (newValue) => {
+    newValue.forEach(async (id) => {
+      if (!channels.value.find((channel) => channel.authorId === id)) {
+        const channelInfo = await getShortChannelInfo(id);
+        channels.value.push(channelInfo);
+      }
+    });
+  });
+
+  onMounted(() => {
+    subscribtions.value.forEach((id) => {
+      getShortChannelInfo(id).then((channelInfo) =>
+        channels.value.push(channelInfo),
+      );
+    });
   });
 </script>
 
@@ -74,27 +96,39 @@
         {{ t("subscribtions.headline") }}
       </h2>
 
-      <template v-if="slicedChannels.length">
+      <template v-if="subscribtions.length">
         <ul class="space-y-5 pt-6">
-          <li v-for="n in slicedChannels" :key="n">
+          <li v-for="channel in slicedChannels" :key="channel.author">
             <RouterLink
               :to="{ name: 'home' }"
               class="flex items-center gap-2 font-sans font-normal text-gray-900"
             >
-              <!-- TODO: Take data from api -->
-              <!-- <img src="#" :alt="t('subscribtions.alt-avatar')" /> -->
-              <div class="h-8 w-8 rounded-full bg-gray-200" />
-              {{ "Channel Name" }}
+              <img
+                v-if="channel.authorThumbnails[0]"
+                :src="channel.authorThumbnails[0].url"
+                decoding="async"
+                referrerpolicy="no-referrer"
+                crossorigin="anonymous"
+                loading="lazy"
+                :alt="t('subscribtions.alt-avatar')"
+                class="rounded-lg"
+                width="32"
+                height="32"
+              />
+              <div v-else class="h-8 w-8 rounded-lg bg-gray-200" />
+              <span class="overflow-hidden text-ellipsis whitespace-nowrap">
+                {{ channel.author }}
+              </span>
             </RouterLink>
           </li>
         </ul>
 
         <SecondaryButton
-          v-if="channels.length > standardToShow"
+          v-if="subscribtions.length > standardToShow"
           @click="
             channelsToShow =
               channelsToShow <= standardToShow
-                ? channels.length
+                ? subscribtions.length
                 : standardToShow
           "
           class="mt-4 w-full"
@@ -189,7 +223,7 @@
       }
     },
     "subscribtions": {
-      "headline": "Subscribtions",
+      "headline": "Підписки",
       "button-more": "Більше",
       "button-less": "Менше",
       "alt-avatar": "Аватар каналу",
