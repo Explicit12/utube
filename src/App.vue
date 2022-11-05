@@ -1,8 +1,12 @@
 <script setup lang="ts">
   import { RouterView } from "vue-router";
   import { storeToRefs } from "pinia";
-  import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
-  import { onMounted } from "vue";
+  import {
+    breakpointsTailwind,
+    useBreakpoints,
+    useScrollLock,
+  } from "@vueuse/core";
+  import { onMounted, watch } from "vue";
   import { useI18n } from "vue-i18n";
   import dayjs from "dayjs";
 
@@ -17,12 +21,25 @@
   const breakpoints = useBreakpoints(breakpointsTailwind);
   const { locale } = useI18n();
 
+  const isBodyScrollLocked: Ref<boolean> = useScrollLock(document.body);
   const isLgAndGreater: Ref<boolean> = breakpoints.greaterOrEqual("lg");
 
   const { isMenuOpen } = storeToRefs(settings);
   const { toggleMenu } = settings;
 
+  function toggleBodySrollLock() {
+    if (isMenuOpen.value && !isLgAndGreater.value) {
+      isBodyScrollLocked.value = true;
+    } else {
+      isBodyScrollLocked.value = false;
+    }
+  }
+
+  watch(isLgAndGreater, toggleBodySrollLock);
+
   onMounted(() => {
+    toggleBodySrollLock();
+
     switch (locale.value) {
       case "uk-UA":
         dayjs.locale("uk");
@@ -46,9 +63,12 @@
   <!-- backdrop -->
   <div
     @click="toggleMenu"
-    :class="{ block: isMenuOpen, hidden: !isMenuOpen || isLgAndGreater }"
-    class="absolute z-10 h-full w-full bg-gray-900 opacity-25"
-  ></div>
+    :class="{
+      block: isMenuOpen || !isLgAndGreater,
+      hidden: !isMenuOpen || isLgAndGreater,
+    }"
+    class="fixed z-10 h-full w-full bg-gray-900 opacity-25"
+  />
 
   <RouterView
     :class="{ 'lg:pl-[272px]': isMenuOpen }"
