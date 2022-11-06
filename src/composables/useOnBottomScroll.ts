@@ -3,12 +3,14 @@ import { useWindowScroll } from "@vueuse/core";
 
 import type { ComputedRef } from "vue";
 
-export function useOnScrollBottom(callback: () => void): {
+interface IsScrolledToBottom {
   isScrolledToBottom: ComputedRef<boolean>;
-} {
+}
+
+export function useOnScrollBottom(callback: () => void): IsScrolledToBottom {
   const { y: scrollY } = useWindowScroll();
 
-  const isScrolledToBottom = computed(
+  const isScrolledToBottom: ComputedRef<boolean> = computed(
     () => scrollY.value === document.body.scrollHeight - window.innerHeight,
   );
 

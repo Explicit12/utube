@@ -19,7 +19,7 @@
 
   const { t } = useI18n();
 
-  const slicedVideos = computed(() => {
+  const slicedVideos = computed<ShortVideoInfo[]>(() => {
     return videos.value.slice(0, videosToShow.value);
   });
 

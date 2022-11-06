@@ -1,4 +1,8 @@
-export default async function getIdsFromFile(file: File): Promise<string[]> {
+import type { ChannelsId } from "@/utils/invidiousAPI";
+
+export default async function getIdsFromFile(
+  file: File,
+): Promise<ChannelsId[]> {
   const reader = new FileReader();
   reader.readAsText(file);
 

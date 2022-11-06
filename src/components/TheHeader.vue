@@ -10,11 +10,11 @@
     IconMenu,
   } from "@iconify-prerendered/vue-mdi";
 
+  import TheLogo from "@/components/TheLogo.vue";
+
   import { useSettings } from "@/stores/userSettings";
 
   import type { Ref } from "vue";
-
-  import TheLogo from "./TheLogo.vue";
 
   const { t } = useI18n();
   const settings = useSettings();

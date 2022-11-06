@@ -2,11 +2,12 @@ import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 
 import type { Ref } from "vue";
+import type { ChannelsId } from "@/utils/invidiousAPI";
 
 export const useUserData = defineStore("userData", () => {
   const subscriptions: Ref<string[]> = useLocalStorage("subscriptions", []);
 
-  function subscribe(channelId: string[] | string) {
+  function subscribeToChannel(channelId: ChannelsId[] | ChannelsId) {
     if (
       typeof channelId === "string" &&
       !subscriptions.value.includes(channelId)
@@ -19,5 +20,5 @@ export const useUserData = defineStore("userData", () => {
     }
   }
 
-  return { subscriptions, subscribe };
+  return { subscriptions, subscribeToChannel };
 });

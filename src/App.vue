@@ -27,7 +27,7 @@
   const { isMenuOpen } = storeToRefs(settings);
   const { toggleMenu } = settings;
 
-  function toggleBodySrollLock() {
+  function toggleBodySrollLock(): void {
     if (isMenuOpen.value && !isLgAndGreater.value) {
       isBodyScrollLocked.value = true;
     } else {

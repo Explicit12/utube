@@ -7,10 +7,14 @@ export type VideoThumbnails = {
   width: number;
 }[];
 
+export type ChannelsId = string;
+export type VideoId = string;
+
 export type ShortVideoInfo = {
   title: string;
   author: string;
-  authorId: string;
+  authorId: ChannelsId;
+  videoId: VideoId;
   viewCount: number;
   published: number;
   videoThumbnails: VideoThumbnails;
@@ -24,7 +28,7 @@ export type AuthorThumbnails = {
 
 export type ShortChannelInfo = {
   author: string;
-  authorId: string;
+  authorId: ChannelsId;
   authorThumbnails: AuthorThumbnails;
 };
 
@@ -49,7 +53,7 @@ export async function pingImage(url: string): Promise<void> {
 }
 
 export async function getShortChannelInfo(
-  channelId: string,
+  channelId: ChannelsId,
 ): Promise<ShortChannelInfo> {
   const response = await invidious.get("/channels/" + channelId, {
     params: {
@@ -61,11 +65,12 @@ export async function getShortChannelInfo(
 }
 
 export async function getChannelsLatest(
-  VideoId: string,
+  videoId: VideoId,
 ): Promise<ShortVideoInfo[]> {
-  const response = await invidious.get("/channels/vidoes/" + VideoId, {
+  const response = await invidious.get("/channels/vidoes/" + videoId, {
     params: {
-      fields: "title,author,authorId,viewCount,published,videoThumbnails",
+      fields:
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails",
     },
   });
   const data = await response.data;

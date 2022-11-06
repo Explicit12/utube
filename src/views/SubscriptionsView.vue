@@ -2,13 +2,14 @@
   import { useI18n } from "vue-i18n";
   import { onMounted, ref, computed } from "vue";
   import { useRouter } from "vue-router";
-  import { useUserData } from "@/stores/userData";
 
   import VideoCompact from "@/components/videoCompact/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
 
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
   import { getChannelsLatest } from "@/utils/invidiousAPI";
+
+  import { useUserData } from "@/stores/userData";
 
   import type { ShortVideoInfo } from "@/utils/invidiousAPI";
   import type { Ref } from "vue";
@@ -21,6 +22,9 @@
   const standardToShow: Ref<number> = ref(20);
   const videosToShow: Ref<number> = ref(standardToShow.value);
 
+  const { subscriptions } = userData;
+  const { t } = useI18n();
+
   const newestVidoes = computed<ShortVideoInfo[]>(() => {
     return [...newVideos.value].slice().sort((a, b) => {
       return b.published - a.published;
@@ -30,10 +34,6 @@
   const slicedVideos = computed<ShortVideoInfo[]>(() => {
     return newestVidoes.value.slice(0, videosToShow.value);
   });
-
-  const { subscriptions } = userData;
-
-  const { t } = useI18n();
 
   useOnScrollBottom(() =>
     setTimeout(() => {

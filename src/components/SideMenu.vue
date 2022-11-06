@@ -16,8 +16,10 @@
   import type { ShortChannelInfo } from "@/utils/invidiousAPI";
 
   const userData = useUserData();
+  const route = useRoute();
+  const { t } = useI18n();
 
-  const { subscriptions } = userData;
+  const { subscriptions, subscribeToChannel } = userData;
   const isChannelsInfoLoaded: Ref<boolean> = ref(false);
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
@@ -25,21 +27,18 @@
   const importDropZone = ref<HTMLDivElement>();
 
   function importDropZoneHandler(file: File[] | null): void {
-    if (file) getIdsFromCSV(file[0]).then((ids) => subscribe(ids));
+    if (file) getIdsFromCSV(file[0]).then((ids) => subscribeToChannel(ids));
   }
 
   function importInputHandler(event: Event | null): void {
     const element = event?.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
-    if (fileList) getIdsFromCSV(fileList[0]).then((ids) => subscribe(ids));
+    if (fileList) {
+      getIdsFromCSV(fileList[0]).then((ids) => subscribeToChannel(ids));
+    }
   }
 
-  const { subscribe } = userData;
-
-  const route = useRoute();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isOverDropZone } = useDropZone(importDropZone, importDropZoneHandler);
-  const { t } = useI18n();
+  useDropZone(importDropZone, importDropZoneHandler);
 
   const slicedChannels = computed<ShortChannelInfo[]>(() => {
     return channels.value.slice(0, channelsToShow.value);
