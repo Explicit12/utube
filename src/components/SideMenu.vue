@@ -83,7 +83,7 @@
             {{ t("navigation.links.home") }}
           </RouterLink>
         </li>
-        <li>
+        <li v-if="subscriptions.length">
           <RouterLink
             :to="{ name: 'subscriptions' }"
             :class="{ 'bg-blue-50': route.name === 'subscriptions' }"

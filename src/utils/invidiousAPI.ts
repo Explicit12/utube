@@ -7,14 +7,14 @@ export type VideoThumbnails = {
   width: number;
 }[];
 
-export type PopularVideos = {
+export type ShortVideoInfo = {
   title: string;
   author: string;
   authorId: string;
   viewCount: number;
   published: number;
   videoThumbnails: VideoThumbnails;
-}[];
+};
 
 export type AuthorThumbnails = {
   url: string;
@@ -31,10 +31,10 @@ export type ShortChannelInfo = {
 const invidiousURL: string = "https://vid.puffyan.us";
 
 const invidious = axios.create({
-  baseURL: `${invidiousURL}/api/v1`,
+  baseURL: invidiousURL + "/api/v1",
 });
 
-export async function getPopular(): Promise<PopularVideos> {
+export async function getPopular(): Promise<ShortVideoInfo[]> {
   const response = await invidious.get("/popular", {
     params: {
       fields: "title,author,authorId,viewCount,published,videoThumbnails",
@@ -51,9 +51,21 @@ export async function pingImage(url: string): Promise<void> {
 export async function getShortChannelInfo(
   channelId: string,
 ): Promise<ShortChannelInfo> {
-  const response = await invidious.get(`/channels/${channelId}`, {
+  const response = await invidious.get("/channels/" + channelId, {
     params: {
       fields: "author,authorId,authorThumbnails",
+    },
+  });
+  const data = await response.data;
+  return data;
+}
+
+export async function getChannelsLatest(
+  VideoId: string,
+): Promise<ShortVideoInfo[]> {
+  const response = await invidious.get("/channels/vidoes/" + VideoId, {
+    params: {
+      fields: "title,author,authorId,viewCount,published,videoThumbnails",
     },
   });
   const data = await response.data;

@@ -1,27 +1,39 @@
 <script setup lang="ts">
-  import { ref, computed, onMounted } from "vue";
   import { useI18n } from "vue-i18n";
+  import { onMounted, ref, computed } from "vue";
+  import { useRouter } from "vue-router";
+  import { useUserData } from "@/stores/userData";
 
   import VideoCompact from "@/components/videoCompact/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
 
-  import { getPopular } from "@/utils/invidiousAPI";
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
+  import { getChannelsLatest } from "@/utils/invidiousAPI";
 
-  import type { Ref } from "vue";
   import type { ShortVideoInfo } from "@/utils/invidiousAPI";
+  import type { Ref } from "vue";
 
+  const userData = useUserData();
+  const router = useRouter();
+
+  const newVideos: Ref<ShortVideoInfo[]> = ref([]);
   const isVideosLoaded: Ref<boolean> = ref(false);
-  const requestError: Ref<string> = ref("");
-  const videos: Ref<ShortVideoInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(20);
   const videosToShow: Ref<number> = ref(standardToShow.value);
 
-  const { t } = useI18n();
-
-  const slicedVideos = computed(() => {
-    return videos.value.slice(0, videosToShow.value);
+  const newestVidoes = computed<ShortVideoInfo[]>(() => {
+    return [...newVideos.value].slice().sort((a, b) => {
+      return b.published - a.published;
+    });
   });
+
+  const slicedVideos = computed<ShortVideoInfo[]>(() => {
+    return newestVidoes.value.slice(0, videosToShow.value);
+  });
+
+  const { subscriptions } = userData;
+
+  const { t } = useI18n();
 
   useOnScrollBottom(() =>
     setTimeout(() => {
@@ -30,12 +42,21 @@
   );
 
   onMounted(() => {
-    getPopular()
-      .then((popular) => {
-        videos.value = popular;
+    if (subscriptions.length) {
+      Promise.all(
+        subscriptions.map((channelId) => {
+          return new Promise((res) => {
+            getChannelsLatest(channelId).then((videos) => res(videos));
+          });
+        }),
+      ).then((videos) => {
+        const arrVideos = videos as ShortVideoInfo[][];
+        newVideos.value = arrVideos.reduce((acc, val) => acc.concat(val), []);
         isVideosLoaded.value = true;
-      })
-      .catch((err) => (requestError.value = err.message));
+      });
+    } else {
+      router.replace({ name: "home" });
+    }
   });
 </script>
 
@@ -68,13 +89,13 @@
 <i18n lang="json">
 {
   "en-US": {
-    "headline": "Popular"
+    "headline": "Sbubscriptions"
   },
   "uk-UA": {
-    "headline": "Популярне"
+    "headline": "Підписки"
   },
   "ru-RU": {
-    "headline": "Популярное"
+    "headline": "Подписки"
   }
 }
 </i18n>
