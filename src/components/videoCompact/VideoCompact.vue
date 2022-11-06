@@ -53,7 +53,6 @@
   <div>
     <RouterLink :to="{ name: 'home' }">
       <img
-        @error="imageError = true"
         v-if="image && !imageError"
         :src="image[3].url"
         :alt="name"
@@ -62,6 +61,7 @@
         crossorigin="anonymous"
         loading="lazy"
         class="aspect-video w-full rounded-lg object-cover"
+        @error="imageError = true"
       />
       <div
         v-else

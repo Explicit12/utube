@@ -10,7 +10,7 @@ export type VideoThumbnails = {
 export type ChannelsId = string;
 export type VideoId = string;
 
-export type ShortVideoInfo = {
+export interface ShortVideoInfo {
   title: string;
   author: string;
   authorId: ChannelsId;
@@ -18,7 +18,7 @@ export type ShortVideoInfo = {
   viewCount: number;
   published: number;
   videoThumbnails: VideoThumbnails;
-};
+}
 
 export type AuthorThumbnails = {
   url: string;
@@ -26,13 +26,13 @@ export type AuthorThumbnails = {
   width: number;
 }[];
 
-export type ShortChannelInfo = {
+export interface ShortChannelInfo {
   author: string;
   authorId: ChannelsId;
   authorThumbnails: AuthorThumbnails;
-};
+}
 
-const invidiousURL: string = "https://vid.puffyan.us";
+const invidiousURL = "https://vid.puffyan.us";
 
 const invidious = axios.create({
   baseURL: invidiousURL + "/api/v1",

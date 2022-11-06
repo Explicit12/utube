@@ -63,10 +63,10 @@
     <nav class="flex gap-4">
       <component
         :is="isMobileSearch ? IconClose : IconMagnify"
-        @click="isMobileSearch = !isMobileSearch"
         width="24"
         height="24"
         class="text-grey-900 hover:cursor-pointer md:hidden"
+        @click="isMobileSearch = !isMobileSearch"
       />
 
       <RouterLink :to="{ name: 'home' }">

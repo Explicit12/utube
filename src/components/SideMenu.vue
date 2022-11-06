@@ -32,7 +32,7 @@
 
   function importInputHandler(event: Event | null): void {
     const element = event?.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
+    const fileList: FileList | null = element.files;
     if (fileList) {
       getIdsFromCSV(fileList[0]).then((ids) => subscribeToChannel(ids));
     }
@@ -132,13 +132,13 @@
 
         <SecondaryButton
           v-if="subscriptions.length > standardToShow && channels.length"
+          class="mt-4 w-full"
           @click="
             channelsToShow =
               channelsToShow <= standardToShow
                 ? subscriptions.length
                 : standardToShow
           "
-          class="mt-4 w-full"
         >
           {{
             channelsToShow <= standardToShow
@@ -157,8 +157,8 @@
         </div>
         <input
           type="file"
-          @change="importInputHandler"
           class="mt-4 block w-full font-sans text-base font-normal text-gray-900 file:block file:w-full file:rounded-lg file:border-2 file:border-transparent file:bg-blue-50 file:py-2 file:px-4 hover:cursor-pointer file:hover:cursor-pointer"
+          @change="importInputHandler"
         />
       </template>
     </div>

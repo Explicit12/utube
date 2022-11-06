@@ -63,12 +63,12 @@
 
   <!-- backdrop -->
   <div
-    @click="toggleMenu"
     :class="{
       block: isMenuOpen || !isLgAndGreater,
       hidden: !isMenuOpen || isLgAndGreater,
     }"
     class="fixed z-10 h-full w-full bg-gray-900 opacity-25"
+    @click="toggleMenu"
   />
 
   <RouterView
