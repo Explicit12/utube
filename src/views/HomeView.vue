@@ -2,7 +2,7 @@
   import { ref, computed, onMounted } from "vue";
   import { useI18n } from "vue-i18n";
 
-  import VideoCompact from "@/components/videoCompact/VideoCompact.vue";
+  import VideoCompact from "@/components/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
 
   import { getPopular } from "@/utils/invidiousAPI";
@@ -50,12 +50,13 @@
       <template v-if="isVideosLoaded">
         <VideoCompact
           v-for="video in slicedVideos"
-          :key="video.title"
+          :key="video.videoId"
           :name="video.title"
           :author="{ name: video.author, id: video.authorId }"
           :views="video.viewCount"
           :date="video.published"
           :image="video.videoThumbnails"
+          :video-id="video.videoId"
         />
       </template>
       <template v-else>
