@@ -14,6 +14,15 @@ const router = createRouter({
       name: "subscriptions",
       component: () => import("@/views/SubscriptionsView.vue"),
     },
+    {
+      path: "/search",
+      name: "search",
+      component: () => import("@/views/SearchView.vue"),
+      props: (route) => ({ searchQuery: route.query.search_query }),
+      beforeEnter: (to) => {
+        if (!to.query.search_query) router.push({ name: "home" });
+      },
+    },
   ],
 });
 

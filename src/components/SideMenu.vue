@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
-  import { useRoute } from "vue-router";
+  import { useRoute, RouterLink } from "vue-router";
   import { useDropZone } from "@vueuse/core";
-  import { ref, computed, onMounted, watch } from "vue";
+  import { ref, computed, onMounted } from "vue";
+  import { storeToRefs } from "pinia";
 
   import { useUserData } from "@/stores/userData";
 
@@ -13,13 +14,14 @@
   import { getShortChannelInfo } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
-  import type { ShortChannelInfo } from "@/utils/invidiousAPI";
+  import type { ShortChannelInfo, ChannelsId } from "@/utils/invidiousAPI";
 
   const userData = useUserData();
   const route = useRoute();
   const { t } = useI18n();
 
-  const { subscriptions, subscribeToChannel } = userData;
+  const { subscribeToChannel } = userData;
+  const { subscriptions } = storeToRefs(userData);
   const isChannelsInfoLoaded: Ref<boolean> = ref(false);
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
@@ -27,7 +29,9 @@
   const importDropZone = ref<HTMLDivElement>();
 
   function importDropZoneHandler(file: File[] | null): void {
-    if (file) getIdsFromCSV(file[0]).then((ids) => subscribeToChannel(ids));
+    if (file) {
+      getIdsFromCSV(file[0]).then((ids) => subscribeToChannel(ids));
+    }
   }
 
   function importInputHandler(event: Event | null): void {
@@ -38,30 +42,27 @@
     }
   }
 
+  async function updateChannels(id: ChannelsId) {
+    isChannelsInfoLoaded.value = false;
+    const channelInfo = await getShortChannelInfo(id);
+    channels.value.push(channelInfo);
+    isChannelsInfoLoaded.value = true;
+  }
+
   useDropZone(importDropZone, importDropZoneHandler);
 
   const slicedChannels = computed<ShortChannelInfo[]>(() => {
     return channels.value.slice(0, channelsToShow.value);
   });
 
-  watch(subscriptions, (newValue) => {
-    newValue.forEach(async (id) => {
-      if (!channels.value.find((channel) => channel.authorId === id)) {
-        const channelInfo = await getShortChannelInfo(id);
-        channels.value.push(channelInfo);
-        isChannelsInfoLoaded.value = true;
-      }
-    });
+  userData.$onAction(({ name, after }) => {
+    if (name === "subscribeToChannel" || name === "unsubscribeFromChannel") {
+      channels.value = [];
+      after(() => subscriptions.value.forEach(updateChannels));
+    }
   });
 
-  onMounted(() => {
-    subscriptions.forEach((id) => {
-      getShortChannelInfo(id).then((channelInfo) => {
-        channels.value.push(channelInfo);
-        isChannelsInfoLoaded.value = true;
-      });
-    });
-  });
+  onMounted(() => subscriptions.value.forEach(updateChannels));
 </script>
 
 <template>
@@ -101,31 +102,33 @@
 
       <template v-if="subscriptions.length">
         <ul class="space-y-5 pt-6">
-          <li v-for="channel in slicedChannels" :key="channel.author">
-            <RouterLink
-              :to="{ name: 'home' }"
-              class="flex items-center gap-2 font-sans font-normal text-gray-900"
-            >
-              <img
-                v-if="channel.authorThumbnails[0]"
-                :src="channel.authorThumbnails[0].url"
-                decoding="async"
-                referrerpolicy="no-referrer"
-                crossorigin="anonymous"
-                loading="lazy"
-                :alt="t('subscriptions.alt-avatar')"
-                class="rounded-lg"
-                width="32"
-                height="32"
-              />
-              <div v-else class="h-8 w-8 rounded-lg bg-gray-200" />
-              <span class="overflow-hidden text-ellipsis whitespace-nowrap">
-                {{ channel.author }}
-              </span>
-            </RouterLink>
-          </li>
+          <template v-if="isChannelsInfoLoaded">
+            <li v-for="channel in slicedChannels" :key="channel.author">
+              <RouterLink
+                :to="{ name: 'home' }"
+                class="flex items-center gap-2 font-sans font-normal text-gray-900"
+              >
+                <img
+                  v-if="channel.authorThumbnails[0]"
+                  :src="channel.authorThumbnails[0].url"
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                  crossorigin="anonymous"
+                  loading="lazy"
+                  :alt="t('subscriptions.alt-avatar')"
+                  class="rounded-lg"
+                  width="32"
+                  height="32"
+                />
+                <div v-else class="h-8 w-8 rounded-lg bg-gray-200" />
+                <span class="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {{ channel.author }}
+                </span>
+              </RouterLink>
+            </li>
+          </template>
 
-          <template v-if="!isChannelsInfoLoaded">
+          <template v-else>
             <SubscriptionSkeleton v-for="n in standardToShow" :key="n" />
           </template>
         </ul>

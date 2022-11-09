@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
+import { ref } from "vue";
 
 import type { Ref } from "vue";
 import type { ChannelsId } from "@/utils/invidiousAPI";
@@ -7,7 +8,7 @@ import type { ChannelsId } from "@/utils/invidiousAPI";
 export const useUserData = defineStore("userData", () => {
   const subscriptions: Ref<string[]> = useLocalStorage("subscriptions", []);
 
-  function subscribeToChannel(channelId: ChannelsId[] | ChannelsId) {
+  function subscribeToChannel(channelId: ChannelsId[] | ChannelsId): void {
     if (
       typeof channelId === "string" &&
       !subscriptions.value.includes(channelId)
@@ -20,5 +21,17 @@ export const useUserData = defineStore("userData", () => {
     }
   }
 
-  return { subscriptions, subscribeToChannel };
+  function unsubscribeFromChannel(channelId: ChannelsId[] | ChannelsId): void {
+    if (typeof channelId === "string") {
+      subscriptions.value = subscriptions.value.filter(
+        (id) => id !== channelId,
+      );
+    } else if (Array.isArray(channelId)) {
+      subscriptions.value = subscriptions.value.filter(
+        (id) => !channelId.includes(id),
+      );
+    }
+  }
+
+  return { subscriptions, subscribeToChannel, unsubscribeFromChannel };
 });
