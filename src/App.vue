@@ -9,17 +9,19 @@
   import { onMounted, watch } from "vue";
   import { useI18n } from "vue-i18n";
   import dayjs from "dayjs";
+  import { useRouter } from "vue-router";
 
-  import { useSettings } from "@/stores/userSettings";
+  import { useUserSettings } from "@/stores/userSettings";
 
   import TheHeader from "@/components/TheHeader.vue";
   import SideMenu from "@/components/SideMenu.vue";
 
   import type { Ref } from "vue";
 
-  const settings = useSettings();
+  const settings = useUserSettings();
   const breakpoints = useBreakpoints(breakpointsTailwind);
   const { locale } = useI18n();
+  const router = useRouter();
 
   const isBodyScrollLocked: Ref<boolean> = useScrollLock(document.body);
   const isLgAndGreater: Ref<boolean> = breakpoints.greaterOrEqual("lg");
@@ -37,6 +39,10 @@
 
   watch(isLgAndGreater, toggleBodySrollLock);
   watch(isMenuOpen, toggleBodySrollLock);
+
+  router.afterEach(() => {
+    if (!isLgAndGreater.value) isMenuOpen.value = false;
+  });
 
   onMounted(() => {
     toggleBodySrollLock();

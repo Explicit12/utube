@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, watch } from "vue";
   import { useI18n } from "vue-i18n";
-  import { RouterLink } from "vue-router";
+  import { RouterLink, useRouter, useRoute } from "vue-router";
   import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
   import {
     IconMagnify,
@@ -12,22 +12,43 @@
 
   import TheLogo from "@/components/TheLogo.vue";
 
-  import { useSettings } from "@/stores/userSettings";
+  import { useUserSettings } from "@/stores/userSettings";
 
   import type { Ref } from "vue";
 
   const { t } = useI18n();
-  const settings = useSettings();
+  const userSettings = useUserSettings();
   const breakpoints = useBreakpoints(breakpointsTailwind);
+  const router = useRouter();
+  const route = useRoute();
 
   const isMobileSearch: Ref<boolean> = ref(false);
   const isSmAndSmaller: Ref<boolean> = breakpoints.smallerOrEqual("sm");
+  const searchInput: Ref<string> = ref("");
 
-  const { toggleMenu } = settings;
+  const { toggleMenu } = userSettings;
+
+  function routeToSearch() {
+    if (searchInput.value) {
+      router.push({
+        name: "search",
+        query: { search_query: searchInput.value },
+      });
+    }
+  }
 
   watch(isSmAndSmaller, (newValue) => {
     if (newValue) isMobileSearch.value = false;
   });
+
+  watch(
+    () => route.query,
+    () => {
+      if (typeof route.query.search_query === "string") {
+        searchInput.value = route.query.search_query;
+      }
+    },
+  );
 </script>
 
 <template>
@@ -39,7 +60,7 @@
         <IconMenu width="24" height="24" class="text-grey-900" />
       </button>
 
-      <RouterLink :to="{ name: 'home' }">
+      <RouterLink v-show="!isMobileSearch" :to="{ name: 'home' }">
         <TheLogo />
       </RouterLink>
     </div>
@@ -52,11 +73,14 @@
         width="24"
         height="24"
         class="text-grey-900 absolute left-2 z-10"
+        @click.prevent="routeToSearch"
       />
       <input
+        v-model="searchInput"
         type="text"
         :placeholder="t('search-placeholder')"
         class="placeholder:text-grey-400 text-grey-900 w-full max-w-screen-sm rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
+        @keypress.prevent.enter="routeToSearch"
       />
     </span>
 

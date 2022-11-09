@@ -2,8 +2,9 @@
   import { useI18n } from "vue-i18n";
   import { onMounted, ref, computed } from "vue";
   import { useRouter } from "vue-router";
+  import { storeToRefs } from "pinia";
 
-  import VideoCompact from "@/components/videoCompact/VideoCompact.vue";
+  import VideoCompact from "@/components/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
 
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
@@ -21,8 +22,8 @@
   const isVideosLoaded: Ref<boolean> = ref(false);
   const standardToShow: Ref<number> = ref(20);
   const videosToShow: Ref<number> = ref(standardToShow.value);
+  const { subscriptions } = storeToRefs(userData);
 
-  const { subscriptions } = userData;
   const { t } = useI18n();
 
   const newestVidoes = computed<ShortVideoInfo[]>(() => {
@@ -42,9 +43,9 @@
   );
 
   onMounted(() => {
-    if (subscriptions.length) {
+    if (subscriptions.value.length) {
       Promise.all(
-        subscriptions.map((channelId) => {
+        subscriptions.value.map((channelId) => {
           return new Promise((res) => {
             getChannelsLatest(channelId).then((videos) => res(videos));
           });
@@ -71,12 +72,13 @@
       <template v-if="isVideosLoaded">
         <VideoCompact
           v-for="video in slicedVideos"
-          :key="video.title"
+          :key="video.videoId"
           :name="video.title"
           :author="{ name: video.author, id: video.authorId }"
           :views="video.viewCount"
           :date="video.published"
           :image="video.videoThumbnails"
+          :video-id="video.videoId"
         />
       </template>
       <template v-else>
