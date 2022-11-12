@@ -43,9 +43,9 @@
   );
 
   onMounted(() => {
-    if (subscriptions.value.length) {
+    if (subscriptions.value.size) {
       Promise.all(
-        subscriptions.value.map((channelId) => {
+        [...subscriptions.value].map((channelId) => {
           return new Promise((res) => {
             getChannelsLatest(channelId).then((videos) => res(videos));
           });
