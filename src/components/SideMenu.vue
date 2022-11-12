@@ -2,7 +2,7 @@
   import { useI18n } from "vue-i18n";
   import { useRoute, RouterLink } from "vue-router";
   import { useDropZone } from "@vueuse/core";
-  import { ref, computed, onMounted } from "vue";
+  import { ref, computed, onBeforeMount, watch } from "vue";
   import { storeToRefs } from "pinia";
 
   import { useUserData } from "@/stores/userData";
@@ -10,7 +10,7 @@
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
   import SubscriptionSkeleton from "@/components/skeletonLoaders/SubscriptionsSkeleton.vue";
 
-  import getIdsFromCSV from "@/utils/getIdsFromCSV";
+  import CSVtoJSON from "@/helpers/CSVtoJSON";
   import { getShortChannelInfo } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
@@ -28,26 +28,43 @@
   const channelsToShow: Ref<number> = ref(standardToShow.value);
   const importDropZone = ref<HTMLDivElement>();
 
-  function importDropZoneHandler(file: File[] | null): void {
+  async function importDropZoneHandler(file: File[] | null): Promise<void> {
     if (file) {
-      getIdsFromCSV(file[0]).then((ids) => subscribeToChannel(ids));
+      const channelsIds = await CSVtoJSON(file[0]);
+      if (channelsIds) {
+        channelsIds.forEach((id) => subscribeToChannel(id["Channel Id"]));
+      }
     }
   }
 
-  function importInputHandler(event: Event | null): void {
+  async function importInputHandler(event: Event | null): Promise<void> {
     const element = event?.currentTarget as HTMLInputElement;
     const fileList: FileList | null = element.files;
     if (fileList) {
-      getIdsFromCSV(fileList[0]).then((ids) => subscribeToChannel(ids));
+      const channelsIds = await CSVtoJSON(fileList[0]);
+      if (channelsIds) {
+        channelsIds.forEach((id) => subscribeToChannel(id["Channel Id"]));
+      }
     }
   }
 
-  async function updateChannels(id: ChannelsId) {
+  async function updateChannels(id: ChannelsId): Promise<void> {
     isChannelsInfoLoaded.value = false;
-    const channelInfo = await getShortChannelInfo(id);
-    channels.value.push(channelInfo);
+    if (!channels.value.find((channel) => channel.authorId === id)) {
+      const channelInfo = await getShortChannelInfo(id);
+      channels.value.push(channelInfo);
+    }
     isChannelsInfoLoaded.value = true;
   }
+
+  watch(
+    subscriptions,
+    () => {
+      channels.value = [];
+      subscriptions.value.forEach(updateChannels);
+    },
+    { deep: true },
+  );
 
   useDropZone(importDropZone, importDropZoneHandler);
 
@@ -55,14 +72,7 @@
     return channels.value.slice(0, channelsToShow.value);
   });
 
-  userData.$onAction(({ name, after }) => {
-    if (name === "subscribeToChannel" || name === "unsubscribeFromChannel") {
-      channels.value = [];
-      after(() => subscriptions.value.forEach(updateChannels));
-    }
-  });
-
-  onMounted(() => subscriptions.value.forEach(updateChannels));
+  onBeforeMount(() => subscriptions.value.forEach(updateChannels));
 </script>
 
 <template>
@@ -83,7 +93,7 @@
             {{ t("navigation.links.home") }}
           </RouterLink>
         </li>
-        <li v-if="subscriptions.length">
+        <li v-if="subscriptions.size">
           <RouterLink
             :to="{ name: 'subscriptions' }"
             :class="{ 'bg-blue-50': route.name === 'subscriptions' }"
@@ -100,7 +110,7 @@
         {{ t("subscriptions.headline") }}
       </h2>
 
-      <template v-if="subscriptions.length">
+      <template v-if="subscriptions.size">
         <ul class="space-y-5 pt-6">
           <template v-if="isChannelsInfoLoaded">
             <li v-for="channel in slicedChannels" :key="channel.author">
@@ -134,12 +144,12 @@
         </ul>
 
         <SecondaryButton
-          v-if="subscriptions.length > standardToShow && channels.length"
+          v-if="subscriptions.size > standardToShow && channels.length"
           class="mt-4 w-full"
           @click="
             channelsToShow =
               channelsToShow <= standardToShow
-                ? subscriptions.length
+                ? subscriptions.size
                 : standardToShow
           "
         >
