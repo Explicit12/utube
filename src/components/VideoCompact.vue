@@ -7,7 +7,7 @@
   import relativeTime from "dayjs/plugin/relativeTime";
 
   import { pingImage } from "@/utils/invidiousAPI";
-  import { formatNumbers } from "@/helpers/formatNumbers";
+  import formatNumbers from "@/helpers/formatNumbers";
 
   import type { Ref } from "vue";
   import type {

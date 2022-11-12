@@ -9,7 +9,7 @@
 
   import { pingImage } from "@/utils/invidiousAPI";
   import { useUserData } from "@/stores/userData";
-  import { formatNumbers } from "@/helpers/formatNumbers";
+  import formatNumbers from "@/helpers/formatNumbers";
 
   import type { Ref } from "vue";
   import type { AuthorThumbnails, ChannelsId } from "@/utils/invidiousAPI";
@@ -65,7 +65,7 @@
       </p>
     </div>
     <PrimaryButton
-      v-if="!subscriptions.includes(channelsId)"
+      v-if="!subscriptions.has(channelsId)"
       class="self-start"
       @click.stop.prevent="subscribeToChannel(channelsId)"
     >

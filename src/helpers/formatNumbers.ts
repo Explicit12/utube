@@ -1,4 +1,4 @@
-export function formatNumbers(
+export default function formatNumbers(
   number: number,
 ): string | `${number}k` | `${number}M` {
   if (Math.abs(number) <= 999) {
