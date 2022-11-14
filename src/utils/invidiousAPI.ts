@@ -69,7 +69,7 @@ export async function getShortChannelInfo(
   return data;
 }
 
-export async function getChannelsLatest(
+export async function getChannelsVideos(
   videoId: VideoId,
 ): Promise<ShortVideoInfo[]> {
   const response = await invidious.get("/channels/videos/" + videoId, {

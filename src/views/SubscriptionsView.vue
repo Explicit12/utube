@@ -10,7 +10,7 @@
   import SpinnerLoader from "@/components/SpinnerLoader.vue";
 
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
-  import { getChannelsLatest } from "@/utils/invidiousAPI";
+  import { getChannelsVideos } from "@/utils/invidiousAPI";
 
   import { useUserData } from "@/stores/userData";
 
@@ -54,7 +54,7 @@
       Promise.all(
         [...subscriptions.value].map((channelId) => {
           return new Promise((res) => {
-            getChannelsLatest(channelId).then((videos) => res(videos));
+            getChannelsVideos(channelId).then((videos) => res(videos));
           });
         }),
       )
