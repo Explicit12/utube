@@ -4,6 +4,7 @@
 
   import VideoCompact from "@/components/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
+  import TheError from "@/components/TheError.vue";
 
   import { getPopular } from "@/utils/invidiousAPI";
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
@@ -31,8 +32,8 @@
 
   onMounted(() => {
     getPopular()
-      .then((popular) => {
-        videos.value = popular;
+      .then((result) => {
+        videos.value = result;
         isVideosLoaded.value = true;
       })
       .catch((err) => (requestError.value = err.message));
@@ -41,28 +42,35 @@
 
 <template>
   <main class="flex flex-col justify-center px-4">
-    <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
-      {{ t("headline") }}
-    </h1>
-    <div
-      class="grid grid-cols-1 gap-4 py-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-    >
-      <template v-if="isVideosLoaded">
-        <VideoCompact
-          v-for="video in slicedVideos"
-          :key="video.videoId"
-          :name="video.title"
-          :author="{ name: video.author, id: video.authorId }"
-          :views="video.viewCount"
-          :date="video.published"
-          :image="video.videoThumbnails"
-          :video-id="video.videoId"
-        />
-      </template>
-      <template v-else>
-        <VideoCompactSkeleton v-for="n in standardToShow" :key="n" />
-      </template>
-    </div>
+    <template v-if="!requestError">
+      <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
+        {{ t("headline") }}
+      </h1>
+      <div
+        class="grid grid-cols-1 gap-4 py-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      >
+        <template v-if="isVideosLoaded">
+          <VideoCompact
+            v-for="video in slicedVideos"
+            :key="video.videoId"
+            :name="video.title"
+            :author="{ name: video.author, id: video.authorId }"
+            :views="video.viewCount"
+            :date="video.published"
+            :image="video.videoThumbnails"
+            :video-id="video.videoId"
+          />
+        </template>
+        <template v-else>
+          <VideoCompactSkeleton v-for="n in standardToShow" :key="n" />
+        </template>
+      </div>
+    </template>
+    <TheError
+      v-else
+      :message="requestError"
+      class="h-[calc(100vh_-_138px)] items-center"
+    />
   </main>
 </template>
 

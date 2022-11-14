@@ -6,6 +6,7 @@
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
   import ChannelCompact from "@/components/ChannelCompact.vue";
   import ChannelCompactSkeleton from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
+  import TheError from "@/components/TheError.vue";
 
   import { searchVideo, searchChannel } from "@/utils/invidiousAPI";
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
@@ -73,13 +74,13 @@
         channels.value = searchResult[1];
         isDataLoaded.value = true;
       })
-      .catch((err) => (requestError.value = err.message));
+      .catch((err) => (requestError.value = err));
   });
 </script>
 
 <template>
   <main class="flex max-w-screen-xl flex-col justify-center px-4">
-    <div class="grid grid-cols-1 gap-4 py-4 pt-8">
+    <div v-if="!requestError" class="grid grid-cols-1 gap-4 py-4 pt-8">
       <template v-if="isDataLoaded">
         <ChannelCompact
           v-for="channel in slicedChannels"
@@ -112,5 +113,9 @@
         />
       </template>
     </div>
+    <TheError
+      :message="requestError"
+      class="h-[calc(100vh_-_138px)] items-center"
+    />
   </main>
 </template>

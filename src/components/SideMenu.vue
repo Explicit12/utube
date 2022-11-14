@@ -9,6 +9,7 @@
 
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
   import SubscriptionSkeleton from "@/components/skeletonLoaders/SubscriptionsSkeleton.vue";
+  import TheError from "@/components/TheError.vue";
 
   import CSVtoJSON from "@/helpers/CSVtoJSON";
   import { getShortChannelInfo } from "@/utils/invidiousAPI";
@@ -23,38 +24,47 @@
   const { subscribeToChannel } = userData;
   const { subscriptions } = storeToRefs(userData);
   const isChannelsInfoLoaded: Ref<boolean> = ref(false);
+  const fileError: Ref<string> = ref("");
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(6);
   const channelsToShow: Ref<number> = ref(standardToShow.value);
   const importDropZone = ref<HTMLDivElement>();
+  const requestError: Ref<string> = ref("");
 
   async function importDropZoneHandler(file: File[] | null): Promise<void> {
-    if (file) {
+    if (file && file[0].type === "text/csv") {
+      fileError.value = "";
       const channelsIds = await CSVtoJSON(file[0]);
-      if (channelsIds) {
-        channelsIds.forEach((id) => subscribeToChannel(id["Channel Id"]));
-      }
+      channelsIds?.forEach((id) => subscribeToChannel(id["Channel Id"]));
+    } else {
+      fileError.value = new Error("Wrong file type").message;
     }
   }
 
   async function importInputHandler(event: Event | null): Promise<void> {
     const element = event?.currentTarget as HTMLInputElement;
     const fileList: FileList | null = element.files;
-    if (fileList) {
+    if (fileList && fileList[0].type === "text/csv") {
+      fileError.value = "";
       const channelsIds = await CSVtoJSON(fileList[0]);
-      if (channelsIds) {
-        channelsIds.forEach((id) => subscribeToChannel(id["Channel Id"]));
-      }
+      channelsIds?.forEach((id) => subscribeToChannel(id["Channel Id"]));
+    } else {
+      fileError.value = new Error("Wrong file type").message;
     }
   }
 
   async function updateChannels(id: ChannelsId): Promise<void> {
-    isChannelsInfoLoaded.value = false;
-    if (!channels.value.find((channel) => channel.authorId === id)) {
-      const channelInfo = await getShortChannelInfo(id);
-      channels.value.push(channelInfo);
+    try {
+      isChannelsInfoLoaded.value = false;
+      if (!channels.value.find((channel) => channel.authorId === id)) {
+        const channelInfo = await getShortChannelInfo(id);
+        channels.value.push(channelInfo);
+      }
+      isChannelsInfoLoaded.value = true;
+    } catch (error) {
+      const message = (error as Error).message;
+      requestError.value = message;
     }
-    isChannelsInfoLoaded.value = true;
   }
 
   watch(
@@ -112,7 +122,7 @@
 
       <template v-if="subscriptions.size">
         <ul class="space-y-5 pt-6">
-          <template v-if="isChannelsInfoLoaded">
+          <template v-if="isChannelsInfoLoaded && !requestError">
             <li v-for="channel in slicedChannels" :key="channel.author">
               <RouterLink
                 :to="{ name: 'home' }"
@@ -173,6 +183,7 @@
           class="mt-4 block w-full font-sans text-base font-normal text-gray-900 file:block file:w-full file:rounded-lg file:border-2 file:border-transparent file:bg-blue-50 file:py-2 file:px-4 hover:cursor-pointer file:hover:cursor-pointer"
           @change="importInputHandler"
         />
+        <TheError v-if="fileError" :message="fileError" class="h-fit p-2" />
       </template>
     </div>
 
