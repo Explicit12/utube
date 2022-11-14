@@ -3,6 +3,7 @@
   import { useI18n } from "vue-i18n";
   import { RouterLink } from "vue-router";
   import { storeToRefs } from "pinia";
+  import { IconImageArea } from "@iconify-prerendered/vue-mdi";
 
   import PrimaryButton from "@/components/buttons/PrimaryButton.vue";
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
@@ -54,7 +55,12 @@
         width="32"
         height="32"
       />
-      <div v-else class="h-full w-full rounded-lg bg-gray-200" />
+      <div
+        v-else
+        class="flex h-full w-full items-center justify-center rounded-lg bg-gray-200"
+      >
+        <IconImageArea class="text-gray-400" width="32" height="32" />
+      </div>
     </div>
     <div class="w-full overflow-hidden">
       <p class="font-sans text-base font-semibold text-gray-900 line-clamp-1">
