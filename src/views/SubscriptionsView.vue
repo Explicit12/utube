@@ -7,6 +7,7 @@
   import VideoCompact from "@/components/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
   import TheError from "@/components/TheError.vue";
+  import SpinnerLoader from "@/components/SpinnerLoader.vue";
 
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
   import { getChannelsLatest } from "@/utils/invidiousAPI";
@@ -21,6 +22,7 @@
 
   const newVideos: Ref<ShortVideoInfo[]> = ref([]);
   const requestError: Ref<string> = ref("");
+  const isSpinnerVisible: Ref<boolean> = ref(false);
   const isVideosLoaded: Ref<boolean> = ref(false);
   const standardToShow: Ref<number> = ref(20);
   const videosToShow: Ref<number> = ref(standardToShow.value);
@@ -38,11 +40,14 @@
     return newestVidoes.value.slice(0, videosToShow.value);
   });
 
-  useOnScrollBottom(() =>
+  useOnScrollBottom(() => {
+    if (videosToShow.value >= newVideos.value.length) return;
+    isSpinnerVisible.value = true;
     setTimeout(() => {
       videosToShow.value += isVideosLoaded.value ? standardToShow.value : 0;
-    }, 500),
-  );
+      isSpinnerVisible.value = false;
+    }, 500);
+  });
 
   onBeforeMount(() => {
     if (subscriptions.value.size) {
@@ -96,6 +101,7 @@
       :message="requestError"
       class="h-[calc(100vh_-_138px)] items-center"
     />
+    <SpinnerLoader v-if="isSpinnerVisible" class="my-4" />
   </main>
 </template>
 

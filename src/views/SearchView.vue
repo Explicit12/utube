@@ -7,6 +7,7 @@
   import ChannelCompact from "@/components/ChannelCompact.vue";
   import ChannelCompactSkeleton from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
   import TheError from "@/components/TheError.vue";
+  import SpinnerLoader from "@/components/SpinnerLoader.vue";
 
   import { searchVideo, searchChannel } from "@/utils/invidiousAPI";
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
@@ -17,6 +18,7 @@
   const props = defineProps<{ searchQuery: string }>();
 
   const isDataLoaded: Ref<boolean> = ref(false);
+  const isSpinnerVisible: Ref<boolean> = ref(false);
   const requestError: Ref<string> = ref("");
   const videos: Ref<ShortVideoInfo[]> = ref([]);
   const channels: Ref<ShortChannelInfo[]> = ref([]);
@@ -43,11 +45,14 @@
     return sortedToDownChannels.value.slice(0, channelsToShow.value);
   });
 
-  useOnScrollBottom(() =>
+  useOnScrollBottom(() => {
+    if (videosToShow.value >= videos.value.length) return;
+    isSpinnerVisible.value = true;
     setTimeout(() => {
       videosToShow.value += isDataLoaded.value ? standardVideoToShow.value : 0;
-    }, 500),
-  );
+      isSpinnerVisible.value = false;
+    }, 500);
+  });
 
   onBeforeRouteUpdate((to) => {
     if (typeof to.query.search_query !== "string") return false;
@@ -113,7 +118,9 @@
         />
       </template>
     </div>
+    <SpinnerLoader v-if="isSpinnerVisible" class="my-4" />
     <TheError
+      v-if="requestError"
       :message="requestError"
       class="h-[calc(100vh_-_138px)] items-center"
     />

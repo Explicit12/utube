@@ -5,6 +5,7 @@
   import VideoCompact from "@/components/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
   import TheError from "@/components/TheError.vue";
+  import SpinnerLoader from "@/components/SpinnerLoader.vue";
 
   import { getPopular } from "@/utils/invidiousAPI";
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
@@ -13,6 +14,7 @@
   import type { ShortVideoInfo } from "@/utils/invidiousAPI";
 
   const isVideosLoaded: Ref<boolean> = ref(false);
+  const isSpinnerVisible: Ref<boolean> = ref(false);
   const requestError: Ref<string> = ref("");
   const videos: Ref<ShortVideoInfo[]> = ref([]);
   const standardToShow: Ref<number> = ref(20);
@@ -24,11 +26,14 @@
     return videos.value.slice(0, videosToShow.value);
   });
 
-  useOnScrollBottom(() =>
+  useOnScrollBottom(() => {
+    if (videosToShow.value >= videos.value.length) return;
+    isSpinnerVisible.value = true;
     setTimeout(() => {
       videosToShow.value += isVideosLoaded.value ? standardToShow.value : 0;
-    }, 500),
-  );
+      isSpinnerVisible.value = false;
+    }, 500);
+  });
 
   onBeforeMount(() => {
     getPopular()
@@ -65,6 +70,7 @@
           <VideoCompactSkeleton v-for="n in standardToShow" :key="n" />
         </template>
       </div>
+      <SpinnerLoader v-if="isSpinnerVisible" class="my-4" />
     </template>
     <TheError
       v-else
