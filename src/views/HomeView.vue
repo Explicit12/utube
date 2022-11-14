@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, computed, onMounted } from "vue";
+  import { ref, computed, onBeforeMount } from "vue";
   import { useI18n } from "vue-i18n";
 
   import VideoCompact from "@/components/VideoCompact.vue";
@@ -30,7 +30,7 @@
     }, 500),
   );
 
-  onMounted(() => {
+  onBeforeMount(() => {
     getPopular()
       .then((result) => {
         videos.value = result;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
-  import { onMounted, ref, computed } from "vue";
+  import { onBeforeMount, ref, computed } from "vue";
   import { useRouter } from "vue-router";
   import { storeToRefs } from "pinia";
 
@@ -44,7 +44,7 @@
     }, 500),
   );
 
-  onMounted(() => {
+  onBeforeMount(() => {
     if (subscriptions.value.size) {
       Promise.all(
         [...subscriptions.value].map((channelId) => {

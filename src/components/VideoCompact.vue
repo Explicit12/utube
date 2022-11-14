@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref, onMounted } from "vue";
+  import { computed, ref, onBeforeMount } from "vue";
   import { useI18n } from "vue-i18n";
   import { RouterLink } from "vue-router";
   import { IconPlay } from "@iconify-prerendered/vue-mdi";
@@ -38,10 +38,10 @@
     return dayjs.unix(props.date).fromNow();
   });
 
-  onMounted(() => {
+  onBeforeMount(() => {
     if (props.image) {
       // Ping image url to check whether it exists or not
-      pingImage(props.image[8].url).catch(() => (imageError.value = true));
+      pingImage(props?.image[8].url).catch(() => (imageError.value = true));
     }
   });
 </script>
