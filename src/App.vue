@@ -79,7 +79,7 @@
 
   <RouterView
     :class="{ 'lg:pl-[272px]': isMenuOpen }"
-    class="relative my-0 mx-auto max-w-screen-2xl pt-[106px] transition-[padding-left] duration-300"
+    class="relative my-0 mx-auto max-w-screen-2xl pt-[58px] transition-[padding-left] duration-300"
   />
 </template>
 
