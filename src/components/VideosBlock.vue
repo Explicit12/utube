@@ -52,7 +52,7 @@
     if (isSearchFunction(props.request) && props.query) {
       response = await props.request(props.query);
     } else if (isSearchFunction(props.request) && !props.query) {
-      throw new Error("Search function require query property.");
+      throw new Error("Request function require query property.");
     } else {
       response = await (props.request as GetFunction)();
     }

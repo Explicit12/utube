@@ -125,7 +125,7 @@
           <template v-if="isChannelsInfoLoaded && !requestError">
             <li v-for="channel in slicedChannels" :key="channel.author">
               <RouterLink
-                :to="{ name: 'home' }"
+                :to="{ name: 'channel', params: { id: channel.authorId } }"
                 class="flex items-center gap-2 font-sans font-normal text-gray-900"
               >
                 <img

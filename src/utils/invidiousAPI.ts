@@ -26,11 +26,14 @@ export type AuthorThumbnails = {
   width: number;
 }[];
 
+export type AuthorBanners = AuthorThumbnails;
+
 export interface ShortChannelInfo {
   author: string;
   authorId: ChannelsId;
   authorThumbnails: AuthorThumbnails;
-  subCount?: number;
+  subCount: number;
+  authorBanners: AuthorBanners;
 }
 
 const invidiousURL = "https://vid.puffyan.us";
@@ -62,7 +65,7 @@ export async function getShortChannelInfo(
 ): Promise<ShortChannelInfo> {
   const response = await invidious.get("/channels/" + channelId, {
     params: {
-      fields: "author,authorId,authorThumbnails",
+      fields: "author,authorId,authorThumbnails,subCount,authorBanners",
     },
   });
   const data = await response.data;
@@ -103,7 +106,7 @@ export async function searchChannel(
       q: query,
       sort_by: "relevance",
       type: "channel",
-      fields: "author,authorId,authorThumbnails,subCount",
+      fields: "author,authorId,authorThumbnails,subCount,AuthorBanners",
     },
   });
   const data = await response.data;

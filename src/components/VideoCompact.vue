@@ -85,9 +85,9 @@
 
       <div>
         <RouterLink
-          :to="{ name: 'home' }"
+          :to="{ name: 'channel', params: { id: author.id } }"
           class="pt-2 font-sans text-sm font-normal text-gray-400 line-clamp-1 hover:underline"
-          @click.stop
+          @click.stop.prevent
         >
           {{ author.name }}
         </RouterLink>

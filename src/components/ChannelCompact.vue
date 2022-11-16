@@ -41,7 +41,10 @@
 </script>
 
 <template>
-  <RouterLink :to="{ name: 'home' }" class="flex justify-between gap-4">
+  <RouterLink
+    :to="{ name: 'channel', params: { id: channelsId } }"
+    class="flex justify-between gap-4"
+  >
     <div class="aspect-square max-h-[56px] min-w-[56px] max-w-[56px]">
       <img
         v-if="thumbnail && !imageError"

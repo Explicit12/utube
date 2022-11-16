@@ -23,6 +23,12 @@ const router = createRouter({
         if (!to.query.search_query) router.push({ name: "home" });
       },
     },
+    {
+      path: "/channel/:id",
+      name: "channel",
+      component: () => import("@/views/ChannelView.vue"),
+      props: true,
+    },
   ],
 });
 
