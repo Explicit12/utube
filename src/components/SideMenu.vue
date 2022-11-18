@@ -1,88 +1,24 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
   import { useRoute, RouterLink } from "vue-router";
-  import { useDropZone } from "@vueuse/core";
-  import { ref, computed, onBeforeMount, watch } from "vue";
+  import { defineAsyncComponent } from "vue";
   import { storeToRefs } from "pinia";
 
   import { useUserData } from "@/stores/userData";
 
-  import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
-  import SubscriptionSkeleton from "@/components/skeletonLoaders/SubscriptionsSkeleton.vue";
-  import TheError from "@/components/TheError.vue";
+  const SubscriptionList = defineAsyncComponent(
+    () => import("@/components/SubscriptionList.vue"),
+  );
 
-  import CSVtoJSON from "@/helpers/CSVtoJSON";
-  import { getShortChannelInfo } from "@/utils/invidiousAPI";
-
-  import type { Ref } from "vue";
-  import type { ShortChannelInfo, ChannelsId } from "@/utils/invidiousAPI";
+  const SubscriptionFileInput = defineAsyncComponent(
+    () => import("@/components/SubscriptionFileInput.vue"),
+  );
 
   const userData = useUserData();
   const route = useRoute();
   const { t } = useI18n();
 
-  const { subscribeToChannel } = userData;
   const { subscriptions } = storeToRefs(userData);
-  const isChannelsInfoLoaded: Ref<boolean> = ref(false);
-  const fileError: Ref<string> = ref("");
-  const channels: Ref<ShortChannelInfo[]> = ref([]);
-  const standardToShow: Ref<number> = ref(6);
-  const channelsToShow: Ref<number> = ref(standardToShow.value);
-  const importDropZone = ref<HTMLDivElement>();
-  const requestError: Ref<string> = ref("");
-
-  async function importDropZoneHandler(file: File[] | null): Promise<void> {
-    if (file && file[0].type === "text/csv") {
-      fileError.value = "";
-      const channelsIds = await CSVtoJSON(file[0]);
-      channelsIds?.forEach((id) => subscribeToChannel(id["Channel Id"]));
-    } else {
-      fileError.value = new Error("Wrong file type").message;
-    }
-  }
-
-  async function importInputHandler(event: Event | null): Promise<void> {
-    const element = event?.currentTarget as HTMLInputElement;
-    const fileList: FileList | null = element.files;
-    if (fileList && fileList[0].type === "text/csv") {
-      fileError.value = "";
-      const channelsIds = await CSVtoJSON(fileList[0]);
-      channelsIds?.forEach((id) => subscribeToChannel(id["Channel Id"]));
-    } else {
-      fileError.value = new Error("Wrong file type").message;
-    }
-  }
-
-  async function updateChannels(id: ChannelsId): Promise<void> {
-    try {
-      isChannelsInfoLoaded.value = false;
-      if (!channels.value.find((channel) => channel.authorId === id)) {
-        const channelInfo = await getShortChannelInfo(id);
-        channels.value.push(channelInfo);
-      }
-      isChannelsInfoLoaded.value = true;
-    } catch (error) {
-      const message = (error as Error).message;
-      requestError.value = message;
-    }
-  }
-
-  watch(
-    subscriptions,
-    () => {
-      channels.value = [];
-      subscriptions.value.forEach(updateChannels);
-    },
-    { deep: true },
-  );
-
-  useDropZone(importDropZone, importDropZoneHandler);
-
-  const slicedChannels = computed<ShortChannelInfo[]>(() => {
-    return channels.value.slice(0, channelsToShow.value);
-  });
-
-  onBeforeMount(() => subscriptions.value.forEach(updateChannels));
 </script>
 
 <template>
@@ -120,71 +56,9 @@
         {{ t("subscriptions.headline") }}
       </h2>
 
-      <template v-if="subscriptions.size">
-        <ul class="space-y-5 pt-6">
-          <template v-if="isChannelsInfoLoaded && !requestError">
-            <li v-for="channel in slicedChannels" :key="channel.author">
-              <RouterLink
-                :to="{ name: 'channel', params: { id: channel.authorId } }"
-                class="flex items-center gap-2 font-sans font-normal text-gray-900"
-              >
-                <img
-                  v-if="channel.authorThumbnails[0]"
-                  :src="channel.authorThumbnails[0].url"
-                  decoding="async"
-                  referrerpolicy="no-referrer"
-                  crossorigin="anonymous"
-                  loading="lazy"
-                  :alt="t('subscriptions.alt-avatar')"
-                  class="rounded-lg"
-                  width="32"
-                  height="32"
-                />
-                <div v-else class="h-8 w-8 rounded-lg bg-gray-200" />
-                <span class="overflow-hidden text-ellipsis whitespace-nowrap">
-                  {{ channel.author }}
-                </span>
-              </RouterLink>
-            </li>
-          </template>
+      <SubscriptionList v-if="subscriptions.size" />
 
-          <template v-else>
-            <SubscriptionSkeleton v-for="n in standardToShow" :key="n" />
-          </template>
-        </ul>
-
-        <SecondaryButton
-          v-if="subscriptions.size > standardToShow && channels.length"
-          class="mt-4 w-full"
-          @click="
-            channelsToShow =
-              channelsToShow <= standardToShow
-                ? subscriptions.size
-                : standardToShow
-          "
-        >
-          {{
-            channelsToShow <= standardToShow
-              ? t("subscriptions.button-more")
-              : t("subscriptions.button-less")
-          }}
-        </SecondaryButton>
-      </template>
-
-      <template v-else>
-        <div
-          ref="importDropZone"
-          class="mt-6 flex h-64 w-full items-center justify-center rounded-lg border-4 border-dashed border-blue-600 p-4 text-center"
-        >
-          {{ t("subscriptions.drop-zone") }}
-        </div>
-        <input
-          type="file"
-          class="mt-4 block w-full font-sans text-base font-normal text-gray-900 file:block file:w-full file:rounded-lg file:border-2 file:border-transparent file:bg-blue-50 file:py-2 file:px-4 hover:cursor-pointer file:hover:cursor-pointer"
-          @change="importInputHandler"
-        />
-        <TheError v-if="fileError" :message="fileError" class="h-fit p-2" />
-      </template>
+      <SubscriptionFileInput v-else />
     </div>
 
     <div>
@@ -232,11 +106,7 @@
       }
     },
     "subscriptions": {
-      "headline": "subscriptions",
-      "button-more": "More",
-      "button-less": "Less",
-      "alt-avatar": "Channel avatar",
-      "drop-zone": "Drop subscriptions.csv file here"
+      "headline": "subscriptions"
     },
     "info": {
       "headline": "Info",
@@ -254,11 +124,7 @@
       }
     },
     "subscriptions": {
-      "headline": "Підписки",
-      "button-more": "Більше",
-      "button-less": "Менше",
-      "alt-avatar": "Аватар каналу",
-      "drop-zone": "Перетягніть сюди subscriptions.csv файл"
+      "headline": "Підписки"
     },
     "info": {
       "headline": "Інформація",
@@ -276,11 +142,7 @@
       }
     },
     "subscriptions": {
-      "headline": "subscriptions",
-      "button-more": "Ещё",
-      "button-less": "Меньше",
-      "alt-avatar": "Аватар канала",
-      "drop-zone": "Перетащите subscriptions.csv файл сюда"
+      "headline": "subscriptions"
     },
     "info": {
       "headline": "Информация",
