@@ -29,12 +29,15 @@
   async function requestChannel(id: ChannelsId) {
     try {
       const channelInfo = await getShortChannelInfo(id);
-      channel.value = channelInfo;
-      if (channelInfo.authorBanners) {
-        pingImage(channel.value.authorBanners[0].url).catch(
+      if (!channelInfo.authorBanners.length) {
+        imageError.value = new Error("No banner image");
+      } else {
+        pingImage(channelInfo.authorBanners[0].url).catch(
           (err) => (imageError.value = err),
         );
       }
+
+      channel.value = channelInfo;
     } catch (error) {
       console.error((error as Error).message);
       channelRequestError.value = error as Error;
@@ -82,7 +85,7 @@
         :channels-id="channel.authorId"
         :subs="channel.subCount"
         :thumbnail="channel.authorThumbnails"
-        class="cursor-default pt-8"
+        class="pt-8"
       />
     </template>
     <template v-else-if="!channel && !channelRequestError">

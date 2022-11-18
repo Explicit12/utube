@@ -51,14 +51,18 @@
 <template>
   <main class="flex max-w-screen-xl flex-col justify-center px-4">
     <div v-if="channels.length" class="flex flex-col gap-4 pt-8">
-      <ChannelCompact
+      <RouterLink
         v-for="channel in channelsToShow"
         :key="channel.authorId"
-        :name="channel.author"
-        :subs="channel.subCount ? channel.subCount : 0"
-        :thumbnail="channel.authorThumbnails"
-        :channels-id="channel.authorId"
-      />
+        :to="{ name: 'channel', params: { id: channel.authorId } }"
+      >
+        <ChannelCompact
+          :name="channel.author"
+          :subs="channel.subCount ? channel.subCount : 0"
+          :thumbnail="channel.authorThumbnails"
+          :channels-id="channel.authorId"
+        />
+      </RouterLink>
       <hr />
     </div>
     <div v-else class="flex flex-col gap-4 pt-8">

@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { onBeforeMount, ref, computed } from "vue";
   import { useI18n } from "vue-i18n";
-  import { RouterLink } from "vue-router";
   import { storeToRefs } from "pinia";
   import { IconImageArea } from "@iconify-prerendered/vue-mdi";
 
@@ -41,10 +40,7 @@
 </script>
 
 <template>
-  <RouterLink
-    :to="{ name: 'channel', params: { id: channelsId } }"
-    class="flex justify-between gap-4"
-  >
+  <div class="flex justify-between gap-4">
     <div class="aspect-square max-h-[56px] min-w-[56px] max-w-[56px]">
       <img
         v-if="thumbnail && !imageError"
@@ -87,7 +83,7 @@
     >
       {{ t("unsubscribe") }}
     </SecondaryButton>
-  </RouterLink>
+  </div>
 </template>
 
 <i18n lang="json">
