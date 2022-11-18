@@ -3,6 +3,7 @@
   import { useI18n } from "vue-i18n";
   import { storeToRefs } from "pinia";
   import { IconImageArea } from "@iconify-prerendered/vue-mdi";
+  import { useScrollLock } from "@vueuse/core";
 
   import PrimaryButton from "@/components/buttons/PrimaryButton.vue";
   import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
@@ -33,12 +34,14 @@
 
   const imageError: Ref<boolean> = ref(false);
   const promptModal: Ref<boolean> = ref(false);
+  const isBodyScrollLocked: Ref<boolean> = useScrollLock(document.body);
 
   const formatedSubs = computed<string>(() => formatNumbers(props.subs));
 
   function unsubscribeOnPrompt(prompt: number, channelsId: ChannelsId): void {
     if (prompt) unsubscribeFromChannel(channelsId);
     promptModal.value = false;
+    isBodyScrollLocked.value = false;
   }
 
   onBeforeMount(() => {
@@ -89,7 +92,9 @@
     <SecondaryButton
       v-else
       class="self-start"
-      @click.stop.prevent="promptModal = !promptModal"
+      @click.stop.prevent="
+        (promptModal = !promptModal), (isBodyScrollLocked = true)
+      "
     >
       {{ t("unsubscribe") }}
     </SecondaryButton>
@@ -97,7 +102,7 @@
       <ThePrompt
         v-if="promptModal"
         @prompt="(prompt) => unsubscribeOnPrompt(prompt, channelsId)"
-        @click-outside="promptModal = false"
+        @click-outside="(promptModal = false), (isBodyScrollLocked = false)"
       >
         <template #text>
           <p class="text-md font-sans font-normal text-gray-900">
