@@ -24,7 +24,7 @@
 
   const channel: Ref<ShortChannelInfo | undefined> = ref();
   const channelRequestError: Ref<Error | undefined> = ref();
-  const imageError: Ref<string> = ref("");
+  const imageError: Ref<Error | undefined> = ref();
 
   async function requestChannel(id: ChannelsId) {
     try {
@@ -32,7 +32,7 @@
       channel.value = channelInfo;
       if (channelInfo.authorBanners) {
         pingImage(channel.value.authorBanners[0].url).catch(
-          (err) => (imageError.value = err.message),
+          (err) => (imageError.value = err),
         );
       }
     } catch (error) {
@@ -57,17 +57,17 @@
     <template v-if="channel && !channelRequestError">
       <div v-if="!imageError" class="relative">
         <img
-          :src="channel?.authorBanners[0].url"
+          :src="channel.authorBanners[0].url"
           alt="ChannelThumbnail"
-          :width="channel?.authorBanners[0].width"
-          :height="channel?.authorBanners[0].height"
+          :width="channel.authorBanners[0].width"
+          :height="channel.authorBanners[0].height"
           class="mt-8 rounded-lg"
         />
         <img
-          :src="channel?.authorBanners[0].url"
+          :src="channel.authorBanners[0].url"
           alt="ChannelThumbnail"
-          :width="channel?.authorBanners[0].width"
-          :height="channel?.authorBanners[0].height"
+          :width="channel.authorBanners[0].width"
+          :height="channel.authorBanners[0].height"
           class="absolute top-8 -z-10 max-h-[249px] w-full max-w-screen-2xl animate-pulse rounded-lg opacity-75 blur-2xl"
         />
       </div>

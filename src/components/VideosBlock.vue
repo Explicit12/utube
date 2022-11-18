@@ -39,7 +39,6 @@
   }>();
 
   const requestError: Ref<Error | undefined> = ref();
-  const isVideosLoaded: Ref<boolean> = ref(false);
   const isSpinnerVisible: Ref<boolean> = ref(false);
   const videos: Ref<ShortVideoInfo[]> = ref([]);
   const toShow: Ref<number> = ref(props.showPerView);
@@ -79,23 +78,17 @@
     if (toShow.value >= videos.value.length) return;
     isSpinnerVisible.value = true;
     setTimeout(() => {
-      toShow.value += isVideosLoaded.value ? props.showPerView : 0;
+      toShow.value += videos.value.length ? props.showPerView : 0;
       isSpinnerVisible.value = false;
     }, 500);
   });
 
   watch(
     () => props.query,
-    () => {
-      isVideosLoaded.value = false;
-      getVideos().then(() => (isVideosLoaded.value = true));
-    },
+    () => getVideos(),
   );
 
-  onBeforeMount(() => {
-    isVideosLoaded.value = false;
-    getVideos().then(() => (isVideosLoaded.value = true));
-  });
+  onBeforeMount(() => getVideos());
 </script>
 
 <template>
@@ -107,7 +100,7 @@
         }"
         class="grid grid-cols-1 gap-4 py-4"
       >
-        <template v-if="isVideosLoaded">
+        <template v-if="videos.length">
           <VideoCompact
             v-for="video in videosToShow"
             :key="video.videoId"

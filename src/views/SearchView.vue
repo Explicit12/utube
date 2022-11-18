@@ -13,8 +13,7 @@
 
   const props = defineProps<{ searchQuery: string }>();
 
-  const isChannelsLoaded: Ref<boolean> = ref(false);
-  const requestError: Ref<string> = ref("");
+  const requestError: Ref<Error | undefined> = ref();
   const channels: Ref<ShortChannelInfo[]> = ref([]);
   const toShow: Ref<number> = ref(3);
 
@@ -32,11 +31,10 @@
   onBeforeRouteUpdate((to) => {
     console.log(to);
     if (typeof to.query.search_query !== "string") return false;
-    isChannelsLoaded.value = false;
+    channels.value = [];
     searchChannel(to.query.search_query)
       .then((result) => {
         channels.value = result;
-        isChannelsLoaded.value = true;
       })
       .catch((err) => (requestError.value = err));
   });
@@ -45,7 +43,6 @@
     searchChannel(props.searchQuery)
       .then((result) => {
         channels.value = result;
-        isChannelsLoaded.value = true;
       })
       .catch((err) => (requestError.value = err));
   });
@@ -53,7 +50,7 @@
 
 <template>
   <main class="flex max-w-screen-xl flex-col justify-center px-4">
-    <div v-if="isChannelsLoaded" class="flex flex-col gap-4 pt-8">
+    <div v-if="channels.length" class="flex flex-col gap-4 pt-8">
       <ChannelCompact
         v-for="channel in channelsToShow"
         :key="channel.authorId"
