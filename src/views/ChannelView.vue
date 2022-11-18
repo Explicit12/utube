@@ -23,7 +23,7 @@
   const props = defineProps<{ id: ChannelsId }>();
 
   const channel: Ref<ShortChannelInfo | undefined> = ref();
-  const channelRequestError: Ref<string> = ref("");
+  const channelRequestError: Ref<Error | undefined> = ref();
   const imageError: Ref<string> = ref("");
 
   async function requestChannel(id: ChannelsId) {
@@ -36,7 +36,8 @@
         );
       }
     } catch (error) {
-      channelRequestError.value = (error as Error).message;
+      console.error((error as Error).message);
+      channelRequestError.value = error as Error;
     }
   }
 
@@ -90,7 +91,11 @@
       />
       <ChannelCompactSkeletonVue class="pt-8" />
     </template>
-    <TheError v-else :message="channelRequestError" class="items-center" />
+    <TheError
+      v-else-if="channelRequestError"
+      :message="channelRequestError.message"
+      class="items-center"
+    />
     <hr />
     <VideosBlock :request="getChannelsVideos" :query="id" :show-per-view="20" />
   </main>

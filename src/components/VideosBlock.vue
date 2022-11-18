@@ -38,7 +38,7 @@
     horizontalLayout?: boolean;
   }>();
 
-  const requestError: Ref<string> = ref("");
+  const requestError: Ref<Error | undefined> = ref();
   const isVideosLoaded: Ref<boolean> = ref(false);
   const isSpinnerVisible: Ref<boolean> = ref(false);
   const videos: Ref<ShortVideoInfo[]> = ref([]);
@@ -57,17 +57,22 @@
   });
 
   async function getVideos(): Promise<void> {
-    let response: ShortVideoInfo[] = [];
-    if (isSearchFunction(props.request) && props.query) {
-      response = await props.request(props.query);
-    } else if (isSearchFunction(props.request) && !props.query) {
-      throw new Error("Request function require query property.");
-    } else {
-      response = await (props.request as GetFunction)();
-    }
+    try {
+      let response: ShortVideoInfo[] = [];
+      if (isSearchFunction(props.request) && props.query) {
+        response = await props.request(props.query);
+      } else if (isSearchFunction(props.request) && !props.query) {
+        throw new Error("Request function require query property.");
+      } else {
+        response = await (props.request as GetFunction)();
+      }
 
-    // sometimes we may get video without title and published time, it's api issue
-    videos.value = response.filter((video) => video.title && video.published);
+      // sometimes we may get video without title and published time, it's api issue
+      videos.value = response.filter((video) => video.title && video.published);
+    } catch (error) {
+      console.error((error as Error).message);
+      requestError.value = error as Error;
+    }
   }
 
   useOnScrollBottom(() => {
@@ -83,17 +88,13 @@
     () => props.query,
     () => {
       isVideosLoaded.value = false;
-      getVideos()
-        .then(() => (isVideosLoaded.value = true))
-        .catch((err) => (requestError.value = err.message));
+      getVideos().then(() => (isVideosLoaded.value = true));
     },
   );
 
   onBeforeMount(() => {
     isVideosLoaded.value = false;
-    getVideos()
-      .then(() => (isVideosLoaded.value = true))
-      .catch((err) => (requestError.value = err.message));
+    getVideos().then(() => (isVideosLoaded.value = true));
   });
 </script>
 
@@ -130,8 +131,8 @@
       <SpinnerLoader v-if="isSpinnerVisible" class="my-4" />
     </template>
     <TheError
-      v-else
-      :message="requestError"
+      v-else-if="requestError"
+      :message="requestError.message"
       class="h-[calc(100vh_-_138px)] items-center"
     />
   </div>
