@@ -1,12 +1,11 @@
 <script setup lang="ts">
-  import { onBeforeMount, ref } from "vue";
+  import { onBeforeMount, ref, defineAsyncComponent } from "vue";
   import { onBeforeRouteUpdate } from "vue-router";
   import { IconImageArea } from "@iconify-prerendered/vue-mdi";
 
   import ChannelCompact from "@/components/ChannelCompact.vue";
   import VideosBlock from "@/components/VideosBlock.vue";
   import ChannelCompactSkeletonVue from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
-  import TheError from "@/components/TheError.vue";
 
   import {
     getChannelsVideos,
@@ -16,6 +15,10 @@
 
   import type { Ref } from "vue";
   import type { ShortChannelInfo, ChannelsId } from "@/utils/invidiousAPI";
+
+  const TheError = defineAsyncComponent(
+    () => import("@/components/TheError.vue"),
+  );
 
   const props = defineProps<{ id: ChannelsId }>();
 

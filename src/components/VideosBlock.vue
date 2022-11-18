@@ -1,18 +1,27 @@
 <script setup lang="ts">
-  import { onBeforeMount, ref, computed, watch } from "vue";
+  import {
+    onBeforeMount,
+    ref,
+    computed,
+    watch,
+    defineAsyncComponent,
+  } from "vue";
 
   import { useOnScrollBottom } from "@/composables/useOnBottomScroll";
 
   import VideoCompact from "@/components/VideoCompact.vue";
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
   import SpinnerLoader from "@/components/SpinnerLoader.vue";
-  import TheError from "@/components/TheError.vue";
 
   import type { ChannelsId, ShortVideoInfo } from "@/utils/invidiousAPI";
   import type { Ref } from "vue";
 
   type GetFunction = () => Promise<ShortVideoInfo[]>;
   type SearchFunction = (query: ChannelsId) => Promise<ShortVideoInfo[]>;
+
+  const TheError = defineAsyncComponent(
+    () => import("@/components/TheError.vue"),
+  );
 
   function isSearchFunction(
     func: GetFunction | SearchFunction,

@@ -2,15 +2,17 @@
   import { useI18n } from "vue-i18n";
 
   import { useDropZone } from "@vueuse/core";
-  import { ref } from "vue";
+  import { ref, defineAsyncComponent } from "vue";
 
   import { useUserData } from "@/stores/userData";
-
-  import TheError from "@/components/TheError.vue";
 
   import CSVtoJSON from "@/helpers/CSVtoJSON";
 
   import type { Ref } from "vue";
+
+  const TheError = defineAsyncComponent(
+    () => import("@/components/TheError.vue"),
+  );
 
   const { t } = useI18n();
   const userData = useUserData();
