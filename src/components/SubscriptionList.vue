@@ -26,36 +26,39 @@
 
   const { t } = useI18n();
 
-  watch(subscriptions, async () => {
-    const deletedChannelId: ChannelsId | undefined = [...channels.value].find(
-      (channel) => !subscriptions.value.has(channel.authorId),
-    )?.authorId;
+  watch(
+    () => subscriptions.value.size,
+    async () => {
+      const deletedChannelId: ChannelsId | undefined = [...channels.value].find(
+        (channel) => !subscriptions.value.has(channel.authorId),
+      )?.authorId;
 
-    const addedChannelsId: ChannelsId[] = [...subscriptions.value].filter(
-      (id) => ![...channels.value].find((channel) => channel.authorId === id),
-    );
+      const addedChannelsId: ChannelsId[] = [...subscriptions.value].filter(
+        (id) => ![...channels.value].find((channel) => channel.authorId === id),
+      );
 
-    if (deletedChannelId) {
-      channels.value = new Set(
-        [...channels.value].filter(
-          (channel) => channel.authorId !== deletedChannelId,
-        ),
-      );
-    } else if (addedChannelsId.length) {
-      const addedChannels: Awaited<ShortChannelInfo[]> = await Promise.all(
-        addedChannelsId.map((id) => getShortChannelInfo(id)),
-      );
-      addedChannels.forEach((newChannel) => {
-        if (
-          ![...channels.value].find(
-            (channel) => channel.authorId === newChannel.authorId,
-          )
-        ) {
-          channels.value.add(newChannel);
-        }
-      });
-    }
-  });
+      if (deletedChannelId) {
+        channels.value = new Set(
+          [...channels.value].filter(
+            (channel) => channel.authorId !== deletedChannelId,
+          ),
+        );
+      } else if (addedChannelsId.length) {
+        const addedChannels: Awaited<ShortChannelInfo[]> = await Promise.all(
+          addedChannelsId.map((id) => getShortChannelInfo(id)),
+        );
+        addedChannels.forEach((newChannel) => {
+          if (
+            ![...channels.value].find(
+              (channel) => channel.authorId === newChannel.authorId,
+            )
+          ) {
+            channels.value.add(newChannel);
+          }
+        });
+      }
+    },
+  );
 
   onBeforeMount(() => {
     Promise.all([...subscriptions.value].map(getShortChannelInfo)).then(

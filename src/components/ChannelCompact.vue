@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onBeforeMount, ref, computed } from "vue";
+  import { onBeforeMount, ref, computed, defineAsyncComponent } from "vue";
   import { useI18n } from "vue-i18n";
   import { storeToRefs } from "pinia";
   import { IconImageArea } from "@iconify-prerendered/vue-mdi";
@@ -13,6 +13,10 @@
 
   import type { Ref } from "vue";
   import type { AuthorThumbnails, ChannelsId } from "@/utils/invidiousAPI";
+
+  const ThePrompt = defineAsyncComponent(
+    () => import("@/components/ThePrompt.vue"),
+  );
 
   const props = defineProps<{
     name: string;
@@ -28,8 +32,14 @@
   const { subscriptions } = storeToRefs(userData);
 
   const imageError: Ref<boolean> = ref(false);
+  const promptModal: Ref<boolean> = ref(false);
 
   const formatedSubs = computed<string>(() => formatNumbers(props.subs));
+
+  function unsubscribeOnPrompt(prompt: number, channelsId: ChannelsId): void {
+    if (prompt) unsubscribeFromChannel(channelsId);
+    promptModal.value = false;
+  }
 
   onBeforeMount(() => {
     if (props.thumbnail) {
@@ -79,10 +89,23 @@
     <SecondaryButton
       v-else
       class="self-start"
-      @click.stop.prevent="unsubscribeFromChannel(channelsId)"
+      @click.stop.prevent="promptModal = !promptModal"
     >
       {{ t("unsubscribe") }}
     </SecondaryButton>
+    <Teleport to="body">
+      <ThePrompt
+        v-if="promptModal"
+        @prompt="(prompt) => unsubscribeOnPrompt(prompt, channelsId)"
+        @click-outside="promptModal = false"
+      >
+        <template #text>
+          <p class="text-md font-sans font-normal text-gray-900">
+            {{ t("unsubscribeFrom") + ` ${name}` }}
+          </p>
+        </template>
+      </ThePrompt>
+    </Teleport>
   </div>
 </template>
 
@@ -92,19 +115,22 @@
     "alt-avatar": "Channel avatar",
     "subscriptions": "Subs",
     "subscribe": "Subscribe",
-    "unsubscribe": "Unsubscribe"
+    "unsubscribe": "Unsubscribe",
+    "unsubscribeFrom": "Unsubscribe from"
   },
   "uk-UA": {
     "alt-avatar": "Аватар каналу",
     "subscriptions": "Підписчиків",
     "subscribe": "Підписатися",
-    "unsubscribe": "Відписатися"
+    "unsubscribe": "Відписатися",
+    "unsubscribeFrom": "Відписатися вiд"
   },
   "ru-RU": {
     "alt-avatar": "Аватар канала",
     "subscriptions": "Подписчиков",
     "subscribe": "Подписаться",
-    "unsubscribe": "Отписаться"
+    "unsubscribe": "Отписаться",
+    "unsubscribeFrom": "Отписаться от"
   }
 }
 </i18n>
