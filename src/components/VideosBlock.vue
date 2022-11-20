@@ -13,11 +13,11 @@
   import VideoCompactSkeleton from "@/components/skeletonLoaders/VideoCompactSkeleton.vue";
   import SpinnerLoader from "@/components/SpinnerLoader.vue";
 
-  import type { ChannelsId, ShortVideoInfo } from "@/utils/invidiousAPI";
+  import type { ChannelId, VideoInfo } from "@/utils/invidiousAPI";
   import type { Ref } from "vue";
 
-  type GetFunction = () => Promise<ShortVideoInfo[]>;
-  type SearchFunction = (query: ChannelsId) => Promise<ShortVideoInfo[]>;
+  type GetFunction = () => Promise<VideoInfo[]>;
+  type SearchFunction = (query: ChannelId) => Promise<VideoInfo[]>;
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
@@ -40,16 +40,16 @@
 
   const requestError: Ref<Error | undefined> = ref();
   const isSpinnerVisible: Ref<boolean> = ref(false);
-  const videos: Ref<ShortVideoInfo[]> = ref([]);
+  const videos: Ref<VideoInfo[]> = ref([]);
   const toShow: Ref<number> = ref(props.showPerView);
 
-  const sortedByTimeVideos = computed<ShortVideoInfo[]>(() =>
+  const sortedByTimeVideos = computed<VideoInfo[]>(() =>
     [...videos.value].sort((a, b) => {
       return b.published - a.published;
     }),
   );
 
-  const videosToShow = computed<ShortVideoInfo[]>(() => {
+  const videosToShow = computed<VideoInfo[]>(() => {
     return props.sortByTime
       ? sortedByTimeVideos.value.slice(0, toShow.value)
       : videos.value.slice(0, toShow.value);
@@ -57,7 +57,7 @@
 
   async function getVideos(): Promise<void> {
     try {
-      let response: ShortVideoInfo[] = [];
+      let response: VideoInfo[] = [];
       if (isSearchFunction(props.request) && props.query) {
         response = await props.request(props.query);
       } else if (isSearchFunction(props.request) && !props.query) {

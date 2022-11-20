@@ -13,7 +13,7 @@
   import formatNumbers from "@/helpers/formatNumbers";
 
   import type { Ref } from "vue";
-  import type { AuthorThumbnails, ChannelsId } from "@/utils/invidiousAPI";
+  import type { AuthorThumbnail, ChannelId } from "@/utils/invidiousAPI";
 
   const ThePrompt = defineAsyncComponent(
     () => import("@/components/ThePrompt.vue"),
@@ -22,8 +22,8 @@
   const props = defineProps<{
     name: string;
     subs: number;
-    channelsId: ChannelsId;
-    thumbnail: AuthorThumbnails;
+    channelsId: ChannelId;
+    thumbnail: AuthorThumbnail[];
   }>();
 
   const { t } = useI18n();
@@ -38,7 +38,7 @@
 
   const formatedSubs = computed<string>(() => formatNumbers(props.subs));
 
-  function unsubscribeOnPrompt(prompt: number, channelsId: ChannelsId): void {
+  function unsubscribeOnPrompt(prompt: number, channelsId: ChannelId): void {
     if (prompt) unsubscribeFromChannel(channelsId);
     promptModal.value = false;
     isBodyScrollLocked.value = false;

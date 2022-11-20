@@ -11,8 +11,8 @@
 
   import type { Ref } from "vue";
   import type {
-    VideoThumbnails,
-    ChannelsId,
+    VideoThumbnail,
+    ChannelId,
     VideoId,
   } from "@/utils/invidiousAPI";
 
@@ -20,11 +20,11 @@
 
   const props = defineProps<{
     name: string;
-    author: { name: string; id: ChannelsId };
+    author: { name: string; id: ChannelId };
     videoId: VideoId;
     date: number;
     views: number;
-    image: VideoThumbnails | null;
+    image: VideoThumbnail[] | null;
     horizontalLayout?: boolean;
   }>();
 

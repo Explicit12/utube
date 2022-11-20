@@ -9,22 +9,22 @@
   import { searchVideo, searchChannel } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
-  import type { ShortChannelInfo } from "@/utils/invidiousAPI";
+  import type { ChannelInfo } from "@/utils/invidiousAPI";
 
   const props = defineProps<{ searchQuery: string }>();
 
   const requestError: Ref<Error | undefined> = ref();
-  const channels: Ref<ShortChannelInfo[]> = ref([]);
+  const channels: Ref<ChannelInfo[]> = ref([]);
   const toShow: Ref<number> = ref(3);
 
-  const sortedBySubsChannels = computed<ShortChannelInfo[]>(() => {
+  const sortedBySubsChannels = computed<ChannelInfo[]>(() => {
     return [...channels.value].sort((a, b) => {
       if (a.subCount && b.subCount) return b.subCount - a.subCount;
       else return 0;
     });
   });
 
-  const channelsToShow = computed<ShortChannelInfo[]>(() => {
+  const channelsToShow = computed<ChannelInfo[]>(() => {
     return sortedBySubsChannels.value.slice(0, toShow.value);
   });
 

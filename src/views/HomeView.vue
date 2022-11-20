@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
   import VideosBlock from "@/components/VideosBlock.vue";
-  import { getPopular } from "@/utils/invidiousAPI";
+  import { getPopularVideos } from "@/utils/invidiousAPI";
 
   const { t } = useI18n();
 </script>
@@ -11,7 +11,7 @@
     <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
       {{ t("headline") }}
     </h1>
-    <VideosBlock :request="getPopular" :show-per-view="20" />
+    <VideosBlock :request="getPopularVideos" :show-per-view="20" />
   </main>
 </template>
 

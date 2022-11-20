@@ -6,21 +6,21 @@
   import SubscriptionSkeleton from "@/components/skeletonLoaders/SubscriptionsSkeleton.vue";
   import SecondaryButton from "./buttons/SecondaryButton.vue";
 
-  import { getShortChannelInfo, type ChannelsId } from "@/utils/invidiousAPI";
+  import { getChannelInfo } from "@/utils/invidiousAPI";
   import { useUserData } from "@/stores/userData";
 
   import type { Ref } from "vue";
-  import type { ShortChannelInfo } from "@/utils/invidiousAPI";
+  import type { ChannelInfo, ChannelId } from "@/utils/invidiousAPI";
 
   const initialAmoutOfChannels = 6;
 
   const userData = useUserData();
-  const channels: Ref<Set<ShortChannelInfo>> = ref(new Set());
+  const channels: Ref<Set<ChannelInfo>> = ref(new Set());
   const amoutOfChannelsToShow: Ref<number> = ref(initialAmoutOfChannels);
 
   const { subscriptions } = storeToRefs(userData);
 
-  const channelsToShow = computed<Set<ShortChannelInfo>>(
+  const channelsToShow = computed<Set<ChannelInfo>>(
     () => new Set([...channels.value].slice(0, amoutOfChannelsToShow.value)),
   );
 
@@ -29,11 +29,11 @@
   watch(
     () => subscriptions.value.size,
     async () => {
-      const deletedChannelId: ChannelsId | undefined = [...channels.value].find(
+      const deletedChannelId: ChannelId | undefined = [...channels.value].find(
         (channel) => !subscriptions.value.has(channel.authorId),
       )?.authorId;
 
-      const addedChannelsId: ChannelsId[] = [...subscriptions.value].filter(
+      const addedChannelsId: ChannelId[] = [...subscriptions.value].filter(
         (id) => ![...channels.value].find((channel) => channel.authorId === id),
       );
 
@@ -44,8 +44,8 @@
           ),
         );
       } else if (addedChannelsId.length) {
-        const addedChannels: Awaited<ShortChannelInfo[]> = await Promise.all(
-          addedChannelsId.map((id) => getShortChannelInfo(id)),
+        const addedChannels: Awaited<ChannelInfo[]> = await Promise.all(
+          addedChannelsId.map((id) => getChannelInfo(id)),
         );
         addedChannels.forEach((newChannel) => {
           if (
@@ -61,7 +61,7 @@
   );
 
   onBeforeMount(() => {
-    Promise.all([...subscriptions.value].map(getShortChannelInfo)).then(
+    Promise.all([...subscriptions.value].map(getChannelInfo)).then(
       (channelsInfo) => {
         channels.value = new Set(channelsInfo);
       },

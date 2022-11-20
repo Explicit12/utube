@@ -1,39 +1,58 @@
 import axios from "axios";
 
-export type VideoThumbnails = {
+export type ChannelId = string;
+export type VideoId = string;
+
+export interface VideoThumbnail {
   height: number;
   quality: string;
   url: string;
   width: number;
-}[];
-
-export type ChannelsId = string;
-export type VideoId = string;
-
-export interface ShortVideoInfo {
-  title: string;
-  author: string;
-  authorId: ChannelsId;
-  videoId: VideoId;
-  viewCount: number;
-  published: number;
-  videoThumbnails: VideoThumbnails;
 }
 
-export type AuthorThumbnails = {
-  url: string;
-  height: number;
-  width: number;
-}[];
+export type AuthorThumbnail = Omit<VideoThumbnail, "quality">;
+export type AuthorBanner = AuthorThumbnail;
 
-export type AuthorBanners = AuthorThumbnails;
-
-export interface ShortChannelInfo {
+export interface VideoInfo {
+  title: string;
   author: string;
-  authorId: ChannelsId;
-  authorThumbnails: AuthorThumbnails;
+  authorId: ChannelId;
+  videoId: VideoId;
+  viewCount: number;
+  likeCount: number;
+  dislikeCount: number;
+  published: number;
+  videoThumbnails: VideoThumbnail[];
+  description?: string;
+}
+
+export interface ChannelInfo {
+  author: string;
+  authorId: ChannelId;
+  authorThumbnails: AuthorThumbnail[];
   subCount: number;
-  authorBanners: AuthorBanners;
+  authorBanners: AuthorBanner[];
+}
+
+export interface FormatStream {
+  url: string;
+  itag: string;
+  type: string;
+  quality: string;
+  container: string;
+  encoding: string;
+  qualityLabel: string;
+  resolution: string;
+  size: string;
+}
+
+export interface RecommendedVideo {
+  videoId: string;
+  title: string;
+  videoThumbnails: VideoThumbnail[];
+  author: string;
+  lengthSeconds: number;
+  viewCountText: string;
 }
 
 const invidiousURL = "https://vid.puffyan.us";
@@ -45,11 +64,11 @@ const invidious = axios.create({
   },
 });
 
-export async function getPopular(): Promise<ShortVideoInfo[]> {
+export async function getPopularVideos(): Promise<VideoInfo[]> {
   const response = await invidious.get("/popular", {
     params: {
       fields:
-        "title,author,authorId,videoId,viewCount,published,videoThumbnails",
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount,dislikeCount",
     },
   });
   const data = await response.data;
@@ -60,9 +79,9 @@ export async function pingImage(url: string): Promise<void> {
   return axios.get(url);
 }
 
-export async function getShortChannelInfo(
-  channelId: ChannelsId,
-): Promise<ShortChannelInfo> {
+export async function getChannelInfo(
+  channelId: ChannelId,
+): Promise<ChannelInfo> {
   const response = await invidious.get("/channels/" + channelId, {
     params: {
       fields: "author,authorId,authorThumbnails,subCount,authorBanners",
@@ -72,35 +91,55 @@ export async function getShortChannelInfo(
   return data;
 }
 
-export async function getChannelsVideos(
-  videoId: VideoId,
-): Promise<ShortVideoInfo[]> {
+export async function getChannelVideos(videoId: VideoId): Promise<VideoInfo[]> {
   const response = await invidious.get("/channels/videos/" + videoId, {
     params: {
       fields:
-        "title,author,authorId,videoId,viewCount,published,videoThumbnails",
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount,dislikeCount",
     },
   });
   const data = await response.data;
   return data;
 }
 
-export async function searchVideo(query: string): Promise<ShortVideoInfo[]> {
+export async function getVideoFormatStreams(
+  videoId: VideoId,
+): Promise<FormatStream[]> {
+  const response = await invidious.get("/videos/" + videoId, {
+    params: {
+      fields: "formatStreams",
+    },
+  });
+  const data = await response.data;
+  return data;
+}
+
+export async function recommendedVideos(
+  videoId: VideoId,
+): Promise<RecommendedVideo[]> {
+  const response = await invidious.get("/videos/" + videoId, {
+    params: {
+      fields: "recommendedVideos",
+    },
+  });
+  const data = await response.data;
+  return data;
+}
+
+export async function searchVideo(query: string): Promise<VideoInfo[]> {
   const response = await invidious.get("/search", {
     params: {
       q: query,
       sort_by: "relevance",
       fields:
-        "title,author,authorId,videoId,viewCount,published,videoThumbnails",
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount,dislikeCount",
     },
   });
   const data = await response.data;
   return data;
 }
 
-export async function searchChannel(
-  query: string,
-): Promise<ShortChannelInfo[]> {
+export async function searchChannel(query: string): Promise<ChannelInfo[]> {
   const response = await invidious.get("/search", {
     params: {
       q: query,

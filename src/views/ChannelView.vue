@@ -8,27 +8,27 @@
   import ChannelCompactSkeletonVue from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
 
   import {
-    getChannelsVideos,
-    getShortChannelInfo,
+    getChannelVideos,
+    getChannelInfo,
     pingImage,
   } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
-  import type { ShortChannelInfo, ChannelsId } from "@/utils/invidiousAPI";
+  import type { ChannelInfo, ChannelId } from "@/utils/invidiousAPI";
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
   );
 
-  const props = defineProps<{ id: ChannelsId }>();
+  const props = defineProps<{ id: ChannelId }>();
 
-  const channel: Ref<ShortChannelInfo | undefined> = ref();
+  const channel: Ref<ChannelInfo | undefined> = ref();
   const channelRequestError: Ref<Error | undefined> = ref();
   const imageError: Ref<Error | undefined> = ref();
 
-  async function requestChannel(id: ChannelsId) {
+  async function requestChannel(id: ChannelId) {
     try {
-      const channelInfo = await getShortChannelInfo(id);
+      const channelInfo = await getChannelInfo(id);
       if (!channelInfo.authorBanners.length) {
         imageError.value = new Error("No banner image");
       } else {
@@ -100,6 +100,6 @@
       class="items-center"
     />
     <hr />
-    <VideosBlock :request="getChannelsVideos" :query="id" :show-per-view="20" />
+    <VideosBlock :request="getChannelVideos" :query="id" :show-per-view="20" />
   </main>
 </template>

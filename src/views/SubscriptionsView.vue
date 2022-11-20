@@ -6,11 +6,11 @@
 
   import VideosBlockVue from "@/components/VideosBlock.vue";
 
-  import { getChannelsVideos } from "@/utils/invidiousAPI";
+  import { getChannelVideos } from "@/utils/invidiousAPI";
 
   import { useUserData } from "@/stores/userData";
 
-  import type { ShortVideoInfo } from "@/utils/invidiousAPI";
+  import type { VideoInfo } from "@/utils/invidiousAPI";
 
   const userData = useUserData();
   const router = useRouter();
@@ -24,12 +24,12 @@
       [...subscriptions.value].map(
         (channelId) =>
           new Promise((res) => {
-            getChannelsVideos(channelId).then((videos) => res(videos));
+            getChannelVideos(channelId).then((videos) => res(videos));
           }),
       ),
     );
 
-    return (channelsVidos as ShortVideoInfo[][]).reduce(
+    return (channelsVidos as VideoInfo[][]).reduce(
       (acc, val) => acc.concat(val),
       [],
     );
