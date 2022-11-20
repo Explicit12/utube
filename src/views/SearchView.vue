@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, computed, onBeforeMount } from "vue";
+  import { ref, computed, onBeforeMount, defineAsyncComponent } from "vue";
   import { onBeforeRouteUpdate } from "vue-router";
 
   import ChannelCompact from "@/components/ChannelCompact.vue";
@@ -9,13 +9,19 @@
   import { searchVideo, searchChannel } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
-  import type { ChannelInfo } from "@/utils/invidiousAPI";
+  import type { ChannelInfo, VideoInfo } from "@/utils/invidiousAPI";
+
+  const TheError = defineAsyncComponent(
+    () => import("@/components/TheError.vue"),
+  );
 
   const props = defineProps<{ searchQuery: string }>();
 
-  const requestError: Ref<Error | undefined> = ref();
+  const channelRequestError: Ref<Error | undefined> = ref();
+  const videoRequestError: Ref<Error | undefined> = ref();
   const channels: Ref<ChannelInfo[]> = ref([]);
-  const toShow: Ref<number> = ref(3);
+  const videos: Ref<VideoInfo[]> = ref([]);
+  const AmoutChannelstoShow: Ref<number> = ref(3);
 
   const sortedBySubsChannels = computed<ChannelInfo[]>(() => {
     return [...channels.value].sort((a, b) => {
@@ -25,18 +31,23 @@
   });
 
   const channelsToShow = computed<ChannelInfo[]>(() => {
-    return sortedBySubsChannels.value.slice(0, toShow.value);
+    return sortedBySubsChannels.value.slice(0, AmoutChannelstoShow.value);
   });
 
   onBeforeRouteUpdate((to) => {
-    console.log(to);
     if (typeof to.query.search_query !== "string") return false;
     channels.value = [];
     searchChannel(to.query.search_query)
       .then((result) => {
         channels.value = result;
       })
-      .catch((err) => (requestError.value = err));
+      .catch((err) => (channelRequestError.value = err));
+
+    searchVideo(props.searchQuery)
+      .then((result) => {
+        videos.value = result;
+      })
+      .catch((err) => (videoRequestError.value = err));
   });
 
   onBeforeMount(() => {
@@ -44,13 +55,22 @@
       .then((result) => {
         channels.value = result;
       })
-      .catch((err) => (requestError.value = err));
+      .catch((err) => (channelRequestError.value = err));
+
+    searchVideo(props.searchQuery)
+      .then((result) => {
+        videos.value = result;
+      })
+      .catch((err) => (videoRequestError.value = err));
   });
 </script>
 
 <template>
   <main class="flex max-w-screen-xl flex-col justify-center px-4">
-    <div v-if="channels.length" class="flex flex-col gap-4 pt-8">
+    <div
+      v-if="channels.length && !channelRequestError"
+      class="flex flex-col gap-4 pt-8"
+    >
       <RouterLink
         v-for="channel in channelsToShow"
         :key="channel.authorId"
@@ -66,14 +86,15 @@
       <hr />
     </div>
     <div v-else class="flex flex-col gap-4 pt-8">
-      <ChannelCompactSkeleton v-for="n in toShow" :key="n" />
+      <ChannelCompactSkeleton v-for="n in AmoutChannelstoShow" :key="n" />
       <hr />
     </div>
     <VideosBlock
-      :query="searchQuery"
-      :request="searchVideo"
+      v-if="!videoRequestError"
+      :videos="videos"
       :show-per-view="10"
       :horizontal-layout="true"
     />
+    <TheError v-else :message="videoRequestError.message" />
   </main>
 </template>

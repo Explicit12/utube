@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { ref, defineAsyncComponent } from "vue";
   import { useI18n } from "vue-i18n";
   import { onBeforeMount } from "vue";
   import { useRouter } from "vue-router";
@@ -10,16 +11,22 @@
 
   import { useUserData } from "@/stores/userData";
 
+  import type { Ref } from "vue";
   import type { VideoInfo } from "@/utils/invidiousAPI";
+
+  const TheError = defineAsyncComponent(
+    () => import("@/components/TheError.vue"),
+  );
 
   const userData = useUserData();
   const router = useRouter();
 
   const { subscriptions } = storeToRefs(userData);
-
   const { t } = useI18n();
+  const videos: Ref<VideoInfo[]> = ref([]);
+  const requestError: Ref<Error | undefined> = ref();
 
-  async function getEachChannelVideos() {
+  async function getEachChannelVideos(): Promise<VideoInfo[]> {
     const channelsVidos = await Promise.all(
       [...subscriptions.value].map(
         (channelId) =>
@@ -27,7 +34,7 @@
             getChannelVideos(channelId).then((videos) => res(videos));
           }),
       ),
-    );
+    ).catch((err) => (requestError.value = err));
 
     return (channelsVidos as VideoInfo[][]).reduce(
       (acc, val) => acc.concat(val),
@@ -39,6 +46,8 @@
     if (!subscriptions.value.size) {
       router.replace({ name: "home" });
     }
+
+    getEachChannelVideos().then((subsVidoes) => (videos.value = subsVidoes));
   });
 </script>
 
@@ -48,10 +57,12 @@
       {{ t("headline") }}
     </h1>
     <VideosBlockVue
-      :request="getEachChannelVideos"
+      v-if="!requestError"
+      :videos="videos"
       :show-per-view="20"
       sort-by-time
     />
+    <TheError v-else :message="requestError.message" />
   </main>
 </template>
 

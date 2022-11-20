@@ -9,7 +9,7 @@
 
 <template>
   <div
-    class="mt-4 flex w-full flex-col justify-center self-center rounded-lg border-8 border-dashed border-orange-400 p-4 text-center"
+    class="mt-4 flex w-full flex-col items-center justify-center self-center rounded-lg border-8 border-dashed border-orange-400 p-4 text-center"
   >
     <div class="flex gap-2">
       <IconAlertCircleOutline class="text-gray-900" width="32" height="32" />

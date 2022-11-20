@@ -14,7 +14,7 @@
   } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
-  import type { ChannelInfo, ChannelId } from "@/utils/invidiousAPI";
+  import type { ChannelInfo, ChannelId, VideoInfo } from "@/utils/invidiousAPI";
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
@@ -24,6 +24,8 @@
 
   const channel: Ref<ChannelInfo | undefined> = ref();
   const channelRequestError: Ref<Error | undefined> = ref();
+  const videoRequestError: Ref<Error | undefined> = ref();
+  const videos: Ref<VideoInfo[]> = ref([]);
   const imageError: Ref<Error | undefined> = ref();
 
   async function requestChannel(id: ChannelId) {
@@ -46,12 +48,24 @@
 
   onBeforeRouteUpdate((to) => {
     if (typeof to.params.id !== "string") return false;
+    channelRequestError.value = undefined;
+    videoRequestError.value = undefined;
     channel.value = undefined;
     requestChannel(to.params.id);
+    getChannelVideos(to.params.id)
+      .then((result) => {
+        videos.value = result;
+      })
+      .catch((err) => (videoRequestError.value = err));
   });
 
   onBeforeMount(() => {
     requestChannel(props.id);
+    getChannelVideos(props.id)
+      .then((result) => {
+        videos.value = result;
+      })
+      .catch((err) => (videoRequestError.value = err));
   });
 </script>
 
@@ -100,6 +114,12 @@
       class="items-center"
     />
     <hr />
-    <VideosBlock :request="getChannelVideos" :query="id" :show-per-view="20" />
+    <VideosBlock
+      v-if="!videoRequestError"
+      :videos="videos"
+      :query="id"
+      :show-per-view="20"
+    />
+    <TheError v-else :message="videoRequestError.message" />
   </main>
 </template>
