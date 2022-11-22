@@ -34,16 +34,21 @@
     return sortedBySubsChannels.value.slice(0, AmoutChannelstoShow.value);
   });
 
+  const fullInfoVideos = computed<VideoInfo[]>(() =>
+    videos.value.filter((video) => video.published && video.viewCount),
+  );
+
   onBeforeRouteUpdate((to) => {
     if (typeof to.query.search_query !== "string") return false;
     channels.value = [];
+    videos.value = [];
     searchChannel(to.query.search_query)
       .then((result) => {
         channels.value = result;
       })
       .catch((err) => (channelRequestError.value = err));
 
-    searchVideo(props.searchQuery)
+    searchVideo(to.query.search_query)
       .then((result) => {
         videos.value = result;
       })
@@ -91,9 +96,10 @@
     </div>
     <VideosBlock
       v-if="!videoRequestError"
-      :videos="videos"
+      :videos="fullInfoVideos"
       :show-per-view="10"
       :horizontal-layout="true"
+      class="py-4"
     />
     <TheError v-else :message="videoRequestError.message" />
   </main>
