@@ -119,6 +119,7 @@
       :videos="videos"
       :query="id"
       :show-per-view="20"
+      class="py-4"
     />
     <TheError v-else :message="videoRequestError.message" />
   </main>

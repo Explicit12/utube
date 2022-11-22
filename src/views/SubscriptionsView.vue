@@ -61,6 +61,7 @@
       :videos="videos"
       :show-per-view="20"
       sort-by-time
+      class="py-4"
     />
     <TheError v-else :message="requestError.message" />
   </main>

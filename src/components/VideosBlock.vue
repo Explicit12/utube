@@ -48,7 +48,7 @@
       :class="{
         'md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5': !horizontalLayout,
       }"
-      class="grid grid-cols-1 gap-4 py-4"
+      class="grid grid-cols-1 gap-4"
     >
       <template v-if="videos.length">
         <VideoCompact

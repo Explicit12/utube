@@ -48,14 +48,25 @@
 
 <template>
   <RouterLink
-    :to="{ name: 'home' }"
-    :class="{ 'md:flex md:gap-4': horizontalLayout }"
+    :to="{
+      name: 'watch',
+      params: { authorId: author.id },
+      query: { watch: videoId },
+    }"
+    :class="{ 'sm:flex sm:gap-4': horizontalLayout }"
     class="block"
   >
-    <RouterLink :to="{ name: 'home' }" @click.stop>
+    <RouterLink
+      :to="{
+        name: 'watch',
+        params: { authorId: author.id },
+        query: { watch: videoId },
+      }"
+      @click.stop.prevent
+    >
       <img
         v-if="image && !imageError"
-        :class="{ 'md:min-w-[24rem] md:max-w-sm': horizontalLayout }"
+        :class="{ 'sm:min-w-[12rem] sm:max-w-[12rem]': horizontalLayout }"
         :src="image[3].url"
         :alt="name"
         decoding="async"
@@ -67,16 +78,20 @@
       />
       <div
         v-else
-        :class="{ 'md:min-w-[24rem] md:max-w-sm': horizontalLayout }"
-        class="flex aspect-video items-center justify-center rounded-lg bg-gray-200"
+        :class="{ 'sm:min-w-[12rem] sm:max-w-[12rem]': horizontalLayout }"
+        class="flex aspect-video w-full items-center justify-center rounded-lg bg-gray-200"
       >
         <IconPlay width="32" height="32" class="text-gray-400" />
       </div>
     </RouterLink>
 
-    <div>
+    <div class="w-full">
       <RouterLink
-        :to="{ name: 'home' }"
+        :to="{
+          name: 'watch',
+          params: { authorId: author.id },
+          query: { watch: videoId },
+        }"
         :class="{ 'pt-4': !horizontalLayout, 'max-md:pt-4': horizontalLayout }"
         class="block font-sans text-base font-normal text-gray-900 line-clamp-2"
       >

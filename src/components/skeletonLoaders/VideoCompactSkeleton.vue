@@ -5,9 +5,9 @@
 </script>
 
 <template>
-  <div :class="{ 'md:flex md:gap-4': horizontalLayout }" class="animate-pulse">
+  <div :class="{ 'sm:flex md:gap-4': horizontalLayout }" class="animate-pulse">
     <div
-      :class="{ 'md:min-w-[24rem] md:max-w-sm': horizontalLayout }"
+      :class="{ 'sm:min-w-[12rem] sm:max-w-sm': horizontalLayout }"
       class="flex aspect-video items-center justify-center rounded-lg bg-gray-200"
     >
       <IconPlay width="32" height="32" class="rounded-sm text-gray-400" />

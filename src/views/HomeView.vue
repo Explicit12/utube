@@ -33,7 +33,7 @@
       <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
         {{ t("headline") }}
       </h1>
-      <VideosBlock :videos="videos" :show-per-view="20" />
+      <VideosBlock :videos="videos" :show-per-view="20" class="py-4" />
     </template>
     <TheError v-else :message="requestError.message" />
   </main>
