@@ -20,7 +20,6 @@ export interface VideoInfo {
   videoId: VideoId;
   viewCount: number;
   likeCount: number;
-  dislikeCount: number;
   published: number;
   videoThumbnails: VideoThumbnail[];
   description?: string;
@@ -55,7 +54,7 @@ export interface RecommendedVideo {
   viewCountText: string;
 }
 
-const invidiousURL = "https://vid.puffyan.us";
+const invidiousURL = "https://inv.vern.cc";
 
 const invidious = axios.create({
   baseURL: invidiousURL + "/api/v1",
@@ -68,7 +67,7 @@ export async function getPopularVideos(): Promise<VideoInfo[]> {
   const response = await invidious.get("/popular", {
     params: {
       fields:
-        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount,dislikeCount",
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount",
     },
   });
   const data = await response.data;
@@ -95,11 +94,32 @@ export async function getChannelVideos(videoId: VideoId): Promise<VideoInfo[]> {
   const response = await invidious.get("/channels/videos/" + videoId, {
     params: {
       fields:
-        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount,dislikeCount",
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount",
     },
   });
   const data = await response.data;
   return data;
+}
+
+export async function getVideo(videoId: VideoId): Promise<VideoInfo> {
+  const response = await invidious.get("/videos/" + videoId, {
+    params: {
+      fields:
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount",
+    },
+  });
+  const data = await response.data;
+  return data;
+}
+
+export async function getVideoDiscription(videoId: VideoId): Promise<string> {
+  const response = await invidious.get("/videos/" + videoId, {
+    params: {
+      fields: "descriptionHtml",
+    },
+  });
+  const data = await response.data;
+  return data.descriptionHtml;
 }
 
 export async function getVideoFormatStreams(
@@ -111,10 +131,10 @@ export async function getVideoFormatStreams(
     },
   });
   const data = await response.data;
-  return data;
+  return data.formatStreams;
 }
 
-export async function recommendedVideos(
+export async function getRecommendedVideos(
   videoId: VideoId,
 ): Promise<RecommendedVideo[]> {
   const response = await invidious.get("/videos/" + videoId, {
@@ -123,7 +143,7 @@ export async function recommendedVideos(
     },
   });
   const data = await response.data;
-  return data;
+  return data.recommendedVideos;
 }
 
 export async function searchVideo(query: string): Promise<VideoInfo[]> {
@@ -132,7 +152,7 @@ export async function searchVideo(query: string): Promise<VideoInfo[]> {
       q: query,
       sort_by: "relevance",
       fields:
-        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount,dislikeCount",
+        "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount",
     },
   });
   const data = await response.data;
