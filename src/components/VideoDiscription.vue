@@ -2,11 +2,14 @@
   import { computed, ref } from "vue";
   import { useI18n } from "vue-i18n";
 
+  import isElementOverflow from "@/helpers/isElemenetOverflow";
+
   import type { Ref } from "vue";
 
   const props = defineProps<{ discriptionHtml: string }>();
 
   const showMore: Ref<boolean> = ref(false);
+  const discriptionRef: Ref<HTMLDivElement | undefined> = ref();
   const { t } = useI18n();
 
   const styledDisctiptionHtml = computed(() => {
@@ -35,11 +38,13 @@
 
     <!-- eslint-disable vue/no-v-html -->
     <div
+      ref="discriptionRef"
       :class="{ 'line-clamp-3': !showMore }"
       class="pt-2"
       v-html="styledDisctiptionHtml"
     />
     <button
+      v-if="discriptionRef && isElementOverflow(discriptionRef)"
       class="font-sans text-base font-medium text-gray-900"
       @click="showMore = !showMore"
     >
