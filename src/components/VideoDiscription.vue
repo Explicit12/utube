@@ -12,16 +12,24 @@
   const discriptionRef: Ref<HTMLDivElement | undefined> = ref();
   const { t } = useI18n();
 
+  const isContentOverflow = computed<boolean>(() => {
+    if (discriptionRef.value) {
+      return isElementOverflow(discriptionRef.value);
+    }
+
+    return false;
+  });
+
   const styledDisctiptionHtml = computed(() => {
     return props.discriptionHtml
       .split("\n")
       .filter((text) => text !== "")
       .map((text) => {
         return (
-          "<p class='font-sans text-base font-normal text-gray-900'>" +
+          "<p class='font-sans text-base break-all font-normal text-gray-900'>" +
           text.replace(
             /<a /gi,
-            "<a class='text-blue-600 cursor-pointer underline' ",
+            "<a class='text-blue-600 break-all cursor-pointer underline' ",
           ) +
           "</p>"
         );
@@ -44,7 +52,7 @@
       v-html="styledDisctiptionHtml"
     />
     <button
-      v-if="discriptionRef && isElementOverflow(discriptionRef)"
+      v-if="discriptionRef && isContentOverflow"
       class="font-sans text-base font-medium text-gray-900"
       @click="showMore = !showMore"
     >
