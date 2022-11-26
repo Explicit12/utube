@@ -54,6 +54,15 @@ export interface RecommendedVideo {
   viewCountText: string;
 }
 
+export interface Comment {
+  author: string;
+  authorThumbnails: AuthorThumbnail[];
+  authorId: ChannelId;
+  content: string;
+  published: number;
+  commentId: string;
+}
+
 const invidiousURL = "https://inv.vern.cc";
 
 const invidious = axios.create({
@@ -170,4 +179,14 @@ export async function searchChannel(query: string): Promise<ChannelInfo[]> {
   });
   const data = await response.data;
   return data;
+}
+
+export async function getComments(videoId: VideoId): Promise<Comment[]> {
+  const response = await invidious.get("/comments/" + videoId, {
+    params: {
+      fields: "comments",
+    },
+  });
+  const data = await response.data;
+  return data.comments;
 }
