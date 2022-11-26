@@ -29,6 +29,19 @@ const router = createRouter({
       component: () => import("@/views/ChannelView.vue"),
       props: true,
     },
+    {
+      path: "/watch/:authorId",
+      name: "watch",
+      component: () => import("@/views/WatchView.vue"),
+      props: (route) => ({
+        watch: route.query.watch,
+        authorId: route.params.authorId,
+      }),
+      beforeEnter: (to) => {
+        if (!to.query.watch || !to.params.authorId)
+          router.push({ name: "home" });
+      },
+    },
   ],
 });
 
