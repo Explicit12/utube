@@ -56,15 +56,49 @@
   const videoDiscription: Ref<string> = ref("");
   const requestError: Ref<AxiosError | undefined> = ref();
   const userSettings = useUserSettings();
-  const { isMenuOpen } = storeToRefs(userSettings);
+  const { isMenuOpen, userLocale } = storeToRefs(userSettings);
   const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
 
-  const videoPlayerOptions = ref({
-    autoplay: true,
-    ratio: "16:9",
-    i18n: {},
+  const ruPlyr = {
+    play: "Плей",
+    pause: "Пауза",
+    currentTime: "Текущее время",
+    duration: "Длительность",
+    volume: "Громкость",
+    mute: "Выключить звук",
+    unmute: "Включить звук",
+    enterFullscreen: "Войти в режим полного экрана",
+    exitFullscreen: "Выйти из режима полного экрана",
+    settings: "Настройки",
+    speed: "Скорость",
+    normal: "Нормальная",
+    quality: "Качество",
+  };
+
+  const uaPlyr = {
+    play: "Плей",
+    pause: "Пуза",
+    currentTime: "Поточний час",
+    duration: "Триваліть",
+    volume: "Гучність",
+    mute: "Вимкнути звук",
+    unmute: "Увімкнути звук",
+    enterFullscreen: "Увійти в режим полного экрану",
+    exitFullscreen: "Вийти з режиму полного экрану",
+    settings: "Налаштування",
+    speed: "Швидкість",
+    normal: "Нормальна",
+    quality: "Якість",
+  };
+
+  const plyrLocales = computed(() => {
+    if (userLocale.value === "en-US") return {};
+    if (userLocale.value === "uk-UA") return uaPlyr;
+    if (userLocale.value === "ru-RU") return ruPlyr;
+
+    return {};
   });
 
   const formatedLikes = computed<string>(() => {
@@ -84,6 +118,12 @@
     } else {
       return "";
     }
+  });
+
+  const videoPlayerOptions = ref({
+    autoplay: true,
+    ratio: "16:9",
+    i18n: plyrLocales,
   });
 
   async function getData(videoId: VideoId, authorId: ChannelId) {
