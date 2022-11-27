@@ -26,7 +26,7 @@
   const isBodyScrollLocked: Ref<boolean> = useScrollLock(document.body);
   const isLgAndGreater: Ref<boolean> = breakpoints.greaterOrEqual("lg");
 
-  const { isMenuOpen } = storeToRefs(settings);
+  const { isMenuOpen, userLocale } = storeToRefs(settings);
   const { toggleMenu } = settings;
 
   function toggleBodySrollLock(): void {
@@ -37,17 +37,9 @@
     }
   }
 
-  watch(isLgAndGreater, toggleBodySrollLock);
-  watch(isMenuOpen, toggleBodySrollLock);
-
-  router.afterEach(() => {
-    if (!isLgAndGreater.value) isMenuOpen.value = false;
-  });
-
-  onMounted(() => {
-    toggleBodySrollLock();
-
-    switch (locale.value) {
+  function setLocales(): void {
+    locale.value = userLocale.value;
+    switch (userLocale.value) {
       case "uk-UA":
         dayjs.locale("uk");
         break;
@@ -58,6 +50,19 @@
         dayjs.locale("ru");
         break;
     }
+  }
+
+  watch(isLgAndGreater, toggleBodySrollLock);
+  watch(isMenuOpen, toggleBodySrollLock);
+  watch(userLocale, setLocales);
+
+  router.afterEach(() => {
+    if (!isLgAndGreater.value) isMenuOpen.value = false;
+  });
+
+  onMounted(() => {
+    toggleBodySrollLock();
+    setLocales();
   });
 </script>
 

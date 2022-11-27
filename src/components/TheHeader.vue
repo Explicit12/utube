@@ -93,11 +93,11 @@
         @click="isMobileSearch = !isMobileSearch"
       />
 
-      <RouterLink :to="{ name: 'home' }">
+      <RouterLink :to="{ name: 'settings' }">
         <IconCog
           width="24"
           height="24"
-          class="text-grey-900 hover:cursor-pointer"
+          class="text-grey-900 transition-transform hover:rotate-90 hover:cursor-pointer"
         />
       </RouterLink>
     </nav>

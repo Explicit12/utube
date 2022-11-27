@@ -19,8 +19,7 @@ const pinia = createPinia();
 pinia.use(PiniaSharedState({}));
 
 const i18n = createI18n({
-  locale: "uk-UA",
-  fallbackLocale: "en-US",
+  locale: "en-US",
 });
 
 app.use(pinia);

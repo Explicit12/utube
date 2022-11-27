@@ -135,7 +135,7 @@
   },
   "ru-RU": {
     "navigation": {
-      "header": "Навигация",
+      "headline": "Навигация",
       "links": {
         "home": "Главная",
         "subscriptions": "Подписки"
