@@ -53,7 +53,7 @@
   const videoComments: Ref<Comment[]> = ref([]);
   const watchVideo: Ref<VideoInfo | undefined> = ref();
   const authorInfo: Ref<ChannelInfo | undefined> = ref();
-  const videoDiscription: Ref<string> = ref("");
+  const videoDiscription = ref("");
   const requestError: Ref<AxiosError | undefined> = ref();
   const userSettings = useUserSettings();
   const { isMenuOpen, userLocale } = storeToRefs(userSettings);
@@ -101,18 +101,18 @@
     return {};
   });
 
-  const formatedLikes = computed<string>(() => {
+  const formatedLikes = computed(() => {
     if (watchVideo.value) return formatNumbers(watchVideo.value.likeCount);
     else return "";
   });
 
-  const formatedViews = computed<string>(() => {
+  const formatedViews = computed(() => {
     if (watchVideo.value) return formatNumbers(watchVideo.value.viewCount);
     else return "";
   });
 
   // used like a key attribute for player container
-  const watchQuery = computed<string>(() => {
+  const watchQuery = computed(() => {
     if (typeof route.query.watch === "string") {
       return route.query.watch;
     } else {
@@ -126,7 +126,7 @@
     i18n: plyrLocales,
   });
 
-  async function getData(videoId: VideoId, authorId: ChannelId) {
+  async function getData(videoId: VideoId, authorId: ChannelId): Promise<void> {
     try {
       const formatStreams = await getVideoFormatStreams(videoId);
       videoFormatStreams.value = formatStreams;

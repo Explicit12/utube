@@ -9,7 +9,6 @@
   import { pingImage } from "@/utils/invidiousAPI";
   import formatNumbers from "@/helpers/formatNumbers";
 
-  import type { Ref } from "vue";
   import type {
     VideoThumbnail,
     ChannelId,
@@ -28,13 +27,13 @@
     horizontalLayout?: boolean;
   }>();
 
-  const imageError: Ref<boolean> = ref(false);
+  const imageError = ref(false);
 
   const { t } = useI18n();
 
-  const formatedViews = computed<string>(() => formatNumbers(props.views));
+  const formatedViews = computed(() => formatNumbers(props.views));
 
-  const formatedDate = computed<string>(() => {
+  const formatedDate = computed(() => {
     return dayjs.unix(props.date).fromNow();
   });
 

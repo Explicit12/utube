@@ -16,15 +16,13 @@
   import TheHeader from "@/components/TheHeader.vue";
   import SideMenu from "@/components/SideMenu.vue";
 
-  import type { Ref } from "vue";
-
   const settings = useUserSettings();
   const breakpoints = useBreakpoints(breakpointsTailwind);
   const { locale } = useI18n();
   const router = useRouter();
 
-  const isBodyScrollLocked: Ref<boolean> = useScrollLock(document.body);
-  const isLgAndGreater: Ref<boolean> = breakpoints.greaterOrEqual("lg");
+  const isBodyScrollLocked = useScrollLock(document.body);
+  const isLgAndGreater = breakpoints.greaterOrEqual("lg");
 
   const { isMenuOpen, userLocale } = storeToRefs(settings);
   const { toggleMenu } = settings;

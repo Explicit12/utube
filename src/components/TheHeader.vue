@@ -14,17 +14,15 @@
 
   import { useUserSettings } from "@/stores/userSettings";
 
-  import type { Ref } from "vue";
-
   const { t } = useI18n();
   const userSettings = useUserSettings();
   const breakpoints = useBreakpoints(breakpointsTailwind);
   const router = useRouter();
   const route = useRoute();
 
-  const isMobileSearch: Ref<boolean> = ref(false);
-  const isSmAndSmaller: Ref<boolean> = breakpoints.smallerOrEqual("sm");
-  const searchInput: Ref<string> = ref("");
+  const isMobileSearch = ref(false);
+  const isSmAndSmaller = breakpoints.smallerOrEqual("sm");
+  const searchInput = ref("");
 
   const { toggleMenu } = userSettings;
 
@@ -79,7 +77,7 @@
         v-model="searchInput"
         type="text"
         :placeholder="t('search-placeholder')"
-        class="placeholder:text-grey-400 text-grey-900 w-full max-w-screen-sm rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
+        class="placeholder:text-grey-400 text-grey-900 maxrounded-lg w-full bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
         @keypress.prevent.enter="routeToSearch"
       />
     </span>

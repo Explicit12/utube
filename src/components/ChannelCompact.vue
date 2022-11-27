@@ -32,11 +32,11 @@
   const { subscribeToChannel, unsubscribeFromChannel } = userData;
   const { subscriptions } = storeToRefs(userData);
 
-  const imageError: Ref<boolean> = ref(false);
-  const promptModal: Ref<boolean> = ref(false);
-  const isBodyScrollLocked: Ref<boolean> = useScrollLock(document.body);
+  const imageError = ref(false);
+  const promptModal = ref(false);
+  const isBodyScrollLocked = useScrollLock(document.body);
 
-  const formatedSubs = computed<string>(() => formatNumbers(props.subs));
+  const formatedSubs = computed(() => formatNumbers(props.subs));
 
   function unsubscribeOnPrompt(prompt: number, channelsId: ChannelId): void {
     if (prompt) unsubscribeFromChannel(channelsId);

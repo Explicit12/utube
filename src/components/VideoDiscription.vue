@@ -8,11 +8,11 @@
 
   const props = defineProps<{ discriptionHtml: string }>();
 
-  const showMore: Ref<boolean> = ref(false);
+  const showMore = ref(false);
   const discriptionRef: Ref<HTMLDivElement | undefined> = ref();
   const { t } = useI18n();
 
-  const isContentOverflow = computed<boolean>(() => {
+  const isContentOverflow = computed(() => {
     if (discriptionRef.value) {
       return isElementOverflow(discriptionRef.value);
     }

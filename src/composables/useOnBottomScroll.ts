@@ -10,7 +10,7 @@ interface IsScrolledToBottom {
 export function useOnScrollBottom(callback: () => void): IsScrolledToBottom {
   const { y: scrollY } = useWindowScroll();
 
-  const isScrolledToBottom: ComputedRef<boolean> = computed(
+  const isScrolledToBottom = computed(
     () => scrollY.value === document.body.scrollHeight - window.innerHeight,
   );
 

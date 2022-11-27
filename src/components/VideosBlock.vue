@@ -8,7 +8,6 @@
   import SpinnerLoader from "@/components/SpinnerLoader.vue";
 
   import type { VideoInfo } from "@/utils/invidiousAPI";
-  import type { Ref } from "vue";
 
   const props = defineProps<{
     showPerView: number;
@@ -17,8 +16,8 @@
     horizontalLayout?: boolean;
   }>();
 
-  const isSpinnerVisible: Ref<boolean> = ref(false);
-  const toShow: Ref<number> = ref(props.showPerView);
+  const isSpinnerVisible = ref(false);
+  const toShow = ref(props.showPerView);
 
   const sortedByTimeVideos = computed<VideoInfo[]>(() =>
     [...props.videos].sort((a, b) => {

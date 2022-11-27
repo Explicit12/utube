@@ -10,6 +10,7 @@
 
   import type { Ref } from "vue";
   import type { ChannelInfo, VideoInfo } from "@/utils/invidiousAPI";
+  import type { AxiosError } from "axios";
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
@@ -17,11 +18,11 @@
 
   const props = defineProps<{ searchQuery: string }>();
 
-  const channelRequestError: Ref<Error | undefined> = ref();
-  const videoRequestError: Ref<Error | undefined> = ref();
+  const channelRequestError: Ref<AxiosError | undefined> = ref();
+  const videoRequestError: Ref<AxiosError | undefined> = ref();
   const channels: Ref<ChannelInfo[]> = ref([]);
   const videos: Ref<VideoInfo[]> = ref([]);
-  const AmoutChannelstoShow: Ref<number> = ref(3);
+  const AmoutChannelstoShow = ref(3);
 
   const sortedBySubsChannels = computed<ChannelInfo[]>(() => {
     return [...channels.value].sort((a, b) => {

@@ -30,7 +30,7 @@
   const imageError: Ref<Error | undefined> = ref();
   const router = useRouter();
 
-  async function getData(id: ChannelId) {
+  async function getData(id: ChannelId): Promise<void> {
     try {
       const channelInfo = await getChannelInfo(id);
       if (!channelInfo.authorBanners.length) {

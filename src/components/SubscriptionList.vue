@@ -16,7 +16,7 @@
 
   const userData = useUserData();
   const channels: Ref<Set<ChannelInfo>> = ref(new Set());
-  const amoutOfChannelsToShow: Ref<number> = ref(initialAmoutOfChannels);
+  const amoutOfChannelsToShow = ref(initialAmoutOfChannels);
 
   const { subscriptions } = storeToRefs(userData);
 

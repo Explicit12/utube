@@ -25,16 +25,16 @@
     published: number;
   }>();
 
-  const imageError: Ref<boolean> = ref(false);
+  const imageError = ref(false);
   const { t } = useI18n();
-  const showMore: Ref<boolean> = ref(false);
+  const showMore = ref(false);
   const commentContentRef: Ref<HTMLParagraphElement | undefined> = ref();
 
-  const formatedDate = computed<string>(() => {
+  const formatedDate = computed(() => {
     return dayjs.unix(props.published).fromNow();
   });
 
-  const isContentOverflow = computed<boolean>(() => {
+  const isContentOverflow = computed(() => {
     if (commentContentRef.value) {
       return isElementOverflow(commentContentRef.value);
     }
