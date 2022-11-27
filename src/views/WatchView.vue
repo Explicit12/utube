@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, onBeforeMount, computed, defineAsyncComponent } from "vue";
+  import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
   import { storeToRefs } from "pinia";
   import { IconThumbDown } from "@iconify-prerendered/vue-mdi";
@@ -31,6 +32,7 @@
     Comment,
   } from "@/utils/invidiousAPI";
   import type { Ref } from "vue";
+  import type { AxiosError } from "axios";
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
@@ -52,11 +54,12 @@
   const watchVideo: Ref<VideoInfo | undefined> = ref();
   const authorInfo: Ref<ChannelInfo | undefined> = ref();
   const videoDiscription: Ref<string> = ref("");
-  const requestError: Ref<Error | undefined> = ref();
+  const requestError: Ref<AxiosError | undefined> = ref();
   const userSettings = useUserSettings();
   const { isMenuOpen } = storeToRefs(userSettings);
   const { t } = useI18n();
   const route = useRoute();
+  const router = useRouter();
 
   const videoPlayerOptions = ref({
     autoplay: true,
@@ -107,7 +110,7 @@
       videoComments.value = comments;
     } catch (error) {
       console.error(error);
-      requestError.value = error as Error;
+      requestError.value = error as AxiosError;
     }
   }
 
@@ -126,11 +129,19 @@
     recommendedVideos.value = [];
     videoComments.value = [];
 
-    getData(to.query.watch, to.params.authorId);
+    getData(to.query.watch, to.params.authorId).then(() => {
+      if (requestError.value && requestError.value.response?.status === 404) {
+        router.replace({ name: "notFound" });
+      }
+    });
   });
 
   onBeforeMount(() => {
-    getData(props.watch, props.authorId);
+    getData(props.watch, props.authorId).then(() => {
+      if (requestError.value && requestError.value.response?.status === 404) {
+        router.replace({ name: "notFound" });
+      }
+    });
   });
 </script>
 

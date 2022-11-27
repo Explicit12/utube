@@ -2,6 +2,7 @@
   import { onBeforeMount, ref, defineAsyncComponent } from "vue";
   import { onBeforeRouteUpdate } from "vue-router";
   import { IconImageArea } from "@iconify-prerendered/vue-mdi";
+  import { useRouter } from "vue-router";
 
   import ChannelCompact from "@/components/ChannelCompact.vue";
   import VideosBlock from "@/components/VideosBlock.vue";
@@ -15,6 +16,7 @@
 
   import type { Ref } from "vue";
   import type { ChannelInfo, ChannelId, VideoInfo } from "@/utils/invidiousAPI";
+  import type { AxiosError } from "axios";
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
@@ -23,12 +25,12 @@
   const props = defineProps<{ id: ChannelId }>();
 
   const channel: Ref<ChannelInfo | undefined> = ref();
-  const channelRequestError: Ref<Error | undefined> = ref();
-  const videoRequestError: Ref<Error | undefined> = ref();
+  const dataRequestError: Ref<AxiosError | undefined> = ref();
   const videos: Ref<VideoInfo[]> = ref([]);
   const imageError: Ref<Error | undefined> = ref();
+  const router = useRouter();
 
-  async function requestChannel(id: ChannelId) {
+  async function getData(id: ChannelId) {
     try {
       const channelInfo = await getChannelInfo(id);
       if (!channelInfo.authorBanners.length) {
@@ -40,38 +42,45 @@
       }
 
       channel.value = channelInfo;
+
+      const channelVideos = await getChannelVideos(id);
+      videos.value = channelVideos;
     } catch (error) {
       console.error((error as Error).message);
-      channelRequestError.value = error as Error;
+      dataRequestError.value = error as AxiosError;
     }
   }
 
   onBeforeRouteUpdate((to) => {
     if (typeof to.params.id !== "string") return false;
-    channelRequestError.value = undefined;
-    videoRequestError.value = undefined;
+    dataRequestError.value = undefined;
     channel.value = undefined;
-    requestChannel(to.params.id);
-    getChannelVideos(to.params.id)
-      .then((result) => {
-        videos.value = result;
-      })
-      .catch((err) => (videoRequestError.value = err));
+
+    getData(to.params.id).then(() => {
+      if (
+        dataRequestError.value &&
+        dataRequestError.value.response?.status === 404
+      ) {
+        router.replace({ name: "notFound" });
+      }
+    });
   });
 
   onBeforeMount(() => {
-    requestChannel(props.id);
-    getChannelVideos(props.id)
-      .then((result) => {
-        videos.value = result;
-      })
-      .catch((err) => (videoRequestError.value = err));
+    getData(props.id).then(() => {
+      if (
+        dataRequestError.value &&
+        dataRequestError.value.response?.status === 404
+      ) {
+        router.replace({ name: "notFound" });
+      }
+    });
   });
 </script>
 
 <template>
   <main class="flex flex-col justify-center gap-4 px-4">
-    <template v-if="channel && !channelRequestError">
+    <template v-if="channel && !dataRequestError">
       <div v-if="!imageError" class="relative">
         <img
           :src="channel.authorBanners[0].url"
@@ -102,25 +111,25 @@
         class="pt-8"
       />
     </template>
-    <template v-else-if="!channel && !channelRequestError">
+    <template v-else-if="!channel && !dataRequestError">
       <div
         class="mt-8 h-screen max-h-[170px] w-full animate-pulse rounded-lg bg-gray-200"
       />
       <ChannelCompactSkeletonVue class="pt-8" />
     </template>
     <TheError
-      v-else-if="channelRequestError"
-      :message="channelRequestError.message"
+      v-else-if="dataRequestError"
+      :message="dataRequestError.message"
       class="items-center"
     />
     <hr />
     <VideosBlock
-      v-if="!videoRequestError"
+      v-if="!dataRequestError"
       :videos="videos"
       :query="id"
       :show-per-view="20"
       class="py-4"
     />
-    <TheError v-else :message="videoRequestError.message" />
+    <TheError v-else :message="dataRequestError.message" />
   </main>
 </template>
