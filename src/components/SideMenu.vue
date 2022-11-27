@@ -34,7 +34,7 @@
           <RouterLink
             :to="{ name: 'home' }"
             :class="{ 'bg-blue-50': route.name === 'home' }"
-            class="block rounded-lg p-2 font-sans text-base font-normal transition-colors"
+            class="block rounded-lg p-2 font-sans text-base font-normal transition-colors hover:bg-blue-50"
           >
             {{ t("navigation.links.home") }}
           </RouterLink>
@@ -43,7 +43,7 @@
           <RouterLink
             :to="{ name: 'subscriptions' }"
             :class="{ 'bg-blue-50': route.name === 'subscriptions' }"
-            class="block rounded-lg p-2 font-sans text-base font-normal transition-colors"
+            class="block rounded-lg p-2 font-sans text-base font-normal transition-colors hover:bg-blue-50"
           >
             {{ t("navigation.links.subscriptions") }}
           </RouterLink>
