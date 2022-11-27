@@ -67,24 +67,8 @@
       </h2>
       <ul class="space-y-4 pt-6">
         <li>
-          <RouterLink
-            :to="{ name: 'home' }"
-            class="font-sans font-normal text-gray-400 hover:underline hover:underline-offset-2"
-          >
-            {{ t("info.license") }}
-          </RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            :to="{ name: 'home' }"
-            class="font-sans font-normal text-gray-400 hover:underline hover:underline-offset-2"
-          >
-            {{ t("info.about") }}
-          </RouterLink>
-        </li>
-        <li>
           <a
-            href="#"
+            href="https://github.com/Explicit12/utube"
             class="font-sans font-normal text-gray-400 hover:underline hover:underline-offset-2"
           >
             {{ t("info.github") }}
@@ -110,8 +94,6 @@
     },
     "info": {
       "headline": "Info",
-      "license": "MIT license",
-      "about": "About",
       "github": "GitHub"
     }
   },
@@ -128,8 +110,6 @@
     },
     "info": {
       "headline": "Інформація",
-      "license": "MIT ліцензія",
-      "about": "Про проект",
       "github": "GitHub"
     }
   },
@@ -146,8 +126,6 @@
     },
     "info": {
       "headline": "Информация",
-      "license": "MIT license",
-      "about": "О проекте",
       "github": "GitHub"
     }
   }

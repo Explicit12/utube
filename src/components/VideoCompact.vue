@@ -41,7 +41,7 @@
   onBeforeMount(() => {
     if (props.image) {
       // Ping image url to check whether it exists or not
-      pingImage(props?.image[8].url).catch(() => (imageError.value = true));
+      pingImage(props.image[8].url).catch(() => (imageError.value = true));
     }
   });
 </script>
