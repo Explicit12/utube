@@ -134,6 +134,8 @@
         router.replace({ name: "notFound" });
       }
     });
+
+    window.scrollTo({ top: 0 });
   });
 
   onBeforeMount(() => {
