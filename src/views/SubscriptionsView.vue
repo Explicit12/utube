@@ -13,6 +13,7 @@
 
   import type { Ref } from "vue";
   import type { VideoInfo } from "@/utils/invidiousAPI";
+  import type { AxiosError } from "axios";
 
   const TheError = defineAsyncComponent(
     () => import("@/components/TheError.vue"),
@@ -24,7 +25,7 @@
   const { subscriptions } = storeToRefs(userData);
   const { t } = useI18n();
   const videos: Ref<VideoInfo[]> = ref([]);
-  const requestError: Ref<Error | undefined> = ref();
+  const requestError: Ref<AxiosError | undefined> = ref();
 
   async function getEachChannelVideos(): Promise<VideoInfo[]> {
     const channelsVidos = await Promise.all(

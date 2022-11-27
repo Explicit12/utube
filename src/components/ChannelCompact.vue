@@ -12,7 +12,6 @@
   import { useUserData } from "@/stores/userData";
   import formatNumbers from "@/helpers/formatNumbers";
 
-  import type { Ref } from "vue";
   import type { AuthorThumbnail, ChannelId } from "@/utils/invidiousAPI";
 
   const ThePrompt = defineAsyncComponent(
