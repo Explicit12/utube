@@ -55,6 +55,7 @@
     if (typeof to.params.id !== "string") return false;
     dataRequestError.value = undefined;
     channel.value = undefined;
+    videos.value = [];
 
     getData(to.params.id).then(() => {
       if (
