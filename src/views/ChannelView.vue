@@ -78,7 +78,7 @@
           alt="ChannelThumbnail"
           :width="channel.authorBanners[0].width"
           :height="channel.authorBanners[0].height"
-          class="mt-8 rounded-lg"
+          class="mt-8 rounded-lg object-cover"
         />
         <img
           :src="channel.authorBanners[0].url"
