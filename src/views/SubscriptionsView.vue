@@ -27,20 +27,26 @@
   const videos: Ref<VideoInfo[]> = ref([]);
   const requestError: Ref<AxiosError | undefined> = ref();
 
-  async function getEachChannelVideos(): Promise<VideoInfo[]> {
-    const channelsVidos = await Promise.all(
-      [...subscriptions.value].map(
-        (channelId) =>
-          new Promise((res) => {
-            getChannelVideos(channelId).then((videos) => res(videos));
-          }),
-      ),
-    ).catch((err) => (requestError.value = err));
+  async function getEachChannelVideos(): Promise<void> {
+    try {
+      const channelsVideos = await Promise.all(
+        [...subscriptions.value].map(
+          (channelId) =>
+            new Promise((res) => {
+              getChannelVideos(channelId).then((videos) => res(videos));
+            }),
+        ),
+      );
 
-    return (channelsVidos as VideoInfo[][]).reduce(
-      (acc, val) => acc.concat(val),
-      [],
-    );
+      const flatChannelsVideos = (channelsVideos as VideoInfo[][]).reduce(
+        (acc, val) => acc.concat(val),
+        [],
+      );
+
+      videos.value = flatChannelsVideos;
+    } catch (error) {
+      requestError.value = error as AxiosError;
+    }
   }
 
   onBeforeMount(() => {
@@ -48,7 +54,7 @@
       router.replace({ name: "home" });
     }
 
-    getEachChannelVideos().then((subsVidoes) => (videos.value = subsVidoes));
+    getEachChannelVideos();
   });
 </script>
 
