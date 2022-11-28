@@ -1,7 +1,7 @@
 ## Features
 
-- Data is stored loacly
-- No youtube api used
+- Data is stored locally
+- No YouTube API used
 - No ads
 - Three language support: English, Ukrainian, Russian
 
