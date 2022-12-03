@@ -1,8 +1,7 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
 
-  import PrimaryButton from "@/components/buttons/PrimaryButton.vue";
-  import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
+  import TheButton from "@/components/TheButton.vue";
 
   defineEmits<{
     (event: "prompt", prompt: number): void;
@@ -20,12 +19,12 @@
     <div class="rounded-lg bg-white p-8">
       <slot name="text" />
       <div class="flex gap-2 pt-4">
-        <SecondaryButton @click="$emit('prompt', true)">
+        <TheButton type="secondary" @click="$emit('prompt', true)">
           {{ t("claim") }}
-        </SecondaryButton>
-        <PrimaryButton @click="$emit('prompt', false)">
+        </TheButton>
+        <TheButton type="primary" @click="$emit('prompt', false)">
           {{ t("cancel") }}
-        </PrimaryButton>
+        </TheButton>
       </div>
     </div>
   </div>

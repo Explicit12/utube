@@ -5,8 +5,7 @@
   import { IconImageArea } from "@iconify-prerendered/vue-mdi";
   import { useScrollLock } from "@vueuse/core";
 
-  import PrimaryButton from "@/components/buttons/PrimaryButton.vue";
-  import SecondaryButton from "@/components/buttons/SecondaryButton.vue";
+  import TheButton from "@/components/TheButton.vue";
 
   import { pingImage } from "@/utils/invidiousAPI";
   import { useUserData } from "@/stores/userData";
@@ -81,22 +80,24 @@
         {{ formatedSubs + " " + t("subscriptions") }}
       </p>
     </div>
-    <PrimaryButton
+    <TheButton
       v-if="!subscriptions.has(channelsId)"
+      type="primary"
       class="self-start"
       @click.stop.prevent="subscribeToChannel(channelsId)"
     >
       {{ t("subscribe") }}
-    </PrimaryButton>
-    <SecondaryButton
+    </TheButton>
+    <TheButton
       v-else
+      type="secondary"
       class="self-start"
       @click.stop.prevent="
         (promptModal = !promptModal), (isBodyScrollLocked = true)
       "
     >
       {{ t("unsubscribe") }}
-    </SecondaryButton>
+    </TheButton>
     <Teleport to="body">
       <ThePrompt
         v-if="promptModal"

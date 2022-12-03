@@ -4,7 +4,7 @@
   import { useI18n } from "vue-i18n";
 
   import SubscriptionSkeleton from "@/components/skeletonLoaders/SubscriptionsSkeleton.vue";
-  import SecondaryButton from "./buttons/SecondaryButton.vue";
+  import TheButton from "@/components/TheButton.vue";
 
   import { getChannelInfo } from "@/utils/invidiousAPI";
   import { useUserData } from "@/stores/userData";
@@ -101,8 +101,9 @@
       <SubscriptionSkeleton v-for="n in initialAmoutOfChannels" :key="n" />
     </template>
   </ul>
-  <SecondaryButton
+  <TheButton
     v-if="channels.size && channels.size > initialAmoutOfChannels"
+    type="secondary"
     class="mt-4 w-full"
     @click="
       amoutOfChannelsToShow =
@@ -116,7 +117,7 @@
         ? t("button-more")
         : t("button-less")
     }}
-  </SecondaryButton>
+  </TheButton>
 </template>
 
 <i18n lang="json">
