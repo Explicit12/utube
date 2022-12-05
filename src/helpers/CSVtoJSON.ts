@@ -17,9 +17,11 @@ async function formatFile(
   const stringCsv = target.result;
   if (typeof stringCsv === "string") {
     const titles = stringCsv.slice(0, stringCsv.indexOf("\n")).split(",");
+
     return stringCsv
       .slice(stringCsv.indexOf("\n") + 1)
       .split("\n")
+      .filter((v) => v !== "")
       .map((v) => {
         const values = v.split(",");
         return titles.reduce(
