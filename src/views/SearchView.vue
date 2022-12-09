@@ -6,7 +6,11 @@
   import ChannelCompactSkeleton from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
   import VideosBlock from "@/components/VideosBlock.vue";
 
-  import { searchVideo, searchChannel } from "@/utils/invidiousAPI";
+  import {
+    searchVideo,
+    searchChannel,
+    getChannelSubs,
+  } from "@/utils/invidiousAPI";
 
   import type { Ref } from "vue";
   import type { ChannelInfo, VideoInfo } from "@/utils/invidiousAPI";
@@ -47,6 +51,17 @@
       .then((result) => {
         channels.value = result;
       })
+      .then(() => {
+        return Promise.all(
+          channels.value.map((channel) => getChannelSubs(channel.authorId)),
+        );
+      })
+      .then((channelSubs) => {
+        channels.value = channels.value.map((channel, index) => {
+          channel.subCount = channelSubs[index];
+          return channel;
+        });
+      })
       .catch((err) => (channelRequestError.value = err));
 
     searchVideo(to.query.search_query)
@@ -60,6 +75,17 @@
     searchChannel(props.searchQuery)
       .then((result) => {
         channels.value = result;
+      })
+      .then(() => {
+        return Promise.all(
+          channels.value.map((channel) => getChannelSubs(channel.authorId)),
+        );
+      })
+      .then((channelSubs) => {
+        channels.value = channels.value.map((channel, index) => {
+          channel.subCount = channelSubs[index];
+          return channel;
+        });
       })
       .catch((err) => (channelRequestError.value = err));
 

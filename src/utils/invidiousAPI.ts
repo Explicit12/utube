@@ -65,8 +65,20 @@ export interface Comment {
 
 const invidiousURL = "https://inv.vern.cc";
 
+// needed to fetch viewsCount, likesCount in getVideo function.
+// Main URL has some bug and always returns zeroes in this fileds.
+// issue: https://github.com/iv-org/invidious/issues/3425
+const deInvidiousURL = "https://invidious.dhusch.de";
+
 const invidious = axios.create({
   baseURL: invidiousURL + "/api/v1",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+const invidiousDe = axios.create({
+  baseURL: deInvidiousURL + "/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -99,6 +111,16 @@ export async function getChannelInfo(
   return data;
 }
 
+export async function getChannelSubs(channelId: ChannelId): Promise<number> {
+  const response = await invidious.get("/channels/" + channelId, {
+    params: {
+      fields: "subCount",
+    },
+  });
+  const data = await response.data;
+  return data.subCount;
+}
+
 export async function getChannelVideos(videoId: VideoId): Promise<VideoInfo[]> {
   const response = await invidious.get("/channels/videos/" + videoId, {
     params: {
@@ -111,7 +133,7 @@ export async function getChannelVideos(videoId: VideoId): Promise<VideoInfo[]> {
 }
 
 export async function getVideo(videoId: VideoId): Promise<VideoInfo> {
-  const response = await invidious.get("/videos/" + videoId, {
+  const response = await invidiousDe.get("/videos/" + videoId, {
     params: {
       fields:
         "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount",
