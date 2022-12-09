@@ -10,6 +10,7 @@
   import ChannelCompact from "@/components/ChannelCompact.vue";
   import ChannelCompactSkeleton from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
   import VideoDiscriptionSkeletonLoader from "@/components/skeletonLoaders/VideoDiscriptionSkeletonLoader.vue";
+  import ThePlayer from "@/components/ThePlayer.vue";
 
   import formatNumbers from "@/helpers/formatNumbers";
 
@@ -56,50 +57,10 @@
   const videoDiscription = ref("");
   const requestError: Ref<AxiosError | undefined> = ref();
   const userSettings = useUserSettings();
-  const { isMenuOpen, userLocale } = storeToRefs(userSettings);
+  const { isMenuOpen } = storeToRefs(userSettings);
   const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
-
-  const ruPlyr = {
-    play: "Плей",
-    pause: "Пауза",
-    currentTime: "Текущее время",
-    duration: "Длительность",
-    volume: "Громкость",
-    mute: "Выключить звук",
-    unmute: "Включить звук",
-    enterFullscreen: "Войти в режим полного экрана",
-    exitFullscreen: "Выйти из режима полного экрана",
-    settings: "Настройки",
-    speed: "Скорость",
-    normal: "Нормальная",
-    quality: "Качество",
-  };
-
-  const uaPlyr = {
-    play: "Плей",
-    pause: "Пуза",
-    currentTime: "Поточний час",
-    duration: "Триваліть",
-    volume: "Гучність",
-    mute: "Вимкнути звук",
-    unmute: "Увімкнути звук",
-    enterFullscreen: "Увійти в режим полного экрану",
-    exitFullscreen: "Вийти з режиму полного экрану",
-    settings: "Налаштування",
-    speed: "Швидкість",
-    normal: "Нормальна",
-    quality: "Якість",
-  };
-
-  const plyrLocales = computed(() => {
-    if (userLocale.value === "en-US") return {};
-    if (userLocale.value === "uk-UA") return uaPlyr;
-    if (userLocale.value === "ru-RU") return ruPlyr;
-
-    return {};
-  });
 
   const formatedLikes = computed(() => {
     if (watchVideo.value) return formatNumbers(watchVideo.value.likeCount);
@@ -118,12 +79,6 @@
     } else {
       return "";
     }
-  });
-
-  const videoPlayerOptions = ref({
-    autoplay: true,
-    ratio: "16:9",
-    i18n: plyrLocales,
   });
 
   async function getData(videoId: VideoId, authorId: ChannelId): Promise<void> {
@@ -196,28 +151,16 @@
         class="flex flex-col gap-4"
       >
         <div :key="watchQuery" class="mt-8">
-          <vue-plyr
+          <ThePlayer
             v-if="videoFormatStreams.length"
-            :options="videoPlayerOptions"
-          >
-            <video controls playsinline style="--plyr-color-main: #2563eb">
-              <source
-                size="720"
-                :src="videoFormatStreams[1].url"
-                type="video/mp4"
-              />
-              <source
-                size="1080"
-                :src="videoFormatStreams[2].url"
-                type="video/mp4"
-              />
-            </video>
-          </vue-plyr>
+            :format-streams="videoFormatStreams"
+          />
           <div
             v-else
             class="aspect-video animate-pulse rounded-lg bg-gray-200"
           />
         </div>
+
         <div v-if="watchVideo">
           <h1 class="font-sans text-lg font-bold text-gray-900 line-clamp-1">
             {{ watchVideo.title }}
@@ -246,7 +189,9 @@
         <div v-else>
           <div class="h-4 w-4/5 rounded-sm bg-gray-500" />
         </div>
+
         <hr />
+
         <RouterLink
           v-if="authorInfo"
           :to="{ name: 'channel', params: { id: authorInfo.authorId } }"
@@ -259,7 +204,9 @@
           />
         </RouterLink>
         <ChannelCompactSkeleton v-else />
+
         <hr />
+
         <template v-if="videoDiscription !== '<p></p>'">
           <VideoDiscription
             v-if="videoDiscription"
@@ -268,6 +215,7 @@
           <VideoDiscriptionSkeletonLoader v-else />
           <hr />
         </template>
+
         <div v-if="videoComments.length" class="flex flex-col gap-4 pb-8">
           <h2
             class="pt-8 font-sans text-xl font-normal uppercase text-gray-500"
@@ -287,6 +235,7 @@
           />
         </div>
       </div>
+
       <div>
         <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
           {{ t("recommendations.headline") }}
@@ -299,6 +248,7 @@
         />
       </div>
     </template>
+
     <TheError
       v-else
       :message="requestError.message"
