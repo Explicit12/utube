@@ -18,41 +18,43 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center px-4">
-    <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
-      {{ t("headline") }}
-    </h1>
-    <section class="py-4">
-      <hr />
-      <label
-        for="locales"
-        class="block pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-500"
-      >
-        {{ t("language.headline") }}
-      </label>
-      <select
-        id="locales"
-        v-model="localeSelect"
-        class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-base text-gray-900"
-      >
-        <option value="en-US" :selected="userLocale === 'en-US'">
-          {{ t("language.english") }}
-        </option>
-        <option value="uk-UA" :selected="userLocale === 'uk-UA'">
-          {{ t("language.ukrainian") }}
-        </option>
-        <option value="ru-RU" :selected="userLocale === 'ru-RU'">
-          {{ t("language.russian") }}
-        </option>
-      </select>
-    </section>
-    <section class="py-4">
-      <hr />
-      <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
-        {{ t("subscriptions.headline") }}
-      </h2>
-      <SubscriptionFileInput />
-    </section>
+  <main class="px-4 lg:px-6">
+    <div class="mx-auto flex w-full max-w-screen-xl flex-col justify-center">
+      <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
+        {{ t("headline") }}
+      </h1>
+      <section class="py-4">
+        <hr />
+        <label
+          for="locales"
+          class="block pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-500"
+        >
+          {{ t("language.headline") }}
+        </label>
+        <select
+          id="locales"
+          v-model="localeSelect"
+          class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-base text-gray-900"
+        >
+          <option value="en-US" :selected="userLocale === 'en-US'">
+            {{ t("language.english") }}
+          </option>
+          <option value="uk-UA" :selected="userLocale === 'uk-UA'">
+            {{ t("language.ukrainian") }}
+          </option>
+          <option value="ru-RU" :selected="userLocale === 'ru-RU'">
+            {{ t("language.russian") }}
+          </option>
+        </select>
+      </section>
+      <section class="py-4">
+        <hr />
+        <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
+          {{ t("subscriptions.headline") }}
+        </h2>
+        <SubscriptionFileInput />
+      </section>
+    </div>
   </main>
 </template>
 

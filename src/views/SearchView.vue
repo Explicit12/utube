@@ -72,36 +72,38 @@
 </script>
 
 <template>
-  <main class="flex max-w-screen-xl flex-col justify-center px-4">
-    <div
-      v-if="channels.length && !channelRequestError"
-      class="flex flex-col gap-4 pt-8"
-    >
-      <RouterLink
-        v-for="channel in channelsToShow"
-        :key="channel.authorId"
-        :to="{ name: 'channel', params: { id: channel.authorId } }"
+  <main class="px-4 lg:px-6">
+    <div class="mx-auto flex max-w-screen-xl flex-col justify-center">
+      <div
+        v-if="channels.length && !channelRequestError"
+        class="flex flex-col gap-4 pt-8"
       >
-        <ChannelCompact
-          :name="channel.author"
-          :subs="channel.subCount ? channel.subCount : 0"
-          :thumbnail="channel.authorThumbnails"
-          :channels-id="channel.authorId"
-        />
-      </RouterLink>
-      <hr />
+        <RouterLink
+          v-for="channel in channelsToShow"
+          :key="channel.authorId"
+          :to="{ name: 'channel', params: { id: channel.authorId } }"
+        >
+          <ChannelCompact
+            :name="channel.author"
+            :subs="channel.subCount ? channel.subCount : 0"
+            :thumbnail="channel.authorThumbnails"
+            :channels-id="channel.authorId"
+          />
+        </RouterLink>
+        <hr />
+      </div>
+      <div v-else class="flex flex-col gap-4 pt-8">
+        <ChannelCompactSkeleton v-for="n in AmoutChannelstoShow" :key="n" />
+        <hr />
+      </div>
+      <VideosBlock
+        v-if="!videoRequestError"
+        :videos="fullInfoVideos"
+        :show-per-view="10"
+        :horizontal-layout="true"
+        class="py-4"
+      />
+      <TheError v-else :message="videoRequestError.message" />
     </div>
-    <div v-else class="flex flex-col gap-4 pt-8">
-      <ChannelCompactSkeleton v-for="n in AmoutChannelstoShow" :key="n" />
-      <hr />
-    </div>
-    <VideosBlock
-      v-if="!videoRequestError"
-      :videos="fullInfoVideos"
-      :show-per-view="10"
-      :horizontal-layout="true"
-      class="py-4"
-    />
-    <TheError v-else :message="videoRequestError.message" />
   </main>
 </template>

@@ -81,19 +81,20 @@
   />
 
   <RouterView
-    :class="{ 'lg:pl-[272px]': isMenuOpen }"
-    class="relative my-0 mx-auto max-w-screen-2xl pt-[58px] transition-[padding-left] duration-300"
+    :class="{ 'lg:pl-[280px]': isMenuOpen }"
+    class="relative my-0 mx-auto w-full max-w-[1920px] pt-[58px] transition-[padding-left] duration-300"
   />
 </template>
 
 <style>
   .slide-in-enter-active,
   .slide-in-leave-active {
-    transition: 300ms ease-in-out;
+    transition: 300ms ease-out;
   }
 
   .slide-in-enter-from,
   .slide-in-leave-to {
     transform: translateX(-100%);
+    transition: 300ms ease-out;
   }
 </style>

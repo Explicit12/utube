@@ -2,7 +2,6 @@
   import { ref, onBeforeMount, computed, defineAsyncComponent } from "vue";
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
-  import { storeToRefs } from "pinia";
   import { IconThumbDown } from "@iconify-prerendered/vue-mdi";
   import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
@@ -22,7 +21,6 @@
     getVideoFormatStreams,
     getComments,
   } from "@/utils/invidiousAPI";
-  import { useUserSettings } from "@/stores/userSettings";
 
   import type {
     VideoId,
@@ -56,8 +54,6 @@
   const authorInfo: Ref<ChannelInfo | undefined> = ref();
   const videoDiscription = ref("");
   const requestError: Ref<AxiosError | undefined> = ref();
-  const userSettings = useUserSettings();
-  const { isMenuOpen } = storeToRefs(userSettings);
   const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
@@ -141,15 +137,9 @@
 </script>
 
 <template>
-  <main
-    class="grid-col-1 grid gap-6 px-4"
-    :class="{ 'xl:grid-cols-3': !isMenuOpen, '2xl:grid-cols-3': isMenuOpen }"
-  >
+  <main class="flex flex-col gap-6 px-4 lg:px-6 2xl:flex-row">
     <template v-if="!requestError">
-      <div
-        :class="{ 'xl:col-span-2': !isMenuOpen, '2xl:col-span-2': isMenuOpen }"
-        class="flex flex-col gap-4"
-      >
+      <div class="flex max-w-[1240px] basis-3/4 flex-col gap-4">
         <div :key="watchQuery" class="mt-8">
           <ThePlayer
             v-if="videoFormatStreams.length"
@@ -236,7 +226,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="basis-1/4">
         <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
           {{ t("recommendations.headline") }}
         </h2>
