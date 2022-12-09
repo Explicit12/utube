@@ -38,8 +38,8 @@
     () => import("@/components/TheError.vue"),
   );
 
-  const TheCommment = defineAsyncComponent(
-    () => import("@/components/TheCommment.vue"),
+  const TheComment = defineAsyncComponent(
+    () => import("@/components/TheComment.vue"),
   );
 
   const VideoDiscription = defineAsyncComponent(
@@ -219,16 +219,16 @@
           />
         </div>
         <div v-if="watchVideo">
-          <h2 class="font-sans text-lg font-bold text-gray-900 line-clamp-1">
+          <h1 class="font-sans text-lg font-bold text-gray-900 line-clamp-1">
             {{ watchVideo.title }}
-          </h2>
+          </h1>
           <div class="flex justify-between pt-2">
-            <span class="font-sans text-base font-normal text-gray-400">
+            <span class="font-sans text-base font-normal text-gray-500">
               {{ formatedViews }} {{ t("views") }}
             </span>
             <div class="flex gap-4">
               <span
-                class="flex items-center gap-2 font-sans text-base font-normal text-gray-400"
+                class="flex items-center gap-2 font-sans text-base font-normal text-gray-500"
               >
                 {{ formatedLikes }}
                 <span class="rotate-180">
@@ -236,7 +236,7 @@
                 </span>
               </span>
               <span
-                class="flex items-center gap-2 font-sans text-base font-normal text-gray-400"
+                class="flex items-center gap-2 font-sans text-base font-normal text-gray-500"
               >
                 <IconThumbDown width="24" height="24" clss="text-gray-900" />
               </span>
@@ -244,7 +244,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="h-4 w-4/5 rounded-sm bg-gray-400" />
+          <div class="h-4 w-4/5 rounded-sm bg-gray-500" />
         </div>
         <hr />
         <RouterLink
@@ -269,12 +269,12 @@
           <hr />
         </template>
         <div v-if="videoComments.length" class="flex flex-col gap-4 pb-8">
-          <h3
-            class="pt-8 font-sans text-xl font-normal uppercase text-gray-400"
+          <h2
+            class="pt-8 font-sans text-xl font-normal uppercase text-gray-500"
           >
             {{ t("comments.headline") }}
-          </h3>
-          <TheCommment
+          </h2>
+          <TheComment
             v-for="comment in videoComments"
             :key="comment.commentId"
             :author="{
@@ -288,9 +288,9 @@
         </div>
       </div>
       <div>
-        <h3 class="pt-8 font-sans text-xl font-normal uppercase text-gray-400">
+        <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
           {{ t("recommendations.headline") }}
-        </h3>
+        </h2>
         <VideosBlock
           class="py-2"
           :show-per-view="10"

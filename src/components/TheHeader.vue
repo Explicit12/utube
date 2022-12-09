@@ -54,16 +54,20 @@
     class="border-b-1 fixed z-20 flex min-h-[58px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-2"
   >
     <div class="flex items-center gap-8">
-      <button @click="toggleMenu">
+      <button :aria-label="t('menu-button-label')" @click="toggleMenu">
         <IconMenu width="24" height="24" class="text-grey-900" />
       </button>
 
-      <RouterLink v-show="!isMobileSearch" :to="{ name: 'home' }">
+      <RouterLink
+        v-show="!isMobileSearch"
+        :aria-label="t('main-link-label')"
+        :to="{ name: 'home' }"
+      >
         <TheLogo />
       </RouterLink>
     </div>
 
-    <span
+    <form
       :class="{ flex: isMobileSearch, hidden: !isMobileSearch }"
       class="relative w-full max-w-screen-sm items-center md:flex"
     >
@@ -73,14 +77,18 @@
         class="text-grey-900 absolute left-2 z-10"
         @click.prevent="routeToSearch"
       />
+      <label for="searchInput" class="sr-only">{{
+        t("menu-input-label")
+      }}</label>
       <input
+        id="searchInput"
         v-model="searchInput"
         type="text"
         :placeholder="t('search-placeholder')"
-        class="placeholder:text-grey-400 text-grey-900 maxrounded-lg w-full bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
+        class="placeholder:text-grey-400 text-grey-900 w-full rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
         @keypress.prevent.enter="routeToSearch"
       />
-    </span>
+    </form>
 
     <nav class="flex gap-4">
       <component
@@ -91,7 +99,10 @@
         @click="isMobileSearch = !isMobileSearch"
       />
 
-      <RouterLink :to="{ name: 'settings' }">
+      <RouterLink
+        :aria-label="t('settings-link-label')"
+        :to="{ name: 'settings' }"
+      >
         <IconCog
           width="24"
           height="24"
@@ -105,13 +116,25 @@
 <i18n lang="json">
 {
   "en-US": {
-    "search-placeholder": "I'm searching..."
+    "menu-input-label": "Search field",
+    "search-placeholder": "I'm searching...",
+    "menu-button-label": "Navigation",
+    "main-link-label": "The main",
+    "settings-link-label": "To settings"
   },
   "uk-UA": {
-    "search-placeholder": "Я шукаю..."
+    "menu-input-label": "Поле пошуку",
+    "search-placeholder": "Я шукаю...",
+    "menu-button-label": "Навігація",
+    "main-link-label": "Головна",
+    "settings-link-label": "Налаштування"
   },
   "ru-RU": {
-    "search-placeholder": "Я ищу..."
+    "menu-input-label": "Поле поиска",
+    "search-placeholder": "Я ищу...",
+    "menu-button-label": "Навигация",
+    "main-link-label": "Главная",
+    "settings-link-label": "Настройки"
   }
 }
 </i18n>

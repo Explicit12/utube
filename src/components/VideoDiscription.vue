@@ -40,9 +40,9 @@
 
 <template>
   <div>
-    <h3 class="font-sans text-xl font-normal uppercase text-gray-400">
+    <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
       {{ t("headline") }}
-    </h3>
+    </h2>
 
     <!-- eslint-disable vue/no-v-html -->
     <div

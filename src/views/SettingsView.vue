@@ -26,7 +26,7 @@
       <hr />
       <label
         for="locales"
-        class="block pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-400"
+        class="block pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-500"
       >
         {{ t("language.headline") }}
       </label>
@@ -48,7 +48,7 @@
     </section>
     <section class="py-4">
       <hr />
-      <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-400">
+      <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
         {{ t("subscriptions.headline") }}
       </h2>
       <SubscriptionFileInput />

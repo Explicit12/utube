@@ -62,7 +62,7 @@
         referrerpolicy="no-referrer"
         crossorigin="anonymous"
         loading="lazy"
-        :alt="t('alt-avatar')"
+        :alt="`${author.name} ${t('channel-avatar-alt')}`"
         class="h-full w-full rounded-lg"
         width="32"
         height="32"
@@ -71,7 +71,7 @@
         v-else
         class="flex h-full w-full items-center justify-center rounded-lg bg-gray-200"
       >
-        <IconImageArea class="text-gray-400" width="32" height="32" />
+        <IconImageArea class="text-gray-500" width="32" height="32" />
       </div>
     </div>
     <div class="flex flex-col items-start gap-2">
@@ -79,7 +79,7 @@
         <span class="font-sans text-base font-medium text-gray-600">
           {{ author.name }}
         </span>
-        <span class="font-sans text-base font-normal text-gray-400">
+        <span class="font-sans text-base font-normal text-gray-500">
           {{ formatedDate }}
         </span>
       </div>
@@ -106,17 +106,20 @@
   "en-US": {
     "alt-avatar": "Channel avatar",
     "showMore": "More",
-    "showLess": "Less"
+    "showLess": "Less",
+    "channel-avatar-alt": "avatar"
   },
   "uk-UA": {
     "alt-avatar": "Аватар каналу",
     "showMore": "Більше",
-    "showLess": "Менше"
+    "showLess": "Менше",
+    "channel-avatar-alt": "аватар"
   },
   "ru-RU": {
     "alt-avatar": "Аватар канала",
     "showMore": "Больше",
-    "showLess": "Меньше"
+    "showLess": "Меньше",
+    "channel-avatar-alt": "аватар"
   }
 }
 </i18n>

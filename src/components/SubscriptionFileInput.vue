@@ -57,32 +57,37 @@
 </script>
 
 <template>
-  <div>
+  <form>
     <div
       ref="importDropZone"
       class="mt-6 flex h-64 w-full items-center justify-center rounded-lg border-4 border-dashed border-blue-600 p-4 text-center"
     >
       {{ t("drop-zone") }}
     </div>
+    <label for="file-input" class="sr-only">{{ t("file-input-label") }}</label>
     <input
+      id="file-input"
       type="file"
       class="mt-4 block w-full font-sans text-base font-normal text-gray-900 file:block file:w-full file:rounded-lg file:border-2 file:border-transparent file:bg-blue-50 file:py-2 file:px-4 hover:cursor-pointer file:hover:cursor-pointer"
       @change="importInputHandler"
     />
     <TheError v-if="fileError" :message="fileError.message" class="h-fit p-2" />
-  </div>
+  </form>
 </template>
 
 <i18n lang="json">
 {
   "en-US": {
-    "drop-zone": "Drop subscriptions.csv file here"
+    "drop-zone": "Drop subscriptions.csv file here",
+    "file-input-label": "Upload file"
   },
   "uk-UA": {
-    "drop-zone": "Перетягніть сюди subscriptions.csv файл"
+    "drop-zone": "Перетягніть сюди subscriptions.csv файл",
+    "file-input-label": "Upload file"
   },
   "ru-RU": {
-    "drop-zone": "Перетащите subscriptions.csv файл сюда"
+    "drop-zone": "Перетащите subscriptions.csv файл сюда",
+    "file-input-label": "Upload file"
   }
 }
 </i18n>

@@ -104,13 +104,15 @@
       >
         <IconImageArea class="text-gray-400" width="32" height="32" />
       </div>
-      <ChannelCompact
-        :name="channel.author"
-        :channels-id="channel.authorId"
-        :subs="channel.subCount"
-        :thumbnail="channel.authorThumbnails"
-        class="pt-8"
-      />
+      <h1>
+        <ChannelCompact
+          :name="channel.author"
+          :channels-id="channel.authorId"
+          :subs="channel.subCount"
+          :thumbnail="channel.authorThumbnails"
+          class="pt-8"
+        />
+      </h1>
     </template>
     <template v-else-if="!channel && !dataRequestError">
       <div

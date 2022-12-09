@@ -76,7 +76,7 @@
       <p class="font-sans text-base font-semibold text-gray-900 line-clamp-1">
         {{ name }}
       </p>
-      <p class="min-w-max pt-2 font-sans text-sm text-gray-400">
+      <p class="min-w-max pt-2 font-sans text-sm text-gray-500">
         {{ formatedSubs + " " + t("subscriptions") }}
       </p>
     </div>

@@ -26,7 +26,7 @@
     class="fixed inset-y-0 left-0 top-[58px] z-20 inline w-64 space-y-8 overflow-y-scroll border-r-2 border-gray-200 bg-white px-6 py-8"
   >
     <nav>
-      <h2 class="font-sans text-xl font-normal uppercase text-gray-400">
+      <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
         {{ t("navigation.headline") }}
       </h2>
       <ul class="space-y-2 pt-6">
@@ -52,7 +52,7 @@
     </nav>
 
     <div>
-      <h2 class="font-sans text-xl font-normal uppercase text-gray-400">
+      <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
         {{ t("subscriptions.headline") }}
       </h2>
 
@@ -62,14 +62,14 @@
     </div>
 
     <div>
-      <h2 class="font-sans text-xl font-normal uppercase text-gray-400">
+      <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
         {{ t("info.headline") }}
       </h2>
       <ul class="space-y-4 pt-6">
         <li>
           <a
             href="https://github.com/Explicit12/utube"
-            class="font-sans font-normal text-gray-400 hover:underline hover:underline-offset-2"
+            class="font-sans font-normal text-gray-500 hover:underline hover:underline-offset-2"
           >
             {{ t("info.github") }}
           </a>
@@ -86,7 +86,7 @@
       "headline": "Navigation",
       "links": {
         "home": "Home",
-        "subscriptions": "subscriptions"
+        "subscriptions": "Subscriptions"
       }
     },
     "subscriptions": {
@@ -122,7 +122,7 @@
       }
     },
     "subscriptions": {
-      "headline": "subscriptions"
+      "headline": "Подписки"
     },
     "info": {
       "headline": "Информация",

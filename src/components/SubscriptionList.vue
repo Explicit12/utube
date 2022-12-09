@@ -84,7 +84,7 @@
             referrerpolicy="no-referrer"
             crossorigin="anonymous"
             loading="lazy"
-            alt="channel avatar"
+            :alt="`${channel.author} ${t('channel-avatar-alt')}`"
             class="rounded-lg"
             width="32"
             height="32"
@@ -124,15 +124,18 @@
 {
   "en-US": {
     "button-more": "More",
-    "button-less": "Less"
+    "button-less": "Less",
+    "channel-avatar-alt": "avatar"
   },
   "uk-UA": {
     "button-more": "Більше",
-    "button-less": "Менше"
+    "button-less": "Менше",
+    "channel-avatar-alt": "аватар"
   },
   "ru-RU": {
     "button-more": "Ещё",
-    "button-less": "Меньше"
+    "button-less": "Меньше",
+    "channel-avatar-alt": "аватар"
   }
 }
 </i18n>
