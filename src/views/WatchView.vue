@@ -177,7 +177,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="h-4 w-4/5 rounded-sm bg-gray-500" />
+          <div class="h-4 w-4/5 rounded-sm bg-gray-400" />
         </div>
 
         <hr />
