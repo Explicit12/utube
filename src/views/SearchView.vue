@@ -22,8 +22,7 @@
 
   const props = defineProps<{ searchQuery: string }>();
 
-  const channelRequestError: Ref<AxiosError | undefined> = ref();
-  const videoRequestError: Ref<AxiosError | undefined> = ref();
+  const requestError: Ref<AxiosError | undefined> = ref();
   const channels: Ref<ChannelInfo[]> = ref([]);
   const videos: Ref<VideoInfo[]> = ref([]);
   const AmoutChannelstoShow = ref(3);
@@ -43,67 +42,44 @@
     videos.value.filter((video) => video.published && video.viewCount),
   );
 
+  async function getData(query: string): Promise<void> {
+    try {
+      const channelsSearchResult = await searchChannel(query);
+      channels.value = channelsSearchResult;
+
+      const channelsSubs = await Promise.all(
+        channels.value.map((channel) => getChannelSubs(channel.authorId)),
+      );
+      channels.value = channels.value.map((channel, index) => {
+        channel.subCount = channelsSubs[index];
+        return channel;
+      });
+
+      const videosSearchResult = await searchVideo(query);
+      videos.value = videosSearchResult;
+    } catch (error) {
+      requestError.value = error as AxiosError;
+    }
+  }
+
   onBeforeRouteUpdate((to) => {
     if (typeof to.query.search_query !== "string") return false;
     channels.value = [];
     videos.value = [];
-    searchChannel(to.query.search_query)
-      .then((result) => {
-        channels.value = result;
-      })
-      .then(() => {
-        return Promise.all(
-          channels.value.map((channel) => getChannelSubs(channel.authorId)),
-        );
-      })
-      .then((channelSubs) => {
-        channels.value = channels.value.map((channel, index) => {
-          channel.subCount = channelSubs[index];
-          return channel;
-        });
-      })
-      .catch((err) => (channelRequestError.value = err));
 
-    searchVideo(to.query.search_query)
-      .then((result) => {
-        videos.value = result;
-      })
-      .catch((err) => (videoRequestError.value = err));
+    getData(to.query.search_query);
   });
 
-  onBeforeMount(() => {
-    searchChannel(props.searchQuery)
-      .then((result) => {
-        channels.value = result;
-      })
-      .then(() => {
-        return Promise.all(
-          channels.value.map((channel) => getChannelSubs(channel.authorId)),
-        );
-      })
-      .then((channelSubs) => {
-        channels.value = channels.value.map((channel, index) => {
-          channel.subCount = channelSubs[index];
-          return channel;
-        });
-      })
-      .catch((err) => (channelRequestError.value = err));
-
-    searchVideo(props.searchQuery)
-      .then((result) => {
-        videos.value = result;
-      })
-      .catch((err) => (videoRequestError.value = err));
-  });
+  onBeforeMount(() => getData(props.searchQuery));
 </script>
 
 <template>
   <main class="px-4 lg:px-6">
-    <div class="mx-auto flex max-w-screen-xl flex-col justify-center">
-      <div
-        v-if="channels.length && !channelRequestError"
-        class="flex flex-col gap-4 pt-8"
-      >
+    <div
+      v-if="!requestError"
+      class="mx-auto flex max-w-screen-xl flex-col justify-center"
+    >
+      <div v-if="channels.length" class="flex flex-col gap-4 pt-8">
         <RouterLink
           v-for="channel in channelsToShow"
           :key="channel.authorId"
@@ -123,13 +99,12 @@
         <hr />
       </div>
       <VideosBlock
-        v-if="!videoRequestError"
         :videos="fullInfoVideos"
         :show-per-view="10"
         :horizontal-layout="true"
         class="py-4"
       />
-      <TheError v-else :message="videoRequestError.message" />
     </div>
+    <TheError v-else :message="requestError.message" />
   </main>
 </template>
