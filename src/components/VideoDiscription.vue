@@ -26,7 +26,7 @@
       .filter((text) => text !== "")
       .map((text) => {
         return (
-          "<p class='font-sans text-base break-all font-normal text-gray-900'>" +
+          "<p class='font-sans text-base font-normal text-gray-900'>" +
           text.replace(
             /<a /gi,
             "<a class='text-blue-600 break-all cursor-pointer underline' ",
