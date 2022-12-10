@@ -137,7 +137,7 @@
 </script>
 
 <template>
-  <main class="flex flex-col gap-6 px-4 lg:px-6 2xl:flex-row">
+  <main class="flex flex-col gap-6 px-4 lg:px-16 2xl:flex-row">
     <template v-if="!requestError">
       <div class="flex max-w-[1240px] basis-3/4 flex-col gap-4">
         <div :key="watchQuery" class="mt-8">

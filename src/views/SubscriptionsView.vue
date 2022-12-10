@@ -59,7 +59,7 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center px-4 lg:px-6">
+  <main class="flex flex-col justify-center px-4 lg:px-16">
     <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
       {{ t("headline") }}
     </h1>

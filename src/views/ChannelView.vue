@@ -80,7 +80,7 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center gap-4 px-4 lg:px-6">
+  <main class="flex flex-col justify-center gap-4 px-4 lg:px-16">
     <template v-if="channel && !dataRequestError">
       <div v-if="!imageError" class="relative">
         <img

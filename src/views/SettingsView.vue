@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <main class="px-4 lg:px-6">
+  <main class="px-4 lg:px-16">
     <div class="mx-auto flex w-full max-w-screen-xl flex-col justify-center">
       <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
         {{ t("headline") }}

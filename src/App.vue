@@ -81,7 +81,7 @@
   />
 
   <RouterView
-    :class="{ 'lg:pl-[280px]': isMenuOpen }"
+    :class="{ 'lg:pl-[318px]': isMenuOpen }"
     class="relative my-0 mx-auto w-full max-w-[1920px] pt-[58px] transition-[padding-left] duration-300"
   />
 </template>

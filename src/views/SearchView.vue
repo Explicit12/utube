@@ -74,7 +74,7 @@
 </script>
 
 <template>
-  <main class="px-4 lg:px-6">
+  <main class="px-4 lg:px-16">
     <div
       v-if="!requestError"
       class="mx-auto flex max-w-screen-xl flex-col justify-center"
