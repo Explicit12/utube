@@ -23,8 +23,8 @@
 </script>
 
 <template>
-  <main class="px-4 lg:px-16">
-    <div class="mx-auto flex h-screen w-full max-w-screen-xl flex-col">
+  <main class="px-4 pb-[58px] lg:px-16">
+    <div class="mx-auto h-screen min-h-full max-w-screen-xl">
       <h1
         class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-gray-300"
       >
