@@ -71,16 +71,20 @@
       <div
         v-else
         :class="{ 'sm:min-w-[12rem] sm:max-w-[12rem]': horizontalLayout }"
-        class="flex aspect-video w-full items-center justify-center rounded-lg bg-gray-200"
+        class="flex aspect-video w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800"
       >
-        <IconPlay width="32" height="32" class="text-gray-500" />
+        <IconPlay
+          width="32"
+          height="32"
+          class="text-gray-500 dark:text-gray-300"
+        />
       </div>
     </span>
 
     <div class="w-full">
       <span
         :class="{ 'pt-4': !horizontalLayout, 'max-md:pt-4': horizontalLayout }"
-        class="block font-sans text-base font-normal text-gray-900 line-clamp-2"
+        class="block font-sans text-base font-normal text-gray-900 line-clamp-2 dark:text-white"
       >
         {{ name }}
       </span>
@@ -88,15 +92,19 @@
       <div>
         <RouterLink
           :to="{ name: 'channel', params: { id: author.id } }"
-          class="pt-2 font-sans text-sm font-normal text-gray-500 line-clamp-1 hover:underline"
+          class="pt-2 font-sans text-sm font-normal text-gray-500 line-clamp-1 hover:underline dark:text-gray-300"
           @click.stop.prevent
         >
           {{ author.name }}
         </RouterLink>
-        <span class="font-sans text-sm font-normal text-gray-500">
+        <span
+          class="font-sans text-sm font-normal text-gray-500 dark:text-gray-300"
+        >
           {{ formatedViews + " " + t("views") }}
         </span>
-        <span class="pl-2 font-sans text-sm font-normal text-gray-500">
+        <span
+          class="pl-2 font-sans text-sm font-normal text-gray-500 dark:text-gray-300"
+        >
           {{ formatedDate }}
         </span>
       </div>

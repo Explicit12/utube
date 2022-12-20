@@ -51,11 +51,15 @@
 
 <template>
   <header
-    class="border-b-1 fixed z-20 flex min-h-[58px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-2"
+    class="border-b-1 fixed z-30 flex min-h-[58px] w-screen items-center justify-between gap-11 border-b-2 border-gray-200 bg-white px-4 py-2 dark:border-gray-400 dark:bg-gray-900"
   >
     <div class="flex items-center gap-8">
       <button :aria-label="t('menu-button-label')" @click="toggleMenu">
-        <IconMenu width="24" height="24" class="text-grey-900" />
+        <IconMenu
+          width="24"
+          height="24"
+          class="text-grey-900 dark:text-white"
+        />
       </button>
 
       <RouterLink
@@ -74,18 +78,18 @@
       <IconMagnify
         width="24"
         height="24"
-        class="text-grey-900 absolute left-2 z-10"
+        class="text-grey-900 absolute left-2 z-10 dark:text-white"
         @click.prevent="routeToSearch"
       />
-      <label for="searchInput" class="sr-only">{{
-        t("menu-input-label")
-      }}</label>
+      <label for="searchInput" class="sr-only">
+        {{ t("menu-input-label") }}
+      </label>
       <input
         id="searchInput"
         v-model="searchInput"
         type="text"
         :placeholder="t('search-placeholder')"
-        class="placeholder:text-grey-400 text-grey-900 w-full rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200"
+        class="placeholder:text-grey-500 text-grey-900 w-full rounded-lg bg-blue-50 p-2 pl-10 font-sans text-base font-normal placeholder:font-sans focus-visible:outline-none focus-visible:outline-blue-200 dark:border-2 dark:border-white dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-300 dark:focus-visible:border-white dark:focus-visible:outline-gray-800"
         @keypress.prevent.enter="routeToSearch"
       />
     </form>
@@ -95,7 +99,7 @@
         :is="isMobileSearch ? IconClose : IconMagnify"
         width="24"
         height="24"
-        class="text-grey-900 hover:cursor-pointer md:hidden"
+        class="text-grey-900 hover:cursor-pointer dark:text-white md:hidden"
         @click="isMobileSearch = !isMobileSearch"
       />
 
@@ -106,7 +110,7 @@
         <IconCog
           width="24"
           height="24"
-          class="text-grey-900 transition-transform hover:rotate-90 hover:cursor-pointer"
+          class="text-grey-900 transition-transform hover:rotate-90 hover:cursor-pointer dark:text-white"
         />
       </RouterLink>
     </nav>

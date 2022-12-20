@@ -60,7 +60,7 @@
 
 <template>
   <main class="flex flex-col justify-center px-4 lg:px-16">
-    <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
+    <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-white">
       {{ t("headline") }}
     </h1>
     <VideosBlockVue

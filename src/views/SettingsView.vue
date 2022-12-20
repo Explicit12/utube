@@ -19,22 +19,24 @@
 
 <template>
   <main class="px-4 lg:px-16">
-    <div class="mx-auto flex w-full max-w-screen-xl flex-col justify-center">
-      <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900">
+    <div class="mx-auto flex h-screen w-full max-w-screen-xl flex-col">
+      <h1
+        class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-gray-300"
+      >
         {{ t("headline") }}
       </h1>
       <section class="py-4">
         <hr />
         <label
           for="locales"
-          class="block pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-500"
+          class="block pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
         >
           {{ t("language.headline") }}
         </label>
         <select
           id="locales"
           v-model="localeSelect"
-          class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-base text-gray-900"
+          class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-base text-gray-900 dark:bg-gray-900 dark:text-white"
         >
           <option value="en-US" :selected="userLocale === 'en-US'">
             {{ t("language.english") }}
@@ -49,7 +51,9 @@
       </section>
       <section class="py-4">
         <hr />
-        <h2 class="pt-8 font-sans text-xl font-normal uppercase text-gray-500">
+        <h2
+          class="pt-8 font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+        >
           {{ t("subscriptions.headline") }}
         </h2>
         <SubscriptionFileInput />

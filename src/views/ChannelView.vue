@@ -100,9 +100,13 @@
       </div>
       <div
         v-else
-        class="mt-8 flex h-screen max-h-[170px] w-full items-center justify-center rounded-lg bg-gray-200"
+        class="mt-8 flex h-screen max-h-[170px] w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800"
       >
-        <IconImageArea class="text-gray-400" width="32" height="32" />
+        <IconImageArea
+          class="text-gray-400 dark:text-gray-300"
+          width="32"
+          height="32"
+        />
       </div>
       <h1>
         <ChannelCompact
@@ -116,7 +120,7 @@
     </template>
     <template v-else-if="!channel && !dataRequestError">
       <div
-        class="mt-8 h-screen max-h-[170px] w-full animate-pulse rounded-lg bg-gray-200"
+        class="mt-8 h-screen max-h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
       />
       <ChannelCompactSkeletonVue class="pt-8" />
     </template>
@@ -125,7 +129,7 @@
       :message="dataRequestError.message"
       class="items-center"
     />
-    <hr />
+    <hr class="border-t-2 dark:border-gray-400" />
     <VideosBlock
       v-if="!dataRequestError"
       :videos="videos"

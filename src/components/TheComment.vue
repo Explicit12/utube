@@ -69,30 +69,38 @@
       />
       <div
         v-else
-        class="flex h-full w-full items-center justify-center rounded-lg bg-gray-200"
+        class="flex h-full w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800"
       >
-        <IconImageArea class="text-gray-500" width="32" height="32" />
+        <IconImageArea
+          class="text-gray-500 dark:text-gray-300"
+          width="32"
+          height="32"
+        />
       </div>
     </div>
     <div class="flex flex-col items-start gap-2">
       <div class="flex gap-2">
-        <span class="font-sans text-base font-medium text-gray-600">
+        <span
+          class="font-sans text-base font-medium text-gray-500 dark:text-gray-300"
+        >
           {{ author.name }}
         </span>
-        <span class="font-sans text-base font-normal text-gray-500">
+        <span
+          class="font-sans text-base font-normal text-gray-500 dark:text-gray-200"
+        >
           {{ formatedDate }}
         </span>
       </div>
       <p
         ref="commentContentRef"
         :class="{ 'line-clamp-3': !showMore }"
-        class="font-sans text-base font-normal text-gray-900"
+        class="font-sans text-base font-normal text-gray-900 dark:text-white"
       >
         {{ content }}
       </p>
       <button
         v-if="commentContentRef && isContentOverflow"
-        class="font-sans text-base font-medium text-gray-900"
+        class="font-sans text-base font-medium text-gray-900 dark:text-white"
         @click="showMore = !showMore"
       >
         {{ t(showMore ? "showLess" : "showMore") }}

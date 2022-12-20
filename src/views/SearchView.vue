@@ -96,7 +96,7 @@
       </div>
       <div v-else class="flex flex-col gap-4 pt-8">
         <ChannelCompactSkeleton v-for="n in AmoutChannelstoShow" :key="n" />
-        <hr />
+        <hr class="border-t-2 dark:border-gray-400" />
       </div>
       <VideosBlock
         :videos="fullInfoVideos"

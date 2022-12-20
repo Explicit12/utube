@@ -26,7 +26,7 @@
       .filter((text) => text !== "")
       .map((text) => {
         return (
-          "<p class='font-sans text-base font-normal text-gray-900'>" +
+          "<p class='font-sans text-base font-normal text-gray-900 dark:text-white'>" +
           text.replace(
             /<a /gi,
             "<a class='text-blue-600 break-all cursor-pointer underline' ",
@@ -40,7 +40,9 @@
 
 <template>
   <div>
-    <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
+    <h2
+      class="font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+    >
       {{ t("headline") }}
     </h2>
 
@@ -53,7 +55,7 @@
     />
     <button
       v-if="discriptionRef && isContentOverflow"
-      class="font-sans text-base font-medium text-gray-900"
+      class="font-sans text-base font-medium text-gray-900 dark:text-white"
       @click="showMore = !showMore"
     >
       {{ t(showMore ? "showLess" : "showMore") }}

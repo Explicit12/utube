@@ -67,16 +67,24 @@
       />
       <div
         v-else
-        class="flex h-full w-full items-center justify-center rounded-lg bg-gray-200"
+        class="flex h-full w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800"
       >
-        <IconImageArea class="text-gray-400" width="32" height="32" />
+        <IconImageArea
+          class="text-gray-400 dark:text-gray-300"
+          width="32"
+          height="32"
+        />
       </div>
     </div>
     <div class="w-full overflow-hidden">
-      <p class="font-sans text-base font-semibold text-gray-900 line-clamp-1">
+      <p
+        class="font-sans text-base font-semibold text-gray-900 line-clamp-1 dark:text-white"
+      >
         {{ name }}
       </p>
-      <p class="min-w-max pt-2 font-sans text-sm text-gray-500">
+      <p
+        class="min-w-max pt-2 font-sans text-sm text-gray-500 dark:text-gray-300"
+      >
         {{ formatedSubs + " " + t("subscriptions") }}
       </p>
     </div>
@@ -105,7 +113,9 @@
         @click-outside="(promptModal = false), (isBodyScrollLocked = false)"
       >
         <template #text>
-          <p class="text-md font-sans font-normal text-gray-900">
+          <p
+            class="text-md font-sans font-normal text-gray-900 dark:text-white"
+          >
             {{ t("unsubscribeFrom") + ` ${name}` }}
           </p>
         </template>

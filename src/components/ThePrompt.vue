@@ -16,7 +16,9 @@
     class="fixed inset-0 flex h-screen w-screen items-center justify-center bg-gray-900/25"
     @click="$emit('clickOutside')"
   >
-    <div class="rounded-lg bg-white p-8">
+    <div
+      class="rounded-lg bg-white p-8 dark:border-2 dark:border-white dark:bg-gray-900"
+    >
       <slot name="text" />
       <div class="flex gap-2 pt-4">
         <TheButton type="secondary" @click="$emit('prompt', true)">

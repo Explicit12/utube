@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center px-4 lg:px-16">
+  <main class="flex h-screen flex-col justify-center px-4 lg:px-16">
     <TheError :message="t('error')" />
   </main>
 </template>

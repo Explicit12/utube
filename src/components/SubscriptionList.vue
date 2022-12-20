@@ -70,12 +70,16 @@
 </script>
 
 <template>
-  <ul class="space-y-5 pt-6">
+  <ul class="space-y-2 pt-6">
     <template v-if="channels.size">
-      <li v-for="channel in channelsToShow" :key="channel.author">
+      <li
+        v-for="channel in channelsToShow"
+        :key="channel.author"
+        class="rounded-lg p-2 hover:bg-blue-50 dark:hover:bg-gray-800"
+      >
         <RouterLink
           :to="{ name: 'channel', params: { id: channel.authorId } }"
-          class="flex items-center gap-2 font-sans font-normal text-gray-900"
+          class="group flex items-center gap-2 font-sans font-normal text-gray-900 dark:text-white"
         >
           <img
             v-if="channel.authorThumbnails[0]"
@@ -89,7 +93,7 @@
             width="32"
             height="32"
           />
-          <div v-else class="h-8 w-8 rounded-lg bg-gray-200" />
+          <div v-else class="h-8 w-8 rounded-lg bg-gray-200 dark:bg-gray-800" />
           <span class="overflow-hidden text-ellipsis whitespace-nowrap">
             {{ channel.author }}
           </span>
@@ -98,7 +102,11 @@
     </template>
 
     <template v-else>
-      <SubscriptionSkeleton v-for="n in initialAmoutOfChannels" :key="n" />
+      <SubscriptionSkeleton
+        v-for="n in initialAmoutOfChannels"
+        :key="n"
+        class="p-2"
+      />
     </template>
   </ul>
   <TheButton

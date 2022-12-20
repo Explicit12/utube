@@ -63,7 +63,7 @@ export interface Comment {
   commentId: string;
 }
 
-const invidiousURL = "https://inv.vern.cc";
+const invidiousURL = "https://invidious.slipfox.xyz";
 
 // needed to fetch viewsCount, likesCount in getVideo function.
 // Main URL has some bug and always returns zeroes in this fileds.

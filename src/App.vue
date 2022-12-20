@@ -10,6 +10,7 @@
   import { useI18n } from "vue-i18n";
   import dayjs from "dayjs";
   import { useRouter } from "vue-router";
+  import { useDark } from "@vueuse/core";
 
   import { useUserSettings } from "@/stores/userSettings";
 
@@ -20,6 +21,7 @@
   const breakpoints = useBreakpoints(breakpointsTailwind);
   const { locale } = useI18n();
   const router = useRouter();
+  const isDark = useDark();
 
   const isBodyScrollLocked = useScrollLock(document.body);
   const isLgAndGreater = breakpoints.greaterOrEqual("lg");
@@ -65,25 +67,27 @@
 </script>
 
 <template>
-  <TheHeader />
-  <Transition name="slide-in">
-    <SideMenu v-show="isMenuOpen" />
-  </Transition>
+  <div :class="{ dark: isDark }">
+    <TheHeader />
+    <Transition name="slide-in">
+      <SideMenu v-show="isMenuOpen" />
+    </Transition>
 
-  <!-- backdrop -->
-  <div
-    :class="{
-      block: isMenuOpen || !isLgAndGreater,
-      hidden: !isMenuOpen || isLgAndGreater,
-    }"
-    class="fixed z-10 h-full w-full bg-gray-900 opacity-25"
-    @click="toggleMenu"
-  />
+    <!-- backdrop -->
+    <div
+      :class="{
+        block: isMenuOpen || !isLgAndGreater,
+        hidden: !isMenuOpen || isLgAndGreater,
+      }"
+      class="fixed z-10 h-full w-full bg-gray-900 opacity-25"
+      @click="toggleMenu"
+    />
 
-  <RouterView
-    :class="{ 'lg:pl-[318px]': isMenuOpen }"
-    class="relative my-0 mx-auto w-full max-w-[1920px] pt-[58px] transition-[padding-left] duration-300"
-  />
+    <RouterView
+      :class="{ 'lg:pl-[318px]': isMenuOpen }"
+      class="relative my-0 mx-auto w-full max-w-[1920px] pt-[58px] transition-[padding-left] duration-300 dark:bg-gray-900"
+    />
+  </div>
 </template>
 
 <style>

@@ -23,18 +23,20 @@
 
 <template>
   <aside
-    class="fixed inset-y-0 left-0 top-[58px] z-20 inline w-64 space-y-8 overflow-y-scroll border-r-2 border-gray-200 bg-white px-6 py-8"
+    class="fixed inset-y-0 left-0 top-[58px] z-20 inline w-64 space-y-8 overflow-y-scroll border-y-0 border-r-2 border-gray-200 bg-white px-6 py-8 dark:border-gray-400 dark:bg-gray-900"
   >
     <nav>
-      <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
+      <h2
+        class="font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+      >
         {{ t("navigation.headline") }}
       </h2>
       <ul class="space-y-2 pt-6">
         <li>
           <RouterLink
             :to="{ name: 'home' }"
-            :class="{ 'bg-blue-50': route.name === 'home' }"
-            class="block rounded-lg p-2 font-sans text-base font-normal transition-colors hover:bg-blue-50"
+            :class="{ 'bg-blue-50 dark:bg-gray-800': route.name === 'home' }"
+            class="block rounded-lg p-2 font-sans text-base font-normal text-gray-900 transition-colors hover:bg-blue-50 dark:text-white dark:hover:bg-gray-800"
           >
             {{ t("navigation.links.home") }}
           </RouterLink>
@@ -42,8 +44,10 @@
         <li v-if="subscriptions.size">
           <RouterLink
             :to="{ name: 'subscriptions' }"
-            :class="{ 'bg-blue-50': route.name === 'subscriptions' }"
-            class="block rounded-lg p-2 font-sans text-base font-normal transition-colors hover:bg-blue-50"
+            :class="{
+              'bg-blue-50 dark:bg-gray-800': route.name === 'subscriptions',
+            }"
+            class="block rounded-lg p-2 font-sans text-base font-normal text-gray-900 transition-colors hover:bg-blue-50 dark:text-white dark:hover:bg-gray-800"
           >
             {{ t("navigation.links.subscriptions") }}
           </RouterLink>
@@ -52,7 +56,9 @@
     </nav>
 
     <div>
-      <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
+      <h2
+        class="font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+      >
         {{ t("subscriptions.headline") }}
       </h2>
 
@@ -62,14 +68,16 @@
     </div>
 
     <div>
-      <h2 class="font-sans text-xl font-normal uppercase text-gray-500">
+      <h2
+        class="font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+      >
         {{ t("info.headline") }}
       </h2>
       <ul class="space-y-4 pt-6">
         <li>
           <a
             href="https://github.com/Explicit12/utube"
-            class="font-sans font-normal text-gray-500 hover:underline hover:underline-offset-2"
+            class="font-sans font-normal text-gray-500 hover:underline hover:underline-offset-2 dark:text-gray-300"
           >
             {{ t("info.github") }}
           </a>
