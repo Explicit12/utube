@@ -10,7 +10,6 @@
   import { useI18n } from "vue-i18n";
   import dayjs from "dayjs";
   import { useRouter } from "vue-router";
-  import { useDark } from "@vueuse/core";
 
   import { useUserSettings } from "@/stores/userSettings";
 
@@ -21,12 +20,11 @@
   const breakpoints = useBreakpoints(breakpointsTailwind);
   const { locale } = useI18n();
   const router = useRouter();
-  const isDark = useDark();
 
   const isBodyScrollLocked = useScrollLock(document.body);
   const isLgAndGreater = breakpoints.greaterOrEqual("lg");
 
-  const { isMenuOpen, userLocale } = storeToRefs(settings);
+  const { isMenuOpen, userLocale, isDarkMode } = storeToRefs(settings);
   const { toggleMenu } = settings;
 
   function toggleBodySrollLock(): void {
@@ -67,7 +65,7 @@
 </script>
 
 <template>
-  <div :class="{ dark: isDark }">
+  <div :class="{ dark: isDarkMode }">
     <TheHeader />
     <Transition name="slide-in">
       <SideMenu v-show="isMenuOpen" />

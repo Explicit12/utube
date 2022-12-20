@@ -9,11 +9,16 @@
 
   const { t } = useI18n();
   const userSettings = useUserSettings();
-  const { userLocale } = storeToRefs(userSettings);
+  const { userLocale, isDarkMode } = storeToRefs(userSettings);
   const localeSelect = ref(userLocale.value);
+  const darkModeForm = ref(isDarkMode.value);
 
   watch(localeSelect, (newValue) => {
     userLocale.value = newValue;
+  });
+
+  watch(darkModeForm, (newValue) => {
+    isDarkMode.value = newValue;
   });
 </script>
 
@@ -25,6 +30,49 @@
       >
         {{ t("headline") }}
       </h1>
+      <section class="py-4">
+        <hr />
+        <h2
+          for="darkMode"
+          class="pt-8 pb-4 font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+        >
+          {{ t("darkMode.headline") }}
+        </h2>
+        <form class="flex gap-8">
+          <div>
+            <input
+              id="dark-radio"
+              v-model="darkModeForm"
+              class="peer hidden"
+              type="radio"
+              name="dark-radio"
+              :value="true"
+            />
+            <label
+              class="rounded-md border-2 border-gray-900 py-2 px-4 text-center font-sans text-base font-normal text-gray-900 peer-checked:border-blue-600 dark:border-white dark:text-white"
+              for="dark-radio"
+            >
+              {{ t("darkMode.dark") }}
+            </label>
+          </div>
+          <div>
+            <input
+              id="light-radio"
+              v-model="darkModeForm"
+              class="peer hidden"
+              type="radio"
+              name="light-radio"
+              :value="false"
+            />
+            <label
+              class="rounded-md border-2 border-gray-900 py-2 px-4 text-center font-sans text-base font-normal text-gray-900 peer-checked:border-blue-600 dark:border-white dark:text-white"
+              for="light-radio"
+            >
+              {{ t("darkMode.light") }}
+            </label>
+          </div>
+        </form>
+      </section>
       <section class="py-4">
         <hr />
         <label
@@ -74,6 +122,11 @@
       "english": "English",
       "ukrainian": "Українська",
       "russian": "Русский"
+    },
+    "darkMode": {
+      "headline": "Theme",
+      "dark": "Dark",
+      "light": "Light"
     }
   },
   "uk-UA": {
@@ -86,6 +139,11 @@
       "english": "English",
       "ukrainian": "Українська",
       "russian": "Русский"
+    },
+    "darkMode": {
+      "headline": "Тема",
+      "dark": "Темна",
+      "light": "Світла"
     }
   },
   "ru-RU": {
@@ -98,6 +156,11 @@
       "english": "English",
       "ukrainian": "Українська",
       "russian": "Русский"
+    },
+    "darkMode": {
+      "headline": "Тема",
+      "dark": "Тёмная",
+      "light": "Светлая"
     }
   }
 }
