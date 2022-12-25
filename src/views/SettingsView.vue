@@ -38,7 +38,7 @@
         >
           {{ t("darkMode.headline") }}
         </h2>
-        <form class="flex gap-8">
+        <form class="flex gap-4">
           <div>
             <input
               id="dark-radio"
