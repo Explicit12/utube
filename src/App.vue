@@ -54,6 +54,7 @@
   watch(isMenuOpen, toggleBodySrollLock);
   watch(userLocale, setLocales);
 
+  // need this to hinde menu on mobile after page update
   router.afterEach(() => {
     if (!isLgAndGreater.value) isMenuOpen.value = false;
   });
