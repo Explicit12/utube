@@ -31,13 +31,13 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "error": "Error"
   },
-  "uk-UA": {
+  "uk": {
     "error": "Помилка"
   },
-  "ru-RU": {
+  "ru": {
     "error": "Ошибка"
   }
 }

@@ -65,17 +65,17 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "headline": "Discription",
     "showMore": "More",
     "showLess": "Less"
   },
-  "uk-UA": {
+  "uk": {
     "headline": "Опис",
     "showMore": "Більше",
     "showLess": "Менше"
   },
-  "ru-RU": {
+  "ru": {
     "headline": "Описание",
     "showMore": "Больше",
     "showLess": "Меньше"

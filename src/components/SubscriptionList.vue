@@ -130,17 +130,17 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "button-more": "More",
     "button-less": "Less",
     "channel-avatar-alt": "avatar"
   },
-  "uk-UA": {
+  "uk": {
     "button-more": "Більше",
     "button-less": "Менше",
     "channel-avatar-alt": "аватар"
   },
-  "ru-RU": {
+  "ru": {
     "button-more": "Ещё",
     "button-less": "Меньше",
     "channel-avatar-alt": "аватар"

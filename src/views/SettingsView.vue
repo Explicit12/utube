@@ -86,13 +86,13 @@
           v-model="localeSelect"
           class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-base text-gray-900 dark:bg-gray-900 dark:text-white"
         >
-          <option value="en-US" :selected="userLocale === 'en-US'">
+          <option value="en" :selected="userLocale === 'en-US'">
             {{ t("language.english") }}
           </option>
-          <option value="uk-UA" :selected="userLocale === 'uk-UA'">
+          <option value="uk" :selected="userLocale === 'uk-UA'">
             {{ t("language.ukrainian") }}
           </option>
-          <option value="ru-RU" :selected="userLocale === 'ru-RU'">
+          <option value="ru" :selected="userLocale === 'ru-RU'">
             {{ t("language.russian") }}
           </option>
         </select>
@@ -112,7 +112,7 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "headline": "Settings",
     "subscriptions": {
       "headline": "Subscriptions"
@@ -129,7 +129,7 @@
       "light": "Light"
     }
   },
-  "uk-UA": {
+  "uk": {
     "headline": "Налаштування",
     "subscriptions": {
       "headline": "Підписки"
@@ -146,7 +146,7 @@
       "light": "Світла"
     }
   },
-  "ru-RU": {
+  "ru": {
     "headline": "Настройки",
     "subscriptions": {
       "headline": "Подписки"

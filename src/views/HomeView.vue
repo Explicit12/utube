@@ -43,13 +43,13 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "headline": "Popular"
   },
-  "uk-UA": {
+  "uk": {
     "headline": "Популярне"
   },
-  "ru-RU": {
+  "ru": {
     "headline": "Популярное"
   }
 }

@@ -254,7 +254,7 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "views": "views",
     "recommendations": {
       "headline": "Recommended"
@@ -263,7 +263,7 @@
       "headline": "Comments"
     }
   },
-  "uk-UA": {
+  "uk": {
     "views": "переглядів",
     "recommendations": {
       "headline": "Рекомендації"
@@ -272,7 +272,7 @@
       "headline": "Коментарі"
     }
   },
-  "ru-RU": {
+  "ru": {
     "views": "просмотров",
     "recommendations": {
       "headline": "Рекомендации"

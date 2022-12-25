@@ -89,7 +89,7 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "navigation": {
       "headline": "Navigation",
       "links": {
@@ -105,7 +105,7 @@
       "github": "GitHub"
     }
   },
-  "uk-UA": {
+  "uk": {
     "navigation": {
       "headline": "Навігація",
       "links": {
@@ -121,7 +121,7 @@
       "github": "GitHub"
     }
   },
-  "ru-RU": {
+  "ru": {
     "navigation": {
       "headline": "Навигация",
       "links": {

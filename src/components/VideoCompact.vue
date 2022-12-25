@@ -114,13 +114,13 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "views": "views"
   },
-  "uk-UA": {
+  "uk": {
     "views": "переглядів"
   },
-  "ru-RU": {
+  "ru": {
     "views": "просмотров"
   }
 }

@@ -111,19 +111,19 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "alt-avatar": "Channel avatar",
     "showMore": "More",
     "showLess": "Less",
     "channel-avatar-alt": "avatar"
   },
-  "uk-UA": {
+  "uk": {
     "alt-avatar": "Аватар каналу",
     "showMore": "Більше",
     "showLess": "Менше",
     "channel-avatar-alt": "аватар"
   },
-  "ru-RU": {
+  "ru": {
     "alt-avatar": "Аватар канала",
     "showMore": "Больше",
     "showLess": "Меньше",

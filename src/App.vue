@@ -37,17 +37,7 @@
 
   function setLocales(): void {
     locale.value = userLocale.value;
-    switch (userLocale.value) {
-      case "uk-UA":
-        dayjs.locale("uk");
-        break;
-      case "en-US":
-        dayjs.locale("en");
-        break;
-      case "ru-RU":
-        dayjs.locale("ru");
-        break;
-    }
+    dayjs.locale(userLocale.value);
   }
 
   watch(isLgAndGreater, toggleBodySrollLock);

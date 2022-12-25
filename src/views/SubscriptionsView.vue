@@ -76,13 +76,13 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "headline": "Sbubscriptions"
   },
-  "uk-UA": {
+  "uk": {
     "headline": "Підписки"
   },
-  "ru-RU": {
+  "ru": {
     "headline": "Подписки"
   }
 }

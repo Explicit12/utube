@@ -34,15 +34,15 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "claim": "Claim",
     "cancel": "Cancel"
   },
-  "uk-UA": {
+  "uk": {
     "claim": "Підтвердити",
     "cancel": "Скасувати"
   },
-  "ru-RU": {
+  "ru": {
     "claim": "Подтвердить",
     "cancel": "Отменить"
   }

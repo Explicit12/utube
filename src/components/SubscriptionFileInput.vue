@@ -77,15 +77,15 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "drop-zone": "Drop subscriptions.csv file here",
     "file-input-label": "Upload file"
   },
-  "uk-UA": {
+  "uk": {
     "drop-zone": "Перетягніть сюди subscriptions.csv файл",
     "file-input-label": "Upload file"
   },
-  "ru-RU": {
+  "ru": {
     "drop-zone": "Перетащите subscriptions.csv файл сюда",
     "file-input-label": "Upload file"
   }

@@ -46,9 +46,9 @@
   };
 
   const plyrLocales = computed(() => {
-    if (userLocale.value === "en-US") return {};
-    if (userLocale.value === "uk-UA") return uaPlyr;
-    if (userLocale.value === "ru-RU") return ruPlyr;
+    if (userLocale.value === "en") return {};
+    if (userLocale.value === "uk") return uaPlyr;
+    if (userLocale.value === "ru") return ruPlyr;
 
     return {};
   });

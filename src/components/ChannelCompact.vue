@@ -126,21 +126,21 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "alt-avatar": "Channel avatar",
     "subscriptions": "Subs",
     "subscribe": "Subscribe",
     "unsubscribe": "Unsubscribe",
     "unsubscribeFrom": "Unsubscribe from"
   },
-  "uk-UA": {
+  "uk": {
     "alt-avatar": "Аватар каналу",
     "subscriptions": "Підписчиків",
     "subscribe": "Підписатися",
     "unsubscribe": "Відписатися",
     "unsubscribeFrom": "Відписатися вiд"
   },
-  "ru-RU": {
+  "ru": {
     "alt-avatar": "Аватар канала",
     "subscriptions": "Подписчиков",
     "subscribe": "Подписаться",

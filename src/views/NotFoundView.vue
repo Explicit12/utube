@@ -14,13 +14,13 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "error": "Page not found"
   },
-  "uk-UA": {
+  "uk": {
     "error": "Сторінка не знайдена"
   },
-  "ru-RU": {
+  "ru": {
     "error": "Страница не найдена"
   }
 }

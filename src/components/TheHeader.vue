@@ -119,21 +119,21 @@
 
 <i18n lang="json">
 {
-  "en-US": {
+  "en": {
     "menu-input-label": "Search field",
     "search-placeholder": "I'm searching...",
     "menu-button-label": "Navigation",
     "main-link-label": "The main",
     "settings-link-label": "To settings"
   },
-  "uk-UA": {
+  "uk": {
     "menu-input-label": "Поле пошуку",
     "search-placeholder": "Я шукаю...",
     "menu-button-label": "Навігація",
     "main-link-label": "Головна",
     "settings-link-label": "Налаштування"
   },
-  "ru-RU": {
+  "ru": {
     "menu-input-label": "Поле поиска",
     "search-placeholder": "Я ищу...",
     "menu-button-label": "Навигация",
