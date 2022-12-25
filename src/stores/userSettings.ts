@@ -8,14 +8,12 @@ import {
 } from "@vueuse/core";
 
 export const useUserSettings = defineStore("userSettings", () => {
-  const isMenuOpen = useLocalStorage(
-    "isMenuOpen",
-    useBreakpoints(breakpointsTailwind).greaterOrEqual("lg"),
-  );
-  const userLocale = useLocalStorage(
-    "userLocale",
-    usePreferredLanguages().value[0] || "en",
-  );
+  const usePreferredLanguage = usePreferredLanguages().value[0];
+  const greaterOrEqualLg =
+    useBreakpoints(breakpointsTailwind).greaterOrEqual("lg");
+
+  const isMenuOpen = useLocalStorage("isMenuOpen", greaterOrEqualLg);
+  const userLocale = useLocalStorage("userLocale", usePreferredLanguage);
   const isDarkMode = useLocalStorage("darkMode", usePreferredDark());
 
   function toggleMenu(): void {
