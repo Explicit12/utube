@@ -91,12 +91,12 @@
 <style>
   .slide-in-enter-active,
   .slide-in-leave-active {
-    transition: 300ms ease-out;
+    transition: 250ms linear;
   }
 
   .slide-in-enter-from,
   .slide-in-leave-to {
     transform: translateX(-100%);
-    transition: 300ms ease-out;
+    transition: 250ms linear;
   }
 </style>
