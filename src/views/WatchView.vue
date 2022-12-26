@@ -9,7 +9,7 @@
   import ChannelCompact from "@/components/ChannelCompact.vue";
   import ChannelCompactSkeleton from "@/components/skeletonLoaders/ChannelCompactSkeleton.vue";
   import VideoDiscriptionSkeletonLoader from "@/components/skeletonLoaders/VideoDiscriptionSkeletonLoader.vue";
-  import ThePlayer from "@/components/ThePlayer.vue";
+  import ThePlayer from "@/components/player/ThePlayer.vue";
 
   import formatNumbers from "@/helpers/formatNumbers";
 
