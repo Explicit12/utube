@@ -15,45 +15,51 @@
   const initialAmoutOfChannels = 6;
 
   const userData = useUserData();
-  const channels: Ref<Set<ChannelInfo>> = ref(new Set());
+  const channels: Ref<ChannelInfo[]> = ref([]);
   const amoutOfChannelsToShow = ref(initialAmoutOfChannels);
 
   const { subscriptions } = storeToRefs(userData);
 
-  const channelsToShow = computed<Set<ChannelInfo>>(
-    () => new Set([...channels.value].slice(0, amoutOfChannelsToShow.value)),
+  const channelsToShow = computed<ChannelInfo[]>(() =>
+    channels.value.slice(0, amoutOfChannelsToShow.value),
   );
 
   const { t } = useI18n();
 
+  function isChennelInChennels(
+    newChannel: ChannelInfo,
+    channels: ChannelInfo[],
+  ): boolean {
+    return Boolean(
+      channels.find((channel) => channel.authorId === newChannel.authorId),
+    );
+  }
+
   watch(
     () => subscriptions.value.size,
     async () => {
-      const deletedChannelId: ChannelId | undefined = [...channels.value].find(
+      const deletedChannel: ChannelInfo | undefined = channels.value.find(
         (channel) => !subscriptions.value.has(channel.authorId),
-      )?.authorId;
-
-      const addedChannelsId: ChannelId[] = [...subscriptions.value].filter(
-        (id) => ![...channels.value].find((channel) => channel.authorId === id),
       );
 
-      if (deletedChannelId) {
-        channels.value = new Set(
-          [...channels.value].filter(
-            (channel) => channel.authorId !== deletedChannelId,
-          ),
+      const addedChannelsId: ChannelId[] = [...subscriptions.value].filter(
+        (id) => !channels.value.find((channel) => channel.authorId === id),
+      );
+
+      if (deletedChannel && deletedChannel.authorId) {
+        channels.value = channels.value.filter(
+          (channel) => channel.authorId !== deletedChannel.authorId,
         );
-      } else if (addedChannelsId.length) {
+      }
+
+      if (addedChannelsId.length) {
         const addedChannels: Awaited<ChannelInfo[]> = await Promise.all(
           addedChannelsId.map((id) => getChannelInfo(id)),
         );
+
         addedChannels.forEach((newChannel) => {
-          if (
-            ![...channels.value].find(
-              (channel) => channel.authorId === newChannel.authorId,
-            )
-          ) {
-            channels.value.add(newChannel);
+          if (isChennelInChennels(newChannel, channels.value)) {
+            channels.value.push(newChannel);
           }
         });
       }
@@ -63,7 +69,7 @@
   onBeforeMount(() => {
     Promise.all([...subscriptions.value].map(getChannelInfo)).then(
       (channelsInfo) => {
-        channels.value = new Set(channelsInfo);
+        channels.value = channelsInfo;
       },
     );
   });
@@ -71,7 +77,7 @@
 
 <template>
   <ul class="space-y-2 pt-6">
-    <template v-if="channels.size">
+    <template v-if="channels.length">
       <li
         v-for="channel in channelsToShow"
         :key="channel.author"
@@ -110,7 +116,7 @@
     </template>
   </ul>
   <TheButton
-    v-if="channels.size && channels.size > initialAmoutOfChannels"
+    v-if="channels.length && channels.length > initialAmoutOfChannels"
     type="secondary"
     class="mt-4 w-full"
     @click="

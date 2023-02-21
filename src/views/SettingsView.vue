@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
   import { storeToRefs } from "pinia";
-  import { ref, watch } from "vue";
 
   import SubscriptionFileInput from "@/components/SubscriptionFileInput.vue";
 
@@ -10,16 +9,6 @@
   const { t } = useI18n();
   const userSettings = useUserSettings();
   const { userLocale, isDarkMode } = storeToRefs(userSettings);
-  const localeSelect = ref(userLocale.value);
-  const darkModeForm = ref(isDarkMode.value);
-
-  watch(localeSelect, (newValue) => {
-    userLocale.value = newValue;
-  });
-
-  watch(darkModeForm, (newValue) => {
-    isDarkMode.value = newValue;
-  });
 </script>
 
 <template>
@@ -42,7 +31,7 @@
           <div>
             <input
               id="dark-radio"
-              v-model="darkModeForm"
+              v-model="isDarkMode"
               class="peer hidden"
               type="radio"
               name="dark-radio"
@@ -58,7 +47,7 @@
           <div>
             <input
               id="light-radio"
-              v-model="darkModeForm"
+              v-model="isDarkMode"
               class="peer hidden"
               type="radio"
               name="light-radio"
@@ -83,7 +72,7 @@
         </label>
         <select
           id="locales"
-          v-model="localeSelect"
+          v-model="userLocale"
           class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-base text-gray-900 dark:bg-gray-900 dark:text-white"
         >
           <option value="en" :selected="userLocale === 'en-US'">

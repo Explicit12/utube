@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import { usePreferredDark } from "@vueuse/core";
   import { computed } from "vue";
+  import { useUserSettings } from "@/stores/userSettings";
+  import { storeToRefs } from "pinia";
 
-  const isDark = usePreferredDark();
+  const userSettings = useUserSettings();
+  const { isDarkMode } = storeToRefs(userSettings);
 
   const tubeFillColor = computed<"white" | "#111827">(() =>
-    isDark ? "white" : "#111827",
+    isDarkMode.value ? "white" : "#111827",
   );
 </script>
 

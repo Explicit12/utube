@@ -26,7 +26,10 @@
       if (file && file[0].type === "text/csv") {
         fileError.value = undefined;
         const channelsIds = await CSVtoJSON(file[0]);
-        channelsIds?.forEach((id) => subscribeToChannel(id["Channel Id"]));
+
+        if (Array.isArray(channelsIds)) {
+          channelsIds.forEach((id) => subscribeToChannel(id["Channel Id"]));
+        }
       } else {
         throw new Error("Wrong file type");
       }
@@ -68,7 +71,7 @@
     <input
       id="file-input"
       type="file"
-      class="mt-4 block w-full border-white font-sans text-base font-normal text-gray-900 file:block file:w-full file:rounded-lg file:border-2 file:border-transparent file:bg-blue-50 file:py-2 file:px-4 file:text-white hover:cursor-pointer file:hover:cursor-pointer dark:text-white dark:file:bg-gray-800"
+      class="mt-4 block w-full border-white font-sans text-base font-normal text-gray-900 file:block file:w-full file:rounded-lg file:border-2 file:border-transparent file:bg-blue-50 file:py-2 file:px-4 file:text-gray-900 hover:cursor-pointer file:hover:cursor-pointer dark:text-white dark:file:bg-gray-800 file:dark:text-white"
       @change="importInputHandler"
     />
     <TheError v-if="fileError" :message="fileError.message" class="h-fit p-2" />
