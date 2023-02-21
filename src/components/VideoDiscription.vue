@@ -50,7 +50,7 @@
     <div
       ref="discriptionRef"
       :class="{ 'line-clamp-3': !showMore }"
-      class="pt-2"
+      class="break-words pt-2"
       v-html="styledDisctiptionHtml"
     />
     <button
