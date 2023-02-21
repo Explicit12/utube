@@ -4,11 +4,13 @@ import {
   usePreferredDark,
   useBreakpoints,
   breakpointsTailwind,
-  usePreferredLanguages,
 } from "@vueuse/core";
 
 export const useUserSettings = defineStore("userSettings", () => {
-  const usePreferredLanguage = usePreferredLanguages().value[0];
+  const usePreferredLanguage = window.navigator.language
+    .toLocaleLowerCase()
+    .substring(0, 2);
+
   const greaterOrEqualLg =
     useBreakpoints(breakpointsTailwind).greaterOrEqual("lg");
 
