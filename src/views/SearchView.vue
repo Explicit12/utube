@@ -74,37 +74,36 @@
 </script>
 
 <template>
-  <main class="px-4 lg:px-16">
-    <div
-      v-if="!requestError"
-      class="mx-auto flex max-w-screen-xl flex-col justify-center"
-    >
-      <div v-if="channels.length" class="flex flex-col gap-4 pt-8">
-        <RouterLink
-          v-for="channel in channelsToShow"
-          :key="channel.authorId"
-          :to="{ name: 'channel', params: { id: channel.authorId } }"
-        >
-          <ChannelCompact
-            :name="channel.author"
-            :subs="channel.subCount ? channel.subCount : 0"
-            :thumbnail="channel.authorThumbnails"
-            :channels-id="channel.authorId"
-          />
-        </RouterLink>
-        <hr />
+  <main>
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-16">
+      <div v-if="!requestError" class="flex flex-col justify-center">
+        <div v-if="channels.length" class="flex flex-col gap-4 pt-8">
+          <RouterLink
+            v-for="channel in channelsToShow"
+            :key="channel.authorId"
+            :to="{ name: 'channel', params: { id: channel.authorId } }"
+          >
+            <ChannelCompact
+              :name="channel.author"
+              :subs="channel.subCount ? channel.subCount : 0"
+              :thumbnail="channel.authorThumbnails"
+              :channels-id="channel.authorId"
+            />
+          </RouterLink>
+          <hr />
+        </div>
+        <div v-else class="flex flex-col gap-4 pt-8">
+          <ChannelCompactSkeleton v-for="n in AmoutChannelstoShow" :key="n" />
+          <hr class="border-t-2 dark:border-gray-400" />
+        </div>
+        <VideosBlock
+          :videos="fullInfoVideos"
+          :show-per-view="10"
+          :horizontal-layout="true"
+          class="py-4"
+        />
       </div>
-      <div v-else class="flex flex-col gap-4 pt-8">
-        <ChannelCompactSkeleton v-for="n in AmoutChannelstoShow" :key="n" />
-        <hr class="border-t-2 dark:border-gray-400" />
-      </div>
-      <VideosBlock
-        :videos="fullInfoVideos"
-        :show-per-view="10"
-        :horizontal-layout="true"
-        class="py-4"
-      />
+      <TheError v-else :message="requestError.message" />
     </div>
-    <TheError v-else :message="requestError.message" />
   </main>
 </template>

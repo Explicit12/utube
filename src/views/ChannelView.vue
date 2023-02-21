@@ -80,63 +80,65 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center gap-4 px-4 lg:px-16">
-    <template v-if="channel && !dataRequestError">
-      <div v-if="!imageError" class="relative">
-        <img
-          :src="channel.authorBanners[0].url"
-          alt="ChannelThumbnail"
-          :width="channel.authorBanners[0].width"
-          :height="channel.authorBanners[0].height"
-          class="mt-8 rounded-lg object-cover"
+  <main>
+    <div class="flex flex-col justify-center gap-4 px-4 lg:px-16">
+      <template v-if="channel && !dataRequestError">
+        <div v-if="!imageError" class="relative">
+          <img
+            :src="channel.authorBanners[0].url"
+            alt="ChannelThumbnail"
+            :width="channel.authorBanners[0].width"
+            :height="channel.authorBanners[0].height"
+            class="mt-8 rounded-lg object-cover"
+          />
+          <img
+            :src="channel.authorBanners[0].url"
+            alt="ChannelThumbnail"
+            :width="channel.authorBanners[0].width"
+            :height="channel.authorBanners[0].height"
+            class="absolute top-8 -z-10 max-h-[249px] w-full max-w-screen-2xl animate-pulse rounded-lg opacity-75 blur-2xl"
+          />
+        </div>
+        <div
+          v-else
+          class="mt-8 flex h-screen max-h-[170px] w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800"
+        >
+          <IconImageArea
+            class="text-gray-400 dark:text-gray-300"
+            width="32"
+            height="32"
+          />
+        </div>
+        <h1>
+          <ChannelCompact
+            :name="channel.author"
+            :channels-id="channel.authorId"
+            :subs="channel.subCount"
+            :thumbnail="channel.authorThumbnails"
+            class="pt-8"
+          />
+        </h1>
+      </template>
+      <template v-else-if="!channel && !dataRequestError">
+        <div
+          class="mt-8 h-screen max-h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
         />
-        <img
-          :src="channel.authorBanners[0].url"
-          alt="ChannelThumbnail"
-          :width="channel.authorBanners[0].width"
-          :height="channel.authorBanners[0].height"
-          class="absolute top-8 -z-10 max-h-[249px] w-full max-w-screen-2xl animate-pulse rounded-lg opacity-75 blur-2xl"
-        />
-      </div>
-      <div
-        v-else
-        class="mt-8 flex h-screen max-h-[170px] w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800"
-      >
-        <IconImageArea
-          class="text-gray-400 dark:text-gray-300"
-          width="32"
-          height="32"
-        />
-      </div>
-      <h1>
-        <ChannelCompact
-          :name="channel.author"
-          :channels-id="channel.authorId"
-          :subs="channel.subCount"
-          :thumbnail="channel.authorThumbnails"
-          class="pt-8"
-        />
-      </h1>
-    </template>
-    <template v-else-if="!channel && !dataRequestError">
-      <div
-        class="mt-8 h-screen max-h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
+        <ChannelCompactSkeletonVue class="pt-8" />
+      </template>
+      <TheError
+        v-else-if="dataRequestError"
+        :message="dataRequestError.message"
+        class="items-center"
       />
-      <ChannelCompactSkeletonVue class="pt-8" />
-    </template>
-    <TheError
-      v-else-if="dataRequestError"
-      :message="dataRequestError.message"
-      class="items-center"
-    />
-    <hr class="border-t-2 dark:border-gray-400" />
-    <VideosBlock
-      v-if="!dataRequestError"
-      :videos="videos"
-      :query="id"
-      :show-per-view="20"
-      class="py-4"
-    />
-    <TheError v-else :message="dataRequestError.message" />
+      <hr class="border-t-2 dark:border-gray-400" />
+      <VideosBlock
+        v-if="!dataRequestError"
+        :videos="videos"
+        :query="id"
+        :show-per-view="20"
+        class="py-4"
+      />
+      <TheError v-else :message="dataRequestError.message" />
+    </div>
   </main>
 </template>

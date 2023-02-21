@@ -137,118 +137,124 @@
 </script>
 
 <template>
-  <main class="flex flex-col gap-6 px-4 lg:px-16 2xl:flex-row">
-    <template v-if="!requestError">
-      <div class="flex max-w-[1240px] basis-3/4 flex-col gap-4">
-        <div :key="watchQuery" class="mt-8">
-          <ThePlayer
-            v-if="videoFormatStreams.length"
-            :format-streams="videoFormatStreams"
-          />
-          <div
-            v-else
-            class="aspect-video animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
-          />
-        </div>
+  <main>
+    <div class="flex flex-col justify-center gap-6 px-4 lg:px-16 2xl:flex-row">
+      <template v-if="!requestError">
+        <div class="flex max-w-[1240px] basis-3/4 flex-col gap-4">
+          <div :key="watchQuery" class="mt-8">
+            <ThePlayer
+              v-if="videoFormatStreams.length"
+              :format-streams="videoFormatStreams"
+            />
+            <div
+              v-else
+              class="aspect-video animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
+            />
+          </div>
 
-        <div v-if="watchVideo">
-          <h1
-            class="font-sans text-lg font-bold text-gray-900 line-clamp-1 dark:text-white"
-          >
-            {{ watchVideo.title }}
-          </h1>
-          <div class="flex justify-between pt-2">
-            <span
-              class="font-sans text-base font-normal text-gray-500 dark:text-gray-300"
+          <div v-if="watchVideo">
+            <h1
+              class="font-sans text-lg font-bold text-gray-900 line-clamp-1 dark:text-white"
             >
-              {{ formatedViews }} {{ t("views") }}
-            </span>
-            <div class="flex gap-4">
+              {{ watchVideo.title }}
+            </h1>
+            <div class="flex justify-between pt-2">
               <span
-                class="flex items-center gap-2 font-sans text-base font-normal text-gray-500 dark:text-gray-300"
+                class="font-sans text-base font-normal text-gray-500 dark:text-gray-300"
               >
-                {{ formatedLikes }}
-                <span class="rotate-180">
-                  <IconThumbDown width="24" height="24" clss="text-gray-400" />
+                {{ formatedViews }} {{ t("views") }}
+              </span>
+              <div class="flex gap-4">
+                <span
+                  class="flex items-center gap-2 font-sans text-base font-normal text-gray-500 dark:text-gray-300"
+                >
+                  {{ formatedLikes }}
+                  <span class="rotate-180">
+                    <IconThumbDown
+                      width="24"
+                      height="24"
+                      clss="text-gray-400"
+                    />
+                  </span>
                 </span>
-              </span>
-              <span
-                class="flex items-center gap-2 font-sans text-base font-normal text-gray-500 dark:text-gray-300"
-              >
-                <IconThumbDown width="24" height="24" clss="text-gray-900" />
-              </span>
+                <span
+                  class="flex items-center gap-2 font-sans text-base font-normal text-gray-500 dark:text-gray-300"
+                >
+                  <IconThumbDown width="24" height="24" clss="text-gray-900" />
+                </span>
+              </div>
             </div>
           </div>
+          <div v-else>
+            <div class="h-4 w-4/5 rounded-sm bg-gray-400 dark:bg-gray-500" />
+          </div>
+
+          <hr class="border-t-2 dark:border-gray-400" />
+          <RouterLink
+            v-if="authorInfo"
+            :to="{ name: 'channel', params: { id: authorInfo.authorId } }"
+          >
+            <ChannelCompact
+              :name="authorInfo.author"
+              :subs="authorInfo.subCount"
+              :channels-id="authorInfo.authorId"
+              :thumbnail="authorInfo.authorThumbnails"
+            />
+          </RouterLink>
+          <ChannelCompactSkeleton v-else />
+
+          <hr class="border-t-2 dark:border-gray-400" />
+
+          <template v-if="videoDiscription !== '<p></p>'">
+            <VideoDiscription
+              v-if="videoDiscription"
+              :discription-html="videoDiscription"
+            />
+            <VideoDiscriptionSkeletonLoader v-else />
+            <hr />
+          </template>
+
+          <div v-if="videoComments.length" class="flex flex-col gap-4 pb-8">
+            <h2
+              class="pt-8 font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
+            >
+              {{ t("comments.headline") }}
+            </h2>
+            <TheComment
+              v-for="comment in videoComments"
+              :key="comment.commentId"
+              :author="{
+                name: comment.author,
+                authorId: comment.authorId,
+                thumbnails: comment.authorThumbnails,
+              }"
+              :content="comment.content"
+              :published="comment.published"
+            />
+          </div>
         </div>
-        <div v-else>
-          <div class="h-4 w-4/5 rounded-sm bg-gray-400 dark:bg-gray-500" />
-        </div>
 
-        <hr class="border-t-2 dark:border-gray-400" />
-        <RouterLink
-          v-if="authorInfo"
-          :to="{ name: 'channel', params: { id: authorInfo.authorId } }"
-        >
-          <ChannelCompact
-            :name="authorInfo.author"
-            :subs="authorInfo.subCount"
-            :channels-id="authorInfo.authorId"
-            :thumbnail="authorInfo.authorThumbnails"
-          />
-        </RouterLink>
-        <ChannelCompactSkeleton v-else />
-
-        <hr class="border-t-2 dark:border-gray-400" />
-
-        <template v-if="videoDiscription !== '<p></p>'">
-          <VideoDiscription
-            v-if="videoDiscription"
-            :discription-html="videoDiscription"
-          />
-          <VideoDiscriptionSkeletonLoader v-else />
-          <hr />
-        </template>
-
-        <div v-if="videoComments.length" class="flex flex-col gap-4 pb-8">
+        <div class="basis-1/4">
           <h2
             class="pt-8 font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
           >
-            {{ t("comments.headline") }}
+            {{ t("recommendations.headline") }}
           </h2>
-          <TheComment
-            v-for="comment in videoComments"
-            :key="comment.commentId"
-            :author="{
-              name: comment.author,
-              authorId: comment.authorId,
-              thumbnails: comment.authorThumbnails,
-            }"
-            :content="comment.content"
-            :published="comment.published"
+          <VideosBlock
+            class="py-2"
+            :show-per-view="10"
+            :videos="recommendedVideos"
+            :horizontal-layout="true"
           />
         </div>
-      </div>
+      </template>
 
-      <div class="basis-1/4">
-        <h2
-          class="pt-8 font-sans text-xl font-normal uppercase text-gray-500 dark:text-gray-300"
-        >
-          {{ t("recommendations.headline") }}
-        </h2>
-        <VideosBlock
-          class="py-2"
-          :show-per-view="10"
-          :videos="recommendedVideos"
-          :horizontal-layout="true"
-        />
-      </div>
-    </template>
-
-    <TheError
-      v-else
-      :message="requestError.message"
-      class="col-span-full row-span-full"
-    />
+      <TheError
+        v-else
+        :message="requestError.message"
+        class="col-span-full row-span-full"
+      />
+    </div>
   </main>
 </template>
 

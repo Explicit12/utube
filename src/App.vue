@@ -72,9 +72,10 @@
       @click="toggleMenu"
     />
 
+    <!-- :class="{ 'lg:pl-[318px]': isMenuOpen }" -->
     <RouterView
-      :class="{ 'lg:pl-[318px]': isMenuOpen }"
-      class="relative my-0 mx-auto w-full max-w-[1920px] pt-[58px] transition-[padding-left] duration-300 dark:bg-gray-900"
+      :class="{ 'lg:pl-[252px]': isMenuOpen }"
+      class="my-0 min-h-screen w-full pt-[58px] transition-[padding-left] duration-300 dark:bg-gray-900"
     />
   </div>
 </template>

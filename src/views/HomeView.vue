@@ -28,16 +28,18 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center px-4 lg:px-16">
-    <template v-if="!requestError">
-      <h1
-        class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-white"
-      >
-        {{ t("headline") }}
-      </h1>
-      <VideosBlock :videos="videos" :show-per-view="20" class="py-4" />
-    </template>
-    <TheError v-else :message="requestError.message" />
+  <main>
+    <div class="flex flex-col justify-center px-4 lg:px-16">
+      <template v-if="!requestError">
+        <h1
+          class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-white"
+        >
+          {{ t("headline") }}
+        </h1>
+        <VideosBlock :videos="videos" :show-per-view="20" class="py-4" />
+      </template>
+      <TheError v-else :message="requestError.message" />
+    </div>
   </main>
 </template>
 

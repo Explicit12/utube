@@ -12,8 +12,8 @@
 </script>
 
 <template>
-  <main class="px-4 pb-[58px] lg:px-16">
-    <div class="mx-auto h-screen min-h-full max-w-screen-xl">
+  <main>
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-16">
       <h1
         class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-gray-300"
       >

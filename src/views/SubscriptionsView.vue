@@ -59,18 +59,22 @@
 </script>
 
 <template>
-  <main class="flex flex-col justify-center px-4 lg:px-16">
-    <h1 class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-white">
-      {{ t("headline") }}
-    </h1>
-    <VideosBlockVue
-      v-if="!requestError"
-      :videos="videos"
-      :show-per-view="20"
-      sort-by-time
-      class="py-4"
-    />
-    <TheError v-else :message="requestError.message" />
+  <main>
+    <div class="flex flex-col justify-center px-4 lg:px-16">
+      <h1
+        class="pt-8 font-sans text-2xl font-bold text-gray-900 dark:text-white"
+      >
+        {{ t("headline") }}
+      </h1>
+      <VideosBlockVue
+        v-if="!requestError"
+        :videos="videos"
+        :show-per-view="20"
+        sort-by-time
+        class="py-4"
+      />
+      <TheError v-else :message="requestError.message" />
+    </div>
   </main>
 </template>
 
