@@ -58,7 +58,7 @@
         );
 
         addedChannels.forEach((newChannel) => {
-          if (isChennelInChennels(newChannel, channels.value)) {
+          if (!isChennelInChennels(newChannel, channels.value)) {
             channels.value.push(newChannel);
           }
         });
