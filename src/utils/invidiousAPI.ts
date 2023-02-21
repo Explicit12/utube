@@ -63,22 +63,11 @@ export interface Comment {
   commentId: string;
 }
 
-const invidiousURL = "https://invidious.slipfox.xyz";
-
-// needed to fetch viewsCount, likesCount in getVideo function.
-// Main URL has some bug and always returns zeroes in this fileds.
-// issue: https://github.com/iv-org/invidious/issues/3425
-const deInvidiousURL = "https://invidious.dhusch.de";
+// In some reason API doesn't return view count for video. It's considered as API bug.
+// You can change api endpoint in vite.config.js
 
 const invidious = axios.create({
-  baseURL: invidiousURL + "/api/v1",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-const invidiousDe = axios.create({
-  baseURL: deInvidiousURL + "/api/v1",
+  baseURL: "/invidiousAPI/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -133,7 +122,7 @@ export async function getChannelVideos(videoId: VideoId): Promise<VideoInfo[]> {
 }
 
 export async function getVideo(videoId: VideoId): Promise<VideoInfo> {
-  const response = await invidiousDe.get("/videos/" + videoId, {
+  const response = await invidious.get("/videos/" + videoId, {
     params: {
       fields:
         "title,author,authorId,videoId,viewCount,published,videoThumbnails,likeCount",

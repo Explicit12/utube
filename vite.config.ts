@@ -12,4 +12,14 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      '/invidiousAPI': {
+        target: 'https://invidious.slipfox.xyz',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/invidiousAPI/, '')
+      }
+    }
+  },
+  base: "/utube/"
 });
