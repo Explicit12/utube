@@ -27,17 +27,17 @@
   const channel: Ref<ChannelInfo | undefined> = ref();
   const dataRequestError: Ref<AxiosError | undefined> = ref();
   const videos: Ref<VideoInfo[]> = ref([]);
-  const imageError: Ref<Error | undefined> = ref();
+  const imageNotFound: Ref<Error | undefined> = ref();
   const router = useRouter();
 
   async function getData(id: ChannelId): Promise<void> {
     try {
       const channelInfo = await getChannelInfo(id);
       if (!channelInfo.authorBanners.length) {
-        imageError.value = new Error("No banner image");
+        imageNotFound.value = new Error("No banner image");
       } else {
         pingImage(channelInfo.authorBanners[0].url).catch(
-          (err) => (imageError.value = err),
+          (err) => (imageNotFound.value = err),
         );
       }
 
@@ -83,7 +83,7 @@
   <main>
     <div class="flex flex-col justify-center gap-4 px-4 lg:px-16">
       <template v-if="channel && !dataRequestError">
-        <div v-if="!imageError" class="relative">
+        <div v-if="!imageNotFound" class="relative">
           <img
             :src="channel.authorBanners[0].url"
             alt="ChannelThumbnail"

@@ -30,7 +30,7 @@
   const { subscribeToChannel, unsubscribeFromChannel } = userData;
   const { subscriptions } = storeToRefs(userData);
 
-  const imageError = ref(false);
+  const imageNotFound = ref(false);
   const promptModal = ref(false);
   const isBodyScrollLocked = useScrollLock(document.body);
 
@@ -45,7 +45,9 @@
   onBeforeMount(() => {
     if (props.thumbnail) {
       // Ping image url to check whether it exists or not
-      pingImage(props.thumbnail[0].url).catch(() => (imageError.value = true));
+      pingImage(props.thumbnail[0].url).catch(
+        () => (imageNotFound.value = true),
+      );
     }
   });
 </script>
@@ -54,7 +56,7 @@
   <div class="flex justify-between gap-4">
     <div class="aspect-square max-h-[56px] min-w-[56px] max-w-[56px]">
       <img
-        v-if="thumbnail && !imageError"
+        v-if="thumbnail && !imageNotFound"
         :src="thumbnail[3].url"
         decoding="async"
         referrerpolicy="no-referrer"

@@ -25,7 +25,7 @@
     published: number;
   }>();
 
-  const imageError = ref(false);
+  const imageNotFound = ref(false);
   const { t } = useI18n();
   const showMore = ref(false);
   const commentContentRef: Ref<HTMLParagraphElement | undefined> = ref();
@@ -46,7 +46,7 @@
     if (props.author.thumbnails[0].url) {
       // Ping image url to check whether it exists or not
       pingImage(props.author.thumbnails[0].url).catch(
-        () => (imageError.value = true),
+        () => (imageNotFound.value = true),
       );
     }
   });
@@ -56,7 +56,7 @@
   <div class="flex gap-4">
     <div class="aspect-square max-h-[36px] min-w-[36px] max-w-[36px]">
       <img
-        v-if="author.thumbnails[2].url && !imageError"
+        v-if="author.thumbnails[2].url && !imageNotFound"
         :src="author.thumbnails[2].url"
         decoding="async"
         referrerpolicy="no-referrer"
