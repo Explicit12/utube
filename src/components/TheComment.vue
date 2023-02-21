@@ -8,7 +8,7 @@
   import relativeTime from "dayjs/plugin/relativeTime";
 
   import { pingImage } from "@/utils/invidiousAPI";
-  import isElementOverflow from "@/helpers/isElemenetOverflow";
+  import isElementOverflow from "@/utils/isElemenetOverflow";
 
   import type { ChannelId, AuthorThumbnail } from "@/utils/invidiousAPI";
   import type { Ref } from "vue";

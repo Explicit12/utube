@@ -9,7 +9,7 @@
 
   import { pingImage } from "@/utils/invidiousAPI";
   import { useUserData } from "@/stores/userData";
-  import formatNumbers from "@/helpers/formatNumbers";
+  import formatNumbers from "@/utils/formatNumbers";
 
   import type { AuthorThumbnail, ChannelId } from "@/utils/invidiousAPI";
 

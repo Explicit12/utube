@@ -7,7 +7,7 @@
   import relativeTime from "dayjs/plugin/relativeTime";
 
   import { pingImage } from "@/utils/invidiousAPI";
-  import formatNumbers from "@/helpers/formatNumbers";
+  import formatNumbers from "@/utils/formatNumbers";
 
   import type {
     VideoThumbnail,

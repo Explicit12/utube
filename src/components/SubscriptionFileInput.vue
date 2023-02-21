@@ -6,7 +6,7 @@
 
   import { useUserData } from "@/stores/userData";
 
-  import CSVtoJSON from "@/helpers/CSVtoJSON";
+  import CSVtoJSON from "@/utils/CSVtoJSON";
 
   import type { Ref } from "vue";
 

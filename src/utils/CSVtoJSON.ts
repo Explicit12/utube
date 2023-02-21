@@ -1,5 +1,3 @@
-// returns PARSED JSON!
-
 export default async function CSVtoJSON(
   file: File,
 ): Promise<Record<string, string>[] | void> {

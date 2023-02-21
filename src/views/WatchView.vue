@@ -11,7 +11,7 @@
   import VideoDiscriptionSkeletonLoader from "@/components/skeletonLoaders/VideoDiscriptionSkeletonLoader.vue";
   import ThePlayer from "@/components/player/ThePlayer.vue";
 
-  import formatNumbers from "@/helpers/formatNumbers";
+  import formatNumbers from "@/utils/formatNumbers";
 
   import {
     getChannelInfo,
