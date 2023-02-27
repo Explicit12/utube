@@ -30,6 +30,7 @@
     "@intlify/unplugin-vue-i18n": "^0.7.0",
     "@rushstack/eslint-patch": "^1.1.4",
     "@testing-library/vue": "^6.6.1",
+    "@types/jsdom": "^21.1.0",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vue/eslint-config-prettier": "^7.0.0",
