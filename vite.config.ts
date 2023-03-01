@@ -15,7 +15,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/invidiousAPI': {
-        target: 'https://invidious.slipfox.xyz',
+        target: 'https://inv.riverside.rocks',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/invidiousAPI/, '')
       }
