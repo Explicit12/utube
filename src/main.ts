@@ -19,6 +19,8 @@ const pinia = createPinia();
 pinia.use(PiniaSharedState({}));
 
 const i18n = createI18n({
+  allowComposition: true,
+  legacy: false,
   locale: "en",
   fallbackLocale: "en",
 });
