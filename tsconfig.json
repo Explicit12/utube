@@ -7,6 +7,9 @@
       "@/*": ["./src/*"]
     },
     "strict": true,
+
+    // TODO: Remove deprecations after upgrade
+    "ignoreDeprecations": "5.0"
   },
 
   "references": [
