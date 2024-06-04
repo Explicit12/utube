@@ -1,3 +1,7 @@
+> **NOTE!**
+Current preview of project may not load content due to used API instance inactivity.
+You can try to build app locally and use another API instance from [here](https://docs.invidious.io/instances/ "here"). Some instances are modified so they may break the app sending unxpected data types.
+
 ## Features
 
 - Data is stored locally
